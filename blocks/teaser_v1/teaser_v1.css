@@ -7,23 +7,23 @@
   background-color: rgb(255 255 255);
 }
 
-.teaser__image {
+.teaser_image {
   width: 100%;
 }
 
-.teaser__image picture,
-.teaser__image img {
+.teaser_image picture,
+.teaser_image img {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.teaser__image img {
+.teaser_image img {
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
-.teaser__content {
+.teaser_content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -31,25 +31,25 @@
   padding: 1rem;
 }
 
-.teaser__title,
-.teaser__description,
-.teaser__cta {
+.teaser_title,
+.teaser_description,
+.teaser_cta {
   margin: 0;
 }
 
-.teaser__title {
+.teaser_title {
   font-size: clamp(1.5rem, 2vw, 2.5rem);
   line-height: 1.2;
   color: inherit;
 }
 
-.teaser__description {
+.teaser_description {
   font-size: clamp(1rem, 1.5vw, 1.125rem);
   line-height: 1.6;
   color: inherit;
 }
 
-.teaser__cta {
+.teaser_cta {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
@@ -62,129 +62,129 @@
   transition: opacity 0.2s ease;
 }
 
-.teaser__cta:hover {
+.teaser_cta:hover {
   opacity: 0.9;
 }
 
-.teaser__cta:focus-visible {
+.teaser_cta:focus-visible {
   outline: 2px solid currentcolor;
   outline-offset: 3px;
 }
 
-.teaser--overlay {
+.teaser-overlay {
   position: relative;
 }
 
-.teaser--overlay .teaser__image {
+.teaser-overlay .teaser_image {
   position: relative;
 }
 
-.teaser--overlay .teaser__image img {
+.teaser-overlay .teaser_image img {
   min-height: 320px;
   aspect-ratio: 16 / 9;
 }
 
-.teaser--overlay .teaser__content {
+.teaser-overlay .teaser_content {
   position: relative;
   padding: 1.5rem;
   background-color: rgb(0 0 0 / 70%);
   color: rgb(255 255 255);
 }
 
-.teaser--featured .teaser__image img {
+.teaser-featured .teaser_image img {
   aspect-ratio: 21 / 9;
 }
 
-.teaser--featured .teaser__title {
+.teaser-featured .teaser_title {
   font-size: clamp(2rem, 3vw, 3.5rem);
 }
 
-.teaser--featured .teaser__content {
+.teaser-featured .teaser_content {
   padding: 1.5rem;
 }
 
-.teaser--compact .teaser__title {
+.teaser-compact .teaser_title {
   font-size: 1.25rem;
 }
 
-.teaser--compact .teaser__description {
+.teaser-compact .teaser_description {
   font-size: 0.95rem;
 }
 
 @media (width <= 767px) {
-  .teaser__cta {
+  .teaser_cta {
     width: 100%;
   }
 
-  .teaser--overlay .teaser__content {
+  .teaser-overlay .teaser_content {
     padding: 1rem;
   }
 
-  .teaser--overlay .teaser__image img {
+  .teaser-overlay .teaser_image img {
     min-height: 240px;
   }
 }
 
 @media (width >= 768px) and (width <= 1024px) {
-  .teaser__content {
+  .teaser_content {
     padding: 1.5rem;
   }
 
-  .teaser--compact {
+  .teaser-compact {
     flex-direction: row;
     align-items: center;
   }
 
-  .teaser--compact .teaser__image {
+  .teaser-compact .teaser_image {
     width: 35%;
   }
 
-  .teaser--compact .teaser__content {
+  .teaser-compact .teaser_content {
     flex: 1;
   }
 
-  .teaser--overlay .teaser__content {
+  .teaser-overlay .teaser_content {
     padding: 1.5rem;
   }
 }
 
 @media (width >= 1025px) {
-  .teaser--horizontal,
-  .teaser--horizontal-reverse,
-  .teaser--compact {
+  .teaser-horizontal,
+  .teaser-horizontal-reverse,
+  .teaser-compact {
     flex-direction: row;
     align-items: stretch;
   }
 
-  .teaser--horizontal .teaser__image,
-  .teaser--horizontal .teaser__content,
-  .teaser--horizontal-reverse .teaser__image,
-  .teaser--horizontal-reverse .teaser__content,
-  .teaser--compact .teaser__image,
-  .teaser--compact .teaser__content {
+  .teaser-horizontal .teaser_image,
+  .teaser-horizontal .teaser_content,
+  .teaser-horizontal-reverse .teaser_image,
+  .teaser-horizontal-reverse .teaser_content,
+  .teaser-compact .teaser_image,
+  .teaser-compact .teaser_content {
     flex: 1 1 50%;
     width: 50%;
   }
 
-  .teaser--horizontal-reverse {
+  .teaser-horizontal-reverse {
     flex-direction: row-reverse;
   }
 
-  .teaser--compact .teaser__image {
+  .teaser-compact .teaser_image {
     width: 35%;
     max-width: 35%;
   }
 
-  .teaser--compact .teaser__content {
+  .teaser-compact .teaser_content {
     flex: 1;
     justify-content: center;
   }
 
-  .teaser--featured .teaser__content {
+  .teaser-featured .teaser_content {
     padding: 2rem;
   }
 
-  .teaser--overlay .teaser__content {
+  .teaser-overlay .teaser_content {
     padding: 2rem;
   }
 }

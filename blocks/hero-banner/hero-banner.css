@@ -189,7 +189,7 @@
   color: var(--hero-subtle);
 }
 
-@media (max-width: 1199px) {
+@media (width <= 1199px) {
   .herobanner__hero {
     height: clamp(760px, 76vw, 880px);
   }
@@ -204,7 +204,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .herobanner__hero {
     align-items: flex-start;
     min-height: 720px;
