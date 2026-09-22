@@ -1204,17 +1204,15 @@
           }
         },
         {
-          "title": "Teaser",
+          "title": "TeaserV1",
           "id": "teaser-v1",
-          "model": "teaser-v1",
-          "filter": "teaser-v1",
           "resourceType": "core/franklin/components/block/v1/block",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "teaser-v1",
+                  "name": "teaserV1",
                   "model": "teaser-v1",
                   "variant": "",
                   "image": "",
@@ -1229,17 +1227,15 @@
         },
         {
           "title": "Embed",
-          "id": "embed_v1",
-          "model": "embed_v1",
-          "filter": "embed_v1",
+          "id": "embed-v1",
           "resourceType": "core/franklin/components/block/v1/block",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "embed_v1",
-                  "model": "embed_v1",
+                  "name": "embed-v1",
+                  "model": "embed-v1",
                   "type": "",
                   "url": "",
                   "title": "",
