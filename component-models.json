@@ -5439,71 +5439,67 @@
     ]
   },
   {
-    "models": [
+    "id": "teaser_v1",
+    "fields": [
       {
-        "id": "teaser_v1",
-        "fields": [
+        "component": "select",
+        "name": "variant",
+        "label": "Layout Style",
+        "required": true,
+        "options": [
           {
-            "component": "select",
-            "name": "variant",
-            "label": "Layout Style",
-            "required": true,
-            "options": [
-              {
-                "name": "Default",
-                "value": "default"
-              },
-              {
-                "name": "Horizontal",
-                "value": "horizontal"
-              },
-              {
-                "name": "Horizontal Reverse",
-                "value": "horizontal-reverse"
-              },
-              {
-                "name": "Overlay",
-                "value": "overlay"
-              },
-              {
-                "name": "Featured",
-                "value": "featured"
-              },
-              {
-                "name": "Compact",
-                "value": "compact"
-              }
-            ]
+            "name": "Default",
+            "value": "default"
           },
           {
-            "component": "reference",
-            "name": "image",
-            "label": "Image",
-            "required": true
+            "name": "Horizontal",
+            "value": "horizontal"
           },
           {
-            "component": "text",
-            "name": "title",
-            "label": "Title",
-            "required": true
+            "name": "Horizontal Reverse",
+            "value": "horizontal-reverse"
           },
           {
-            "component": "textarea",
-            "name": "description",
-            "label": "Description",
-            "required": true
+            "name": "Overlay",
+            "value": "overlay"
           },
           {
-            "component": "text",
-            "name": "ctaLabel",
-            "label": "CTA Label"
+            "name": "Featured",
+            "value": "featured"
           },
           {
-            "component": "text",
-            "name": "ctaLink",
-            "label": "CTA Link"
+            "name": "Compact",
+            "value": "compact"
           }
         ]
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title",
+        "required": true
+      },
+      {
+        "component": "textarea",
+        "name": "description",
+        "label": "Description",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "ctaLabel",
+        "label": "CTA Label"
+      },
+      {
+        "component": "text",
+        "name": "ctaLink",
+        "label": "CTA Link"
       }
     ]
   },
