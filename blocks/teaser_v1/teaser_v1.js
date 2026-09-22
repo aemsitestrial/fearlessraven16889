@@ -126,7 +126,7 @@ function createCTA(label, link) {
     return null;
   }
 
-  const cta = createElement('a', 'teaser__cta', label);
+  const cta = createElement('a', 'teaser-cta', label);
   cta.href = link;
   cta.setAttribute('aria-label', label);
 
@@ -143,7 +143,7 @@ function createImage(data) {
     return null;
   }
 
-  const imageWrapper = createElement('div', 'teaser__image');
+  const imageWrapper = createElement('div', 'teaser-image');
   const picture = createOptimizedPicture(
     data.image,
     data.title || 'Teaser image',
@@ -163,14 +163,14 @@ function createImage(data) {
 }
 
 function createContent(data) {
-  const content = createElement('div', 'teaser__content');
+  const content = createElement('div', 'teaser-content');
 
   if (data.title) {
-    content.append(createElement('h2', 'teaser__title', data.title));
+    content.append(createElement('h2', 'teaser-title', data.title));
   }
 
   if (data.description) {
-    content.append(createElement('p', 'teaser__description', data.description));
+    content.append(createElement('p', 'teaser-description', data.description));
   }
 
   const cta = createCTA(data.ctaLabel, data.ctaLink);
@@ -193,7 +193,7 @@ export default async function decorate(block) {
   block.textContent = '';
 
   const article = document.createElement('article');
-  article.className = `teaser teaser--${variant}`;
+  article.className = `teaser teaser-${variant}`;
   article.setAttribute('aria-label', data.title || 'Teaser content');
 
   const image = createImage(data);

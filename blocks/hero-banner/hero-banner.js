@@ -181,16 +181,16 @@ function createTextElement(tagName, className, text) {
 
 function createMeta(fields) {
   const meta = document.createElement('div');
-  meta.className = 'herobanner__meta';
+  meta.className = 'herobanner-meta';
   meta.setAttribute('aria-label', 'Report metadata');
 
   const label = getText(fields, 'label');
   const category = getText(fields, 'category');
   const readTime = getText(fields, 'readTime');
 
-  if (label) meta.append(createTextElement('span', 'herobanner__label', label));
-  if (category) meta.append(createTextElement('span', 'herobanner__category', category));
-  if (readTime) meta.append(createTextElement('span', 'herobanner__read-time', readTime));
+  if (label) meta.append(createTextElement('span', 'herobanner-label', label));
+  if (category) meta.append(createTextElement('span', 'herobanner-category', category));
+  if (readTime) meta.append(createTextElement('span', 'herobanner-read-time', readTime));
 
   return meta;
 }
@@ -200,10 +200,10 @@ function createHeading(fields) {
   if (lines.length === 0) return null;
 
   const heading = document.createElement('h1');
-  heading.className = 'herobanner__title';
+  heading.className = 'herobanner-title';
 
   lines.forEach((line) => {
-    heading.append(createTextElement('span', 'herobanner__title-line', line));
+    heading.append(createTextElement('span', 'herobanner-title-line', line));
   });
 
   return heading;
@@ -214,10 +214,10 @@ function createSubtitle(fields) {
   if (lines.length === 0) return null;
 
   const subtitle = document.createElement('p');
-  subtitle.className = 'herobanner__subtitle';
+  subtitle.className = 'herobanner-subtitle';
 
   lines.forEach((line) => {
-    subtitle.append(createTextElement('span', 'herobanner__subtitle-line', line));
+    subtitle.append(createTextElement('span', 'herobanner-subtitle-line', line));
   });
 
   return subtitle;
@@ -232,13 +232,13 @@ function createCallToAction(fields) {
   const href = authoredLink?.getAttribute('href') || linkCell?.textContent.trim() || '#';
 
   const link = document.createElement('a');
-  link.className = 'herobanner__cta';
+  link.className = 'herobanner-cta';
   link.href = href;
   link.append(
-    createTextElement('span', 'herobanner__cta-text', text),
-    createTextElement('span', 'herobanner__cta-arrow', '→'),
+    createTextElement('span', 'herobanner-cta-text', text),
+    createTextElement('span', 'herobanner-cta-arrow', '→'),
   );
-  link.querySelector('.herobanner__cta-arrow').setAttribute('aria-hidden', 'true');
+  link.querySelector('.herobanner-cta-arrow').setAttribute('aria-hidden', 'true');
   return link;
 }
 
@@ -248,15 +248,15 @@ function createAuthor(fields) {
   if (!name && !role) return null;
 
   const author = document.createElement('footer');
-  author.className = 'herobanner__author';
-  if (name) author.append(createTextElement('p', 'herobanner__author-name', name));
-  if (role) author.append(createTextElement('p', 'herobanner__author-role', role));
+  author.className = 'herobanner-author';
+  if (name) author.append(createTextElement('p', 'herobanner-author-name', name));
+  if (role) author.append(createTextElement('p', 'herobanner-author-role', role));
   return author;
 }
 
 function createBackground(fields) {
   const background = document.createElement('div');
-  background.className = 'herobanner__background';
+  background.className = 'herobanner-background';
   background.setAttribute('aria-hidden', 'true');
 
   const cell = fields[normalizeFieldName('backgroundImage')];
@@ -283,7 +283,7 @@ function createBackground(fields) {
   }
 
   if (media) {
-    media.classList.add('herobanner__background-image');
+    media.classList.add('herobanner-background-image');
     (media.matches('img') ? media : media.querySelector('img'))?.setAttribute('alt', '');
     background.append(media);
   }
@@ -295,18 +295,18 @@ export default function decorate(block) {
   block.classList.add('herobanner');
   const fields = getFields(block);
   const hero = document.createElement('section');
-  hero.className = 'herobanner__hero';
+  hero.className = 'herobanner-hero';
   hero.setAttribute('aria-label', 'Research report');
 
   const content = document.createElement('div');
-  content.className = 'herobanner__content';
+  content.className = 'herobanner-content';
 
   const meta = createMeta(fields);
   if (meta.children.length > 0) content.append(meta);
 
   const publication = getText(fields, 'publishDate');
   if (publication) {
-    content.append(createTextElement('p', 'herobanner__publication', publication));
+    content.append(createTextElement('p', 'herobanner-publication', publication));
   }
 
   const heading = createHeading(fields);
