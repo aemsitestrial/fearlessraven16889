@@ -182,6 +182,10 @@ function createContent(data) {
 }
 
 export default async function decorate(block) {
+  console.log('BLOCK HTML');
+  console.log(block.innerHTML);
+  console.log('CHILDREN');
+  console.log([...block.children]);
   const data = normalizeBlock(block);
   const variant = normalizeVariant(data.variant);
 
