@@ -30,6 +30,7 @@
       "text",
       "title",
       "teaser",
+      "teaser_v1",
       "video"
     ]
   },

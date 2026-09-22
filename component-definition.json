@@ -1202,7 +1202,8 @@
               }
             }
           }
-        },{
+        },
+        {
           "title": "Hero Banner",
           "id": "hero-banner",
           "plugins": {
@@ -1217,6 +1218,25 @@
               }
             }
           }
+        },
+        {
+          "definitions": [
+            {
+              "title": "Teaser V1",
+              "id": "teaser_v1",
+              "plugins": {
+                "xwalk": {
+                  "page": {
+                    "resourceType": "core/franklin/components/block/v1/block",
+                    "template": {
+                      "name": "Teaser V1",
+                      "model": "teaser_v1"
+                    }
+                  }
+                }
+              }
+            }
+          ]
         }
       ]
     }

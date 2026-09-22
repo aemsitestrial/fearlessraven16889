@@ -1,0 +1,30 @@
+{
+  "title": "Teaser",
+  "description": "Multi-variant teaser block supporting Universal Editor and Document Authoring.",
+  "fields": [
+    {
+      "name": "variant",
+      "type": "string"
+    },
+    {
+      "name": "image",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "ctaLabel",
+      "type": "string"
+    },
+    {
+      "name": "ctaLink",
+      "type": "string"
+    }
+  ]
+}
