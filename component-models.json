@@ -6235,7 +6235,7 @@
     ]
   },
   {
-    "id": "teaser_v1",
+    "id": "teaser-v1",
     "fields": [
       {
         "component": "select",
