@@ -6192,6 +6192,258 @@
     ]
   },
   {
+    "id": "teaserv2",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "fileReference",
+        "label": "Image",
+        "description": "The teaser image, min Xpx x Ypx...",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "fileReferenceAlt",
+        "value": "",
+        "label": "Image Description",
+        "description": "A descriptive text of the image will be shown as tooltip."
+      },
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Style",
+        "valueType": "string",
+        "required": true,
+        "maxSize": 3,
+        "options": [
+          {
+            "name": "Theme",
+            "children": [
+              {
+                "name": "Light",
+                "value": "light"
+              },
+              {
+                "name": "Dark",
+                "value": "dark"
+              },
+              {
+                "name": "Half Height",
+                "value": "half-height"
+              }
+            ]
+          },
+          {
+            "name": "Layout",
+            "children": [
+              {
+                "name": "Split (50/50)",
+                "value": "split"
+              },
+              {
+                "name": "Card (Floating Box)",
+                "value": "card"
+              },
+              {
+                "name": "Hero (Large)",
+                "value": "hero"
+              },
+              {
+                "name": "Image Left",
+                "value": "image-left"
+              },
+              {
+                "name": "Image Right",
+                "value": "image-right"
+              },
+              {
+                "name": "Image Top",
+                "value": "image-top"
+              }
+            ]
+          },
+          {
+            "name": "Alignment",
+            "children": [
+              {
+                "name": "Left",
+                "value": "left"
+              },
+              {
+                "name": "Right",
+                "value": "right"
+              },
+              {
+                "name": "Center",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "name": "Background Color",
+            "children": [
+              {
+                "name": "tcs Red",
+                "value": "tcs-background-red"
+              },
+              {
+                "name": "tcs Yellow",
+                "value": "tcs-background-yellow"
+              },
+              {
+                "name": "tcs Blue",
+                "value": "tcs-background-blue"
+              },
+              {
+                "name": "tcs Beige",
+                "value": "tcs-background-beige"
+              },
+              {
+                "name": "tcs Black",
+                "value": "tcs-background-black"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "eyebrow",
+        "value": "",
+        "label": "Eyebrow",
+        "description": "Sets the small pre-title above the title."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "value": "",
+        "label": "Heading",
+        "description": "Sets the main title of the teaser."
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "titleType",
+        "value": "h3",
+        "label": "Heading Type",
+        "options": [
+          {
+            "name": "H1",
+            "value": "h1"
+          },
+          {
+            "name": "H2",
+            "value": "h2"
+          },
+          {
+            "name": "H3",
+            "value": "h3"
+          },
+          {
+            "name": "H4",
+            "value": "h4"
+          },
+          {
+            "name": "H5",
+            "value": "h5"
+          },
+          {
+            "name": "H6",
+            "value": "h6"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "longDescr",
+        "value": "",
+        "label": "Long Description",
+        "description": "The description shown in Desktop and Tablet view."
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "shortDescr",
+        "value": "",
+        "label": "Short Description",
+        "description": "The description shown in Mobile view. If not set long text is used."
+      },
+      {
+        "component": "select",
+        "name": "cta1Type",
+        "value": "primary",
+        "label": "First CTA Type",
+        "description": "'Primary' will render button filled, 'Secondary' with an outline.",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Primary",
+            "value": "primary"
+          },
+          {
+            "name": "Secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cta1Text",
+        "value": "",
+        "label": "First CTA Text",
+        "description": "Text to be shown inside button."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cta1",
+        "value": "",
+        "label": "First CTA Link",
+        "description": "What link to open when clicking the button."
+      },
+      {
+        "component": "select",
+        "name": "cta2Type",
+        "value": "primary",
+        "label": "Second CTA Type",
+        "description": "'Primary' will render button filled, 'Secondary' with an outline.",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Primary",
+            "value": "primary"
+          },
+          {
+            "name": "Secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cta2Text",
+        "value": "",
+        "label": "Second CTA Text",
+        "description": "Text to be shown inside button."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cta2",
+        "value": "",
+        "label": "Second CTA Link",
+        "description": "What link to open when clicking the button."
+      }
+    ]
+  },
+  {
     "id": "video",
     "fields": [
       {
@@ -6231,123 +6483,6 @@
         "name": "placeholder_imageAlt",
         "value": "",
         "label": "Placeholder Image Alt Text"
-      }
-    ]
-  },
-  {
-    "id": "teaserv1",
-    "fields": [
-      {
-        "component": "select",
-        "name": "variant",
-        "label": "Layout Style",
-        "required": true,
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "Horizontal",
-            "value": "horizontal"
-          },
-          {
-            "name": "Horizontal Reverse",
-            "value": "horizontal-reverse"
-          },
-          {
-            "name": "Overlay",
-            "value": "overlay"
-          },
-          {
-            "name": "Featured",
-            "value": "featured"
-          },
-          {
-            "name": "Compact",
-            "value": "compact"
-          }
-        ]
-      },
-      {
-        "component": "reference",
-        "name": "image",
-        "label": "Image",
-        "required": true
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "title",
-        "label": "Title",
-        "required": true
-      },
-      {
-        "component": "textarea",
-        "valueType": "string",
-        "name": "description",
-        "label": "Description",
-        "required": true
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "ctaLabel",
-        "label": "CTA Label"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "ctaLink",
-        "label": "CTA Link"
-      }
-    ]
-  },
-  {
-    "id": "embed-v1",
-    "fields": [
-      {
-        "component": "select",
-        "name": "type",
-        "label": "Embed Type",
-        "required": true,
-        "options": [
-          {
-            "name": "Iframe",
-            "value": "iframe"
-          },
-          {
-            "name": "YouTube",
-            "value": "youtube"
-          },
-          {
-            "name": "Vimeo",
-            "value": "vimeo"
-          },
-          {
-            "name": "Generic",
-            "value": "generic"
-          }
-        ]
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "url",
-        "label": "Embed URL",
-        "required": true
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "title",
-        "label": "Title"
-      },
-      {
-        "component": "textarea",
-        "valueType": "string",
-        "name": "caption",
-        "label": "Caption"
       }
     ]
   }

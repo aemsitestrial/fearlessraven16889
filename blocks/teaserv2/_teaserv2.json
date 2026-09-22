@@ -1,0 +1,217 @@
+{
+  "definitions": [
+    {
+      "title": "Teaser V2",
+      "id": "teaserv2",
+      "plugins": {
+        "da": {
+          "rows": 7,
+          "columns": 1,
+          "fields": [
+            { "name": "fileReference", "selector": "div:nth-child(1)>div>picture>img[src]" },
+            { "name": "fileReferenceAlt", "selector": "div:nth-child(1)>div>picture>img[alt]" },
+            { "name": "classes", "selector": "div:nth-child(1)>div>ul" },
+            { "name": "eyebrow", "selector": "div:nth-child(2)>div" },
+            { "name": "title", "selector": "div:nth-child(3)>div" },
+            { "name": "titleType", "selector": "div:nth-child(3)>div>:first-child" },
+            { "name": "longDescr", "selector": "div:nth-child(4)>div" },
+            { "name": "shortDescr", "selector": "div:nth-child(5)>div" },
+            { "name": "cta1Type", "selector": "div:nth-child(6)>div>p>:first-child" },
+            { "name": "cta1Text", "selector": "div:nth-child(6)>div>p>strong>a" },
+            { "name": "cta1", "selector": "div:nth-child(6)>div>p>strong>a[href]" },
+            { "name": "cta2Type", "selector": "div:nth-child(7)>div>p>:first-child" },
+            { "name": "cta2Text", "selector": "div:nth-child(7)>div>p>em>a" },
+            { "name": "cta2", "selector": "div:nth-child(7)>div>p>em>a[href]" }
+          ]
+        },
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Teaser V2",
+              "model": "teaserv2",
+              "title": "Teaser V2 Title",
+              "titleType": "h3",
+              "longDescr": "",
+              "classes": ["light", "left"]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "teaserv2",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "fileReference",
+          "label": "Image",
+          "description": "The teaser image, min Xpx x Ypx...",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "fileReferenceAlt",
+          "value": "",
+          "label": "Image Description",
+          "description": "A descriptive text of the image will be shown as tooltip."
+        },
+        {
+          "component": "multiselect",
+          "name": "classes",
+          "label": "Style",
+          "valueType": "string",
+          "required": true,
+          "maxSize": 3,
+          "options": [
+            {
+              "name": "Theme",
+              "children": [
+                { "name": "Light", "value": "light" },
+                { "name": "Dark", "value": "dark" },
+                { "name": "Half Height", "value": "half-height" }
+              ]
+            },
+            {
+              "name": "Layout",
+              "children": [
+                { "name": "Split (50/50)", "value": "split" },
+                { "name": "Card (Floating Box)", "value": "card" },
+                { "name": "Hero (Large)", "value": "hero" },
+                { "name": "Image Left", "value": "image-left" },
+                { "name": "Image Right", "value": "image-right" },
+                { "name": "Image Top", "value": "image-top" }
+              ]
+            },
+            {
+              "name": "Alignment",
+              "children": [
+                { "name": "Left", "value": "left" },
+                { "name": "Right", "value": "right" },
+                { "name": "Center", "value": "center" }
+              ]
+            },
+            {
+              "name": "Background Color",
+              "children": [
+                { "name": "tcs Red", "value": "tcs-background-red" },
+                { "name": "tcs Yellow", "value": "tcs-background-yellow" },
+                { "name": "tcs Blue", "value": "tcs-background-blue" },
+                { "name": "tcs Beige", "value": "tcs-background-beige" },
+                { "name": "tcs Black", "value": "tcs-background-black" }
+              ]
+            }
+          ]
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "eyebrow",
+          "value": "",
+          "label": "Eyebrow",
+          "description": "Sets the small pre-title above the title."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "title",
+          "value": "",
+          "label": "Heading",
+          "description": "Sets the main title of the teaser."
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "titleType",
+          "value": "h3",
+          "label": "Heading Type",
+          "options": [
+            { "name": "H1", "value": "h1" },
+            { "name": "H2", "value": "h2" },
+            { "name": "H3", "value": "h3" },
+            { "name": "H4", "value": "h4" },
+            { "name": "H5", "value": "h5" },
+            { "name": "H6", "value": "h6" }
+          ]
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "longDescr",
+          "value": "",
+          "label": "Long Description",
+          "description": "The description shown in Desktop and Tablet view."
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "shortDescr",
+          "value": "",
+          "label": "Short Description",
+          "description": "The description shown in Mobile view. If not set long text is used."
+        },
+        {
+          "component": "select",
+          "name": "cta1Type",
+          "value": "primary",
+          "label": "First CTA Type",
+          "description": "'Primary' will render button filled, 'Secondary' with an outline.",
+          "valueType": "string",
+          "options": [
+            { "name": "Primary", "value": "primary" },
+            { "name": "Secondary", "value": "secondary" }
+          ]
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "cta1Text",
+          "value": "",
+          "label": "First CTA Text",
+          "description": "Text to be shown inside button."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "cta1",
+          "value": "",
+          "label": "First CTA Link",
+          "description": "What link to open when clicking the button."
+        },
+        {
+          "component": "select",
+          "name": "cta2Type",
+          "value": "primary",
+          "label": "Second CTA Type",
+          "description": "'Primary' will render button filled, 'Secondary' with an outline.",
+          "valueType": "string",
+          "options": [
+            { "name": "Primary", "value": "primary" },
+            { "name": "Secondary", "value": "secondary" }
+          ]
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "cta2Text",
+          "value": "",
+          "label": "Second CTA Text",
+          "description": "Text to be shown inside button."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "cta2",
+          "value": "",
+          "label": "Second CTA Link",
+          "description": "What link to open when clicking the button."
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
