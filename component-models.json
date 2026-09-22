@@ -6304,7 +6304,7 @@
     ]
   },
   {
-    "id": "embed_v1",
+    "id": "embed-v1",
     "fields": [
       {
         "component": "select",

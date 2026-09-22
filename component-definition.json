@@ -1212,7 +1212,7 @@
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "teaserv1",
+                  "name": "Teaserv1",
                   "model": "teaserv1"
                 }
               }
@@ -1221,15 +1221,15 @@
         },
         {
           "title": "EmbedV1",
-          "id": "embed_v1",
+          "id": "embed-v1",
           "resourceType": "core/franklin/components/block/v1/block",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "embed_v1",
-                  "model": "embed_v1"
+                  "name": "EmbedV1",
+                  "model": "embed-v1"
                 }
               }
             }
