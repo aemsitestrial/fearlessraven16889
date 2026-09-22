@@ -1220,7 +1220,7 @@
           }
         },
         {
-          "title": "Embed",
+          "title": "EmbedV1",
           "id": "embed_v1",
           "resourceType": "core/franklin/components/block/v1/block",
           "plugins": {
