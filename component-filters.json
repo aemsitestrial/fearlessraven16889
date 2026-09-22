@@ -21,7 +21,6 @@
       "fragment",
       "form",
       "hero",
-      "hero-banner",
       "image",
       "quote",
       "search",
@@ -31,6 +30,7 @@
       "title",
       "teaser",
       "teaser_v1",
+      "embed_v1",
       "video"
     ]
   },

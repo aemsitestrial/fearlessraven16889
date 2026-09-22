@@ -9,61 +9,99 @@ const SUPPORTED_VARIANTS = [
   'compact',
 ];
 
-// function getValue(row) {
-//   if (!row) {
-//     return '';
-//   }
+function asText(value) {
+  if (!value) {
+    return '';
+  }
 
-//   const cells = [...row.children];
+  if (typeof value === 'string') {
+    return value.trim();
+  }
 
-//   if (cells.length > 1) {
-//     return cells[1];
-//   }
+  const text = value.textContent || '';
+  return text.trim();
+}
 
-//   return cells[0];
-// }
+function getCellValue(cell) {
+  if (!cell) {
+    return '';
+  }
+
+  if (cell.querySelector) {
+    const anchor = cell.querySelector('a');
+    if (anchor) {
+      return anchor.getAttribute('href') || anchor.textContent.trim();
+    }
+
+    const image = cell.querySelector('picture img, img');
+    if (image) {
+      return image.getAttribute('src') || image.getAttribute('data-src') || '';
+    }
+  }
+
+  if (cell.href) {
+    return cell.href;
+  }
+
+  return asText(cell);
+}
+
+function normalizeVariant(value) {
+  const normalized = (value || 'default')
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_]+/g, '-');
+
+  return SUPPORTED_VARIANTS.includes(normalized) ? normalized : 'default';
+}
 
 function normalizeBlock(block) {
-  const rows = [...block.children];
+  const data = {
+    variant: 'default',
+    image: '',
+    title: '',
+    description: '',
+    ctaLabel: '',
+    ctaLink: '',
+  };
 
-  const data = {};
+  if (!block || !block.children) {
+    return data;
+  }
 
-  rows.forEach((row) => {
-    const cols = [...row.children];
-
-    if (cols.length < 2) {
+  [...block.children].forEach((row) => {
+    const cells = [...row.children || []];
+    if (cells.length < 2) {
       return;
     }
 
-    const key = cols[0].textContent.trim().toLowerCase();
+    const key = asText(cells[0]).toLowerCase();
+    const value = cells[1];
+    const textValue = asText(value);
 
     switch (key) {
       case 'variant':
-        data.variant = cols[1].textContent.trim();
+      case 'layout style':
+      case 'layout-style':
+        data.variant = textValue || data.variant;
         break;
-
       case 'image':
-        data.image = cols[1].querySelector('picture img')?.src
-          || cols[1].querySelector('img')?.src
-          || cols[1].textContent.trim();
+        data.image = getCellValue(value) || data.image;
         break;
-
       case 'title':
-        data.title = cols[1].textContent.trim();
+        data.title = textValue || data.title;
         break;
-
       case 'description':
-        data.description = cols[1].textContent.trim();
+        data.description = textValue || data.description;
         break;
-
       case 'cta label':
-        data.ctaLabel = cols[1].textContent.trim();
+      case 'cta-label':
+        data.ctaLabel = textValue || data.ctaLabel;
         break;
-
       case 'cta link':
-        data.ctaLink = cols[1].textContent.trim();
+      case 'cta-link':
+        data.ctaLink = getCellValue(value) || data.ctaLink;
         break;
-
       default:
         break;
     }
@@ -72,30 +110,80 @@ function normalizeBlock(block) {
   return data;
 }
 
-function createCTA(ctaLabel, ctaLink) {
-  if (!ctaLabel || !ctaLink) {
-    return '';
+function createElement(tagName, className, text) {
+  const element = document.createElement(tagName);
+  element.className = className;
+
+  if (text) {
+    element.textContent = text;
   }
 
-  //   const isExternal = /^https?:\/\//i.test(ctaLink);
+  return element;
+}
 
-  return `
-    ${ctaLink}
-      ${ctaLabel}
-    </a>
-  `;
+function createCTA(label, link) {
+  if (!label || !link) {
+    return null;
+  }
+
+  const cta = createElement('a', 'teaser__cta', label);
+  cta.href = link;
+  cta.setAttribute('aria-label', label);
+
+  if (/^https?:\/\//i.test(link)) {
+    cta.target = '_blank';
+    cta.rel = 'noopener noreferrer';
+  }
+
+  return cta;
+}
+
+function createImage(data) {
+  if (!data.image) {
+    return null;
+  }
+
+  const imageWrapper = createElement('div', 'teaser__image');
+  const picture = createOptimizedPicture(
+    data.image,
+    data.title || 'Teaser image',
+    false,
+    [{ width: '750' }, { width: '1200' }],
+  );
+
+  const image = picture.querySelector('img');
+  if (image) {
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.setAttribute('alt', data.title || 'Teaser image');
+  }
+
+  imageWrapper.append(picture);
+  return imageWrapper;
+}
+
+function createContent(data) {
+  const content = createElement('div', 'teaser__content');
+
+  if (data.title) {
+    content.append(createElement('h2', 'teaser__title', data.title));
+  }
+
+  if (data.description) {
+    content.append(createElement('p', 'teaser__description', data.description));
+  }
+
+  const cta = createCTA(data.ctaLabel, data.ctaLink);
+  if (cta) {
+    content.append(cta);
+  }
+
+  return content;
 }
 
 export default async function decorate(block) {
   const data = normalizeBlock(block);
-
-  const variantRaw = (data.variant || 'default')
-    .toLowerCase()
-    .replace(/\s+/g, '-');
-
-  const variant = SUPPORTED_VARIANTS.includes(variantRaw)
-    ? variantRaw
-    : 'default';
+  const variant = normalizeVariant(data.variant);
 
   if (!data.title && !data.description && !data.image) {
     block.remove();
@@ -106,34 +194,15 @@ export default async function decorate(block) {
 
   const article = document.createElement('article');
   article.className = `teaser teaser--${variant}`;
+  article.setAttribute('aria-label', data.title || 'Teaser content');
 
-  const imageDiv = document.createElement('div');
-  imageDiv.className = 'teaser__image';
+  const image = createImage(data);
+  const content = createContent(data);
 
-  if (data.image) {
-    imageDiv.append(
-      createOptimizedPicture(
-        data.image,
-        data.title || 'Teaser Image',
-        false,
-        [
-          { width: '750' },
-          { width: '1200' },
-        ],
-      ),
-    );
+  if (image) {
+    article.append(image);
   }
 
-  const contentDiv = document.createElement('div');
-  contentDiv.className = 'teaser__content';
-
-  contentDiv.innerHTML = `
-    ${data.title ? `<h2 class="teaser__title">${data.title}</h2>` : ''}
-    ${data.description ? `<p class="teaser__description">${data.description}</p>` : ''}
-    ${createCTA(data.ctaLabel, data.ctaLink)}
-  `;
-
-  article.append(imageDiv, contentDiv);
-
+  article.append(content);
   block.append(article);
 }

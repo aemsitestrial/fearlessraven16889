@@ -5367,143 +5367,6 @@
     ]
   },
   {
-    "id": "hero-banner",
-    "fields": [
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "label",
-        "label": "Label"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "category",
-        "label": "Category"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "read-time",
-        "label": "Read Time"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "publish-date",
-        "label": "Publish Date"
-      },
-      {
-        "component": "richtext",
-        "valueType": "string",
-        "name": "title",
-        "label": "Title"
-      },
-      {
-        "component": "richtext",
-        "valueType": "string",
-        "name": "subtitle",
-        "label": "Subtitle"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "cta-text",
-        "label": "CTA Text"
-      },
-      {
-        "component": "aem-content",
-        "valueType": "string",
-        "name": "cta-link",
-        "label": "CTA Link"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "author",
-        "label": "Author"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "role",
-        "label": "Role"
-      },
-      {
-        "component": "reference",
-        "valueType": "string",
-        "name": "background-image",
-        "label": "Background Image",
-        "multi": false
-      }
-    ]
-  },
-  {
-    "id": "teaser_v1",
-    "fields": [
-      {
-        "component": "select",
-        "name": "variant",
-        "label": "Layout Style",
-        "required": true,
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "Horizontal",
-            "value": "horizontal"
-          },
-          {
-            "name": "Horizontal Reverse",
-            "value": "horizontal-reverse"
-          },
-          {
-            "name": "Overlay",
-            "value": "overlay"
-          },
-          {
-            "name": "Featured",
-            "value": "featured"
-          },
-          {
-            "name": "Compact",
-            "value": "compact"
-          }
-        ]
-      },
-      {
-        "component": "reference",
-        "name": "image",
-        "label": "Image",
-        "required": true
-      },
-      {
-        "component": "text",
-        "name": "title",
-        "label": "Title",
-        "required": true
-      },
-      {
-        "component": "textarea",
-        "name": "description",
-        "label": "Description",
-        "required": true
-      },
-      {
-        "component": "text",
-        "name": "ctaLabel",
-        "label": "CTA Label"
-      },
-      {
-        "component": "text",
-        "name": "ctaLink",
-        "label": "CTA Link"
-      }
-    ]
-  },
-  {
     "id": "list",
     "fields": [
       {
@@ -6368,6 +6231,123 @@
         "name": "placeholder_imageAlt",
         "value": "",
         "label": "Placeholder Image Alt Text"
+      }
+    ]
+  },
+  {
+    "id": "teaser_v1",
+    "fields": [
+      {
+        "component": "select",
+        "name": "variant",
+        "label": "Layout Style",
+        "required": true,
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Horizontal",
+            "value": "horizontal"
+          },
+          {
+            "name": "Horizontal Reverse",
+            "value": "horizontal-reverse"
+          },
+          {
+            "name": "Overlay",
+            "value": "overlay"
+          },
+          {
+            "name": "Featured",
+            "value": "featured"
+          },
+          {
+            "name": "Compact",
+            "value": "compact"
+          }
+        ]
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "required": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Title",
+        "required": true
+      },
+      {
+        "component": "textarea",
+        "valueType": "string",
+        "name": "description",
+        "label": "Description",
+        "required": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaLabel",
+        "label": "CTA Label"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaLink",
+        "label": "CTA Link"
+      }
+    ]
+  },
+  {
+    "id": "embed_v1",
+    "fields": [
+      {
+        "component": "select",
+        "name": "type",
+        "label": "Embed Type",
+        "required": true,
+        "options": [
+          {
+            "name": "Iframe",
+            "value": "iframe"
+          },
+          {
+            "name": "YouTube",
+            "value": "youtube"
+          },
+          {
+            "name": "Vimeo",
+            "value": "vimeo"
+          },
+          {
+            "name": "Generic",
+            "value": "generic"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "url",
+        "label": "Embed URL",
+        "required": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "textarea",
+        "valueType": "string",
+        "name": "caption",
+        "label": "Caption"
       }
     ]
   }

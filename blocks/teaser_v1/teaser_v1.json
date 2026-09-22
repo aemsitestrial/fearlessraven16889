@@ -1,30 +1,98 @@
 {
-  "title": "Teaser",
-  "description": "Multi-variant teaser block supporting Universal Editor and Document Authoring.",
-  "fields": [
+  "definitions": [
     {
-      "name": "variant",
-      "type": "string"
-    },
+      "title": "Teaser",
+      "id": "teaser_v1",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "teaser_v1",
+              "model": "teaser_v1"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
     {
-      "name": "image",
-      "type": "string"
-    },
+      "id": "teaser_v1",
+      "fields": [
+        {
+          "component": "select",
+          "name": "variant",
+          "label": "Layout Style",
+          "required": true,
+          "options": [
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "Horizontal",
+              "value": "horizontal"
+            },
+            {
+              "name": "Horizontal Reverse",
+              "value": "horizontal-reverse"
+            },
+            {
+              "name": "Overlay",
+              "value": "overlay"
+            },
+            {
+              "name": "Featured",
+              "value": "featured"
+            },
+            {
+              "name": "Compact",
+              "value": "compact"
+            }
+          ]
+        },
+        {
+          "component": "reference",
+          "name": "image",
+          "label": "Image",
+          "required": true
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "title",
+          "label": "Title",
+          "required": true
+        },
+        {
+          "component": "textarea",
+          "valueType": "string",
+          "name": "description",
+          "label": "Description",
+          "required": true
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "ctaLabel",
+          "label": "CTA Label"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "ctaLink",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ],
+  "filters": [
     {
-      "name": "title",
-      "type": "string"
-    },
-    {
-      "name": "description",
-      "type": "string"
-    },
-    {
-      "name": "ctaLabel",
-      "type": "string"
-    },
-    {
-      "name": "ctaLink",
-      "type": "string"
+      "id": "section",
+      "components": [
+        "teaser_v1"
+      ]
     }
   ]
 }
