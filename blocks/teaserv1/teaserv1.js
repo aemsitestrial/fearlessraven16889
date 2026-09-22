@@ -65,7 +65,22 @@ function normalizeBlock(block) {
     ctaLink: '',
   };
 
-  if (!block || !block.children) {
+  if (!block) {
+    return data;
+  }
+
+  if (block.variant || block.image || block.title
+    || block.description || block.ctaLabel || block.ctaLink) {
+    data.variant = normalizeVariant(block.variant || data.variant);
+    data.image = block.image || data.image;
+    data.title = block.title || data.title;
+    data.description = block.description || data.description;
+    data.ctaLabel = block.ctaLabel || data.ctaLabel;
+    data.ctaLink = block.ctaLink || data.ctaLink;
+    return data;
+  }
+
+  if (!block.children) {
     return data;
   }
 
@@ -83,7 +98,7 @@ function normalizeBlock(block) {
       case 'variant':
       case 'layout style':
       case 'layout-style':
-        data.variant = textValue || data.variant;
+        data.variant = normalizeVariant(textValue || data.variant);
         break;
       case 'image':
         data.image = getCellValue(value) || data.image;
@@ -96,10 +111,12 @@ function normalizeBlock(block) {
         break;
       case 'cta label':
       case 'cta-label':
+      case 'ctalabel':
         data.ctaLabel = textValue || data.ctaLabel;
         break;
       case 'cta link':
       case 'cta-link':
+      case 'ctalink':
         data.ctaLink = getCellValue(value) || data.ctaLink;
         break;
       default:
@@ -182,17 +199,7 @@ function createContent(data) {
 }
 
 export default async function decorate(block) {
-  console.log('BLOCK HTML');
-  console.log(block.innerHTML);
-  console.log('CHILDREN');
-  console.log([...block.children]);
-  const rows = [...block.children];
-  rows.forEach((row, index) => {
-    console.log(`ROW ${index}`, row.outerHTML);
-    console.log(`TEXT ${index}`, row.textContent);
-  });
   const data = normalizeBlock(block);
-  console.log('DATA', data);
   const variant = normalizeVariant(data.variant);
 
   if (!data.title && !data.description && !data.image) {

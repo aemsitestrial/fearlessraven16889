@@ -71,6 +71,13 @@
   outline-offset: 3px;
 }
 
+.teaser-horizontal,
+.teaser-horizontal-reverse,
+.teaser-compact {
+  display: flex;
+  flex-direction: column;
+}
+
 .teaser-overlay {
   position: relative;
 }
@@ -85,9 +92,13 @@
 }
 
 .teaser-overlay .teaser-content {
-  position: relative;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
   padding: 1.5rem;
-  background-color: rgb(0 0 0 / 70%);
+  background: linear-gradient(180deg, rgb(15 23 42 / 0%) 0%, rgb(15 23 42 / 75%) 100%);
   color: rgb(255 255 255);
 }
 
@@ -117,7 +128,9 @@
   }
 
   .teaser-overlay .teaser-content {
+    position: relative;
     padding: 1rem;
+    background-color: rgb(15 23 42 / 90%);
   }
 
   .teaser-overlay .teaser-image img {
