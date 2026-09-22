@@ -187,6 +187,7 @@ export default async function decorate(block) {
   console.log('CHILDREN');
   console.log([...block.children]);
   const data = normalizeBlock(block);
+  console.log('DATA', data);
   const variant = normalizeVariant(data.variant);
 
   if (!data.title && !data.description && !data.image) {
