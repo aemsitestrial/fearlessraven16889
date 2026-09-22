@@ -6235,7 +6235,7 @@
     ]
   },
   {
-    "id": "teaser-v1",
+    "id": "teaserv1",
     "fields": [
       {
         "component": "select",

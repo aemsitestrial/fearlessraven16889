@@ -1205,7 +1205,7 @@
         },
         {
           "title": "TeaserV1",
-          "id": "teaser-v1",
+          "id": "teaserv1",
           "resourceType": "core/franklin/components/block/v1/block",
           "plugins": {
             "xwalk": {
