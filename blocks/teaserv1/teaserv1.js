@@ -187,10 +187,10 @@ export default async function decorate(block) {
   console.log('CHILDREN');
   console.log([...block.children]);
   const rows = [...block.children];
-rows.forEach((row, index) => {
-  console.log(`ROW ${index}`, row.outerHTML);
-  console.log(`TEXT ${index}`, row.textContent);
-});
+  rows.forEach((row, index) => {
+    console.log(`ROW ${index}`, row.outerHTML);
+    console.log(`TEXT ${index}`, row.textContent);
+  });
   const data = normalizeBlock(block);
   console.log('DATA', data);
   const variant = normalizeVariant(data.variant);

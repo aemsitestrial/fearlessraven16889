@@ -1,0 +1,57 @@
+.embed {
+  display: block;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.embed-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: rgb(15 23 42);
+}
+
+.embed-iframe {
+  display: block;
+  width: 100%;
+  min-height: 315px;
+  border: 0;
+}
+
+.embed-title,
+.embed-caption {
+  margin-top: 0.75rem;
+  color: rgb(31 41 55);
+  line-height: 1.5;
+}
+
+.embed-title {
+  font-weight: 700;
+}
+
+.embed-caption {
+  font-size: 0.95rem;
+  color: rgb(75 85 99);
+}
+
+@media (width <= 767px) {
+  .embed {
+    margin: 1rem 0;
+  }
+
+  .embed-iframe {
+    min-height: 220px;
+  }
+
+  .embed-title,
+  .embed-caption {
+    margin-top: 0.5rem;
+  }
+}
+
+@media (width >= 768px) {
+  .embed-frame {
+    border-radius: 1rem;
+  }
+}   
