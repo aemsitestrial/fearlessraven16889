@@ -353,6 +353,54 @@
     ]
   },
   {
+    "id": "embedv1",
+    "fields": [
+      {
+        "component": "select",
+        "name": "type",
+        "label": "Embed Type",
+        "required": true,
+        "options": [
+          {
+            "name": "Iframe",
+            "value": "iframe"
+          },
+          {
+            "name": "YouTube",
+            "value": "youtube"
+          },
+          {
+            "name": "Vimeo",
+            "value": "vimeo"
+          },
+          {
+            "name": "Generic",
+            "value": "generic"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "url",
+        "label": "Embed URL",
+        "required": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "textarea",
+        "valueType": "string",
+        "name": "caption",
+        "label": "Caption"
+      }
+    ]
+  },
+  {
     "id": "form",
     "fields": [
       {
@@ -5973,7 +6021,7 @@
     ]
   },
   {
-    "id": "teaser",
+    "id": "teaser-v2",
     "fields": [
       {
         "component": "reference",
@@ -6017,6 +6065,35 @@
             ]
           },
           {
+            "name": "Layout",
+            "children": [
+              {
+                "name": "Split (50/50)",
+                "value": "split"
+              },
+              {
+                "name": "Card (Floating Box)",
+                "value": "card"
+              },
+              {
+                "name": "Hero (Large)",
+                "value": "hero"
+              },
+              {
+                "name": "Image Left",
+                "value": "image-left"
+              },
+              {
+                "name": "Image Right",
+                "value": "image-right"
+              },
+              {
+                "name": "Image Top",
+                "value": "image-top"
+              }
+            ]
+          },
+          {
             "name": "Alignment",
             "children": [
               {
@@ -6026,6 +6103,10 @@
               {
                 "name": "Right",
                 "value": "right"
+              },
+              {
+                "name": "Center",
+                "value": "center"
               }
             ]
           },
@@ -6192,7 +6273,7 @@
     ]
   },
   {
-    "id": "teaserv2",
+    "id": "teaser",
     "fields": [
       {
         "component": "reference",
@@ -6236,35 +6317,6 @@
             ]
           },
           {
-            "name": "Layout",
-            "children": [
-              {
-                "name": "Split (50/50)",
-                "value": "split"
-              },
-              {
-                "name": "Card (Floating Box)",
-                "value": "card"
-              },
-              {
-                "name": "Hero (Large)",
-                "value": "hero"
-              },
-              {
-                "name": "Image Left",
-                "value": "image-left"
-              },
-              {
-                "name": "Image Right",
-                "value": "image-right"
-              },
-              {
-                "name": "Image Top",
-                "value": "image-top"
-              }
-            ]
-          },
-          {
             "name": "Alignment",
             "children": [
               {
@@ -6274,10 +6326,6 @@
               {
                 "name": "Right",
                 "value": "right"
-              },
-              {
-                "name": "Center",
-                "value": "center"
               }
             ]
           },

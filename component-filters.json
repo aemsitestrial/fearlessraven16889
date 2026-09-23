@@ -29,7 +29,6 @@
       "text",
       "title",
       "teaser",
-      "teaserv2",
       "video"
     ]
   },
@@ -64,6 +63,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "section",
+    "components": [
+      "embedv1"
     ]
   },
   {
@@ -124,6 +129,12 @@
     "id": "tabs",
     "components": [
       "tabs-item"
+    ]
+  },
+  {
+    "id": "section",
+    "components": [
+      "teaser-v2"
     ]
   },
   {
