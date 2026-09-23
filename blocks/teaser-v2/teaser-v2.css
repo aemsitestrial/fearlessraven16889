@@ -9,7 +9,11 @@
 }
 
 .teaser-v2.block.half-height {
-  height: 200px;
+  height: auto;
+}
+
+.teaser-v2.block.half-height .background {
+height: 200px;
 }
   
 .teaser-v2.block > .foreground {
