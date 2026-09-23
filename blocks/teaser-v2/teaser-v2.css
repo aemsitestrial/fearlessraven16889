@@ -139,6 +139,16 @@
   background-color: transparent;
 }
 
+.teaser-v2.block.split > .foreground > .text > .eyebrow,
+.teaser-v2.block.split > .foreground > .text > .title h1,
+.teaser-v2.block.split > .foreground > .text > .title h2,
+.teaser-v2.block.split > .foreground > .text > .title h3,
+.teaser-v2.block.split > .foreground > .text > .title h4,
+.teaser-v2.block.split > .foreground > .text > .title h5,
+.teaser-v2.block.split > .foreground > .text > .title h6 {
+  color: #000;
+}
+
 @media (width <=899px) {
   .teaser-v2.block.split {
     flex-direction: column;
