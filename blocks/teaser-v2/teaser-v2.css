@@ -98,9 +98,7 @@
 }
 
 
-.teaser-v2.block .long-description,
-.teaser-v2.block .title,
-.teaser-v2.block .eyebrow {
+.teaser-v2.block .long-description {
   color: #000;
   text-align: justify;
 }
@@ -176,6 +174,17 @@
 
 .teaser-v2.block.card>.foreground>.spacer {
   display: none;
+}
+
+.teaser-v2.block.card > .foreground > .text > .title h1,
+.teaser-v2.block.card > .foreground > .text > .title h2,
+.teaser-v2.block.card > .foreground > .text > .title h3,
+.teaser-v2.block.card > .foreground > .text > .title h4,
+.teaser-v2.block.card > .foreground > .text > .title h5,
+.teaser-v2.block.card > .foreground > .text > .title h6,
+.teaser-v2.block.card > .foreground > .text > .eyebrow,
+.teaser-v2.block.card > .foreground > .text > .long-description {
+  color: #000;
 }
 
 /* Hero */
