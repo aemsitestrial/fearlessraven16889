@@ -109,19 +109,19 @@
    ========================================= */
 
 /* Split */
-.teaserv2.block.split {
+.teaser-v2.block.split {
   display: flex;
   flex-direction: row; 
   background-color: var(--teaser-background-color, #f4f4f4);
 }
 
-.teaserv2.block.split > .background {
+.teaser-v2.block.split > .background {
   position: relative;
   width: 50%;
   height: auto;
 }
 
-.teaserv2.block.split > .foreground {
+.teaser-v2.block.split > .foreground {
   position: relative;
   width: 50%;
   max-width: none;
