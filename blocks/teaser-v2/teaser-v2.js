@@ -54,11 +54,20 @@ export function generateTeaserDOM(props, classes) {
   // set the mobile/desktop background color from the tcs-background-* variant class
   const backgroundColor = [...classes].find((cls) => cls.startsWith('tcs-background-'));
   if (backgroundColor) {
+    const colorName = backgroundColor.substring('tcs-background-'.length);
+    const colorMap = {
+      red: '#eb1c24',
+      yellow: '#ffcc00',
+      blue: '#0076a8',
+      beige: '#f5f0eb',
+      black: '#111111',
+    };
+    const fallbackColor = colorMap[colorName] || colorName;
     teaserDOM
       .querySelector('.foreground')
       .style.setProperty(
         '--teaser-background-color',
-        `var(--${backgroundColor.substring('tcs-background-'.length)})`,
+        `var(--${colorName}, var(--tcs-background-${colorName}, ${fallbackColor}))`,
       );
   }
 
