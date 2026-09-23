@@ -319,14 +319,14 @@
         },
         {
           "title": "Embed v1",
-          "id": "embed-v1",
+          "id": "embedv1",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "embed-v1",
-                  "model": "embed-v1"
+                  "name": "embedv1",
+                  "model": "embedv1"
                 }
               }
             }

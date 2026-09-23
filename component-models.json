@@ -353,7 +353,7 @@
     ]
   },
   {
-    "id": "embed-v1",
+    "id": "embedv1",
     "fields": [
       {
         "component": "select",
