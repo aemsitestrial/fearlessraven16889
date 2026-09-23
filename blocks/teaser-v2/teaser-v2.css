@@ -97,7 +97,8 @@
   object-fit: cover;
 }
 
-.teaser-v2.block .long-description {
+
+.teaser-v2.block .long-description, .title, .eyebrow {
   color: #000;
   text-align: justify;
 }
