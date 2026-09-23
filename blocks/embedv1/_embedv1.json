@@ -66,12 +66,5 @@
       ]
     }
   ],
-  "filters": [
-    {
-      "id": "section",
-      "components": [
-        "embed-v1"
-      ]
-    }
-  ]
+  "filters": []
 }

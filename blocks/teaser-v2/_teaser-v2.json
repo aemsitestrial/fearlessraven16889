@@ -339,12 +339,5 @@
       ]
     }
   ],
-  "filters": [
-    {
-      "id": "section",
-      "components": [
-        "teaser-v2"
-      ]
-    }
-  ]
+  "filters": []
 }

@@ -66,12 +66,6 @@
     ]
   },
   {
-    "id": "section",
-    "components": [
-      "embed-v1"
-    ]
-  },
-  {
     "id": "form",
     "components": [
       "captcha",
@@ -129,12 +123,6 @@
     "id": "tabs",
     "components": [
       "tabs-item"
-    ]
-  },
-  {
-    "id": "section",
-    "components": [
-      "teaser-v2"
     ]
   },
   {
