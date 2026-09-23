@@ -66,5 +66,12 @@
       ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "section",
+      "components": [
+        "embedv1"
+      ]
+    }
+  ]
 }
