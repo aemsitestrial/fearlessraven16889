@@ -98,7 +98,9 @@
 }
 
 
-.teaser-v2.block .long-description, .title, .eyebrow {
+.teaser-v2.block .long-description,
+.teaser-v2.block .title,
+.teaser-v2.block .eyebrow {
   color: #000;
   text-align: justify;
 }
