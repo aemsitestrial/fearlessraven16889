@@ -54,4 +54,22 @@
   .embed-frame {
     border-radius: 1rem;
   }
+}
+
+.embedv1.embed-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  border: 1px dashed rgb(156 163 175);
+  border-radius: 0.75rem;
+  background: rgb(249 250 251);
+  text-align: center;
+}
+
+.embedv1.embed-empty .embed-empty-message {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgb(107 114 128);
 }   

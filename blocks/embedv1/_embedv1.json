@@ -4,6 +4,28 @@
       "title": "Embed v1",
       "id": "embedv1",
       "plugins": {
+        "da": {
+          "rows": 4,
+          "columns": 1,
+          "fields": [
+            {
+              "name": "type",
+              "selector": "div:nth-child(1)>div"
+            },
+            {
+              "name": "url",
+              "selector": "div:nth-child(2)>div"
+            },
+            {
+              "name": "title",
+              "selector": "div:nth-child(3)>div"
+            },
+            {
+              "name": "caption",
+              "selector": "div:nth-child(4)>div"
+            }
+          ]
+        },
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block",
