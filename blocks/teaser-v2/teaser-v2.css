@@ -98,7 +98,13 @@
 }
 
 .teaser-v2.block .long-description {
-  color: #fff;
+  color: #000000;
+  text-align: justify;
+}
+
+.teaser-v2.block .short-description {
+  color: #000000;
+  text-align: justify;
 }
 
 @media (width >=900px) {
