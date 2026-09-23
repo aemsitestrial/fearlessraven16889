@@ -1,7 +1,7 @@
 {
   "definitions": [
     {
-      "title": "Embed",
+      "title": "Embed v1",
       "id": "embed-v1",
       "plugins": {
         "xwalk": {
