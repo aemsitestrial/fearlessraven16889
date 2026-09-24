@@ -52,7 +52,7 @@
 }
 
 /* =========================================
-   SIZE VARIANTS
+   SIZE
    ========================================= */
 
 .embed.small {
@@ -73,17 +73,30 @@
 }
 
 /* =========================================
-   VIDEO (YOUTUBE / VIMEO)
+   YOUTUBE / VIMEO
    FLUID 16:9
    ========================================= */
 
-.embed.video .embed-frame {
+.embed.youtube .embed-frame,
+.embed.vimeo .embed-frame {
   aspect-ratio: 16 / 9;
 }
 
-.embed.video .embed-iframe {
+.embed.youtube .embed-iframe,
+.embed.vimeo .embed-iframe {
   width: 100%;
   height: 100%;
+}
+
+/* =========================================
+   GENERIC IFRAMES / WEBSITES
+   ========================================= */
+
+.embed.iframe .embed-iframe,
+.embed.generic .embed-iframe {
+  width: 100%;
+  height: 80vh;
+  min-height: 700px;
 }
 
 /* =========================================
@@ -91,7 +104,8 @@
    ========================================= */
 
 .embed.form .embed-iframe {
-  min-height: 800px;
+  width: 100%;
+  min-height: 900px;
 }
 
 /* =========================================
@@ -99,23 +113,8 @@
    ========================================= */
 
 .embed.document .embed-iframe {
-  min-height: 700px;
-}
-
-/* =========================================
-   GENERIC IFRAME
-   ========================================= */
-
-.embed.auto .embed-iframe {
-  min-height: 600px;
-}
-
-/* =========================================
-   CUSTOM HEIGHT
-   ========================================= */
-
-.embed.custom-height .embed-iframe {
-  min-height: var(--embed-height, 600px);
+  width: 100%;
+  min-height: 800px;
 }
 
 /* =========================================
@@ -124,8 +123,8 @@
 
 .embed-title {
   margin-top: 0.75rem;
-  color: rgb(31 41 55);
   font-weight: 700;
+  color: rgb(31 41 55);
   line-height: 1.5;
   overflow-wrap: break-word;
   hyphens: auto;
@@ -138,8 +137,8 @@
 .embed-caption {
   margin-top: 0.75rem;
   font-size: 0.95rem;
-  color: rgb(75 85 99);
   line-height: 1.5;
+  color: rgb(75 85 99);
   overflow-wrap: break-word;
   hyphens: auto;
 }
@@ -184,16 +183,23 @@
     margin-top: 0.5rem;
   }
 
+  .embed.youtube .embed-frame,
+  .embed.vimeo .embed-frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .embed.iframe .embed-iframe,
+  .embed.generic .embed-iframe {
+    height: 60vh;
+    min-height: 450px;
+  }
+
   .embed.form .embed-iframe {
     min-height: 600px;
   }
 
   .embed.document .embed-iframe {
     min-height: 500px;
-  }
-
-  .embed.auto .embed-iframe {
-    min-height: 350px;
   }
 
   .embedv1.embed-empty {
@@ -210,16 +216,18 @@
     margin: 1.25rem auto;
   }
 
-  .embed.form .embed-iframe {
-    min-height: 700px;
-  }
-
-  .embed.document .embed-iframe {
+  .embed.iframe .embed-iframe,
+  .embed.generic .embed-iframe {
+    height: 75vh;
     min-height: 600px;
   }
 
-  .embed.auto .embed-iframe {
-    min-height: 500px;
+  .embed.form .embed-iframe {
+    min-height: 750px;
+  }
+
+  .embed.document .embed-iframe {
+    min-height: 650px;
   }
 }
 
@@ -236,15 +244,17 @@
     border-radius: 1rem;
   }
 
+  .embed.iframe .embed-iframe,
+  .embed.generic .embed-iframe {
+    height: 90vh;
+    min-height: 900px;
+  }
+
   .embed.form .embed-iframe {
-    min-height: 800px;
+    min-height: 1000px;
   }
 
   .embed.document .embed-iframe {
-    min-height: 700px;
-  }
-
-  .embed.auto .embed-iframe {
-    min-height: 600px;
+    min-height: 800px;
   }
 }
