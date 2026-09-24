@@ -5,7 +5,7 @@
       "id": "embedv1",
       "plugins": {
         "da": {
-          "rows": 4,
+          "rows": 6,
           "columns": 1,
           "fields": [
             {
@@ -23,6 +23,14 @@
             {
               "name": "caption",
               "selector": "div:nth-child(4)>div"
+            },
+            {
+              "name": "alignment",
+              "selector": "div:nth-child(5)>div"
+            },
+            {
+              "name": "size",
+              "selector": "div:nth-child(6)>div"
             }
           ]
         },
@@ -84,6 +92,50 @@
           "valueType": "string",
           "name": "caption",
           "label": "Caption"
+        },
+        {
+          "component": "select",
+          "name": "alignment",
+          "label": "Alignment",
+          "value": "center",
+          "options": [
+            {
+              "name": "Left",
+              "value": "left"
+            },
+            {
+              "name": "Center",
+              "value": "center"
+            },
+            {
+              "name": "Right",
+              "value": "right"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "size",
+          "label": "Size",
+          "value": "large",
+          "options": [
+            {
+              "name": "Small",
+              "value": "small"
+            },
+            {
+              "name": "Medium",
+              "value": "medium"
+            },
+            {
+              "name": "Large",
+              "value": "large"
+            },
+            {
+              "name": "Full Width",
+              "value": "full-width"
+            }
+          ]
         }
       ]
     }

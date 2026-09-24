@@ -322,7 +322,7 @@
           "id": "embedv1",
           "plugins": {
             "da": {
-              "rows": 4,
+              "rows": 6,
               "columns": 1,
               "fields": [
                 {
@@ -340,6 +340,14 @@
                 {
                   "name": "caption",
                   "selector": "div:nth-child(4)>div"
+                },
+                {
+                  "name": "alignment",
+                  "selector": "div:nth-child(5)>div"
+                },
+                {
+                  "name": "size",
+                  "selector": "div:nth-child(6)>div"
                 }
               ]
             },
