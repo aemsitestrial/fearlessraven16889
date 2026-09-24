@@ -27,6 +27,11 @@
   border: 0;
 }
 
+.embed-iframe:focus {
+  outline: 2px solid #0076a8;
+  outline-offset: 2px;
+}
+
 /* =========================================
    ALIGNMENT
    ========================================= */
@@ -47,7 +52,7 @@
 }
 
 /* =========================================
-   SIZE
+   SIZE VARIANTS
    ========================================= */
 
 .embed.small {
@@ -63,15 +68,15 @@
 }
 
 .embed.full-width {
-  max-width: none;
   width: 100%;
+  max-width: none;
 }
 
 /* =========================================
-   DISPLAY TYPES
+   VIDEO (YOUTUBE / VIMEO)
+   FLUID 16:9
    ========================================= */
 
-/* Videos */
 .embed.video .embed-frame {
   aspect-ratio: 16 / 9;
 }
@@ -81,46 +86,62 @@
   height: 100%;
 }
 
-/* Forms */
+/* =========================================
+   FORMS
+   ========================================= */
+
 .embed.form .embed-iframe {
   min-height: 800px;
 }
 
-/* Documents */
+/* =========================================
+   DOCUMENTS / PDFS
+   ========================================= */
+
 .embed.document .embed-iframe {
   min-height: 700px;
 }
 
-/* Generic iframe */
+/* =========================================
+   GENERIC IFRAME
+   ========================================= */
+
 .embed.auto .embed-iframe {
-  min-height: 500px;
+  min-height: 600px;
 }
 
-/* Custom Height */
+/* =========================================
+   CUSTOM HEIGHT
+   ========================================= */
+
 .embed.custom-height .embed-iframe {
   min-height: var(--embed-height, 600px);
 }
 
 /* =========================================
-   TITLE & CAPTION
+   TITLE
    ========================================= */
 
-.embed-title,
-.embed-caption {
+.embed-title {
   margin-top: 0.75rem;
+  color: rgb(31 41 55);
+  font-weight: 700;
+  line-height: 1.5;
   overflow-wrap: break-word;
   hyphens: auto;
-  line-height: 1.5;
 }
 
-.embed-title {
-  font-weight: 700;
-  color: rgb(31 41 55);
-}
+/* =========================================
+   CAPTION
+   ========================================= */
 
 .embed-caption {
+  margin-top: 0.75rem;
   font-size: 0.95rem;
   color: rgb(75 85 99);
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 /* =========================================
@@ -152,6 +173,10 @@
 @media (width <= 767px) {
   .embed {
     margin: 1rem 0;
+  }
+
+  .embed-frame {
+    border-radius: 0.5rem;
   }
 
   .embed-title,
@@ -194,7 +219,7 @@
   }
 
   .embed.auto .embed-iframe {
-    min-height: 450px;
+    min-height: 500px;
   }
 }
 
@@ -203,7 +228,23 @@
    ========================================= */
 
 @media (width >= 1024px) {
+  .embed {
+    margin: 1.5rem auto;
+  }
+
   .embed-frame {
     border-radius: 1rem;
+  }
+
+  .embed.form .embed-iframe {
+    min-height: 800px;
+  }
+
+  .embed.document .embed-iframe {
+    min-height: 700px;
+  }
+
+  .embed.auto .embed-iframe {
+    min-height: 600px;
   }
 }
