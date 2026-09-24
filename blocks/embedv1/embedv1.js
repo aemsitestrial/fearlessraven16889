@@ -29,6 +29,10 @@ function getCellValue(cell) {
     return iframe.getAttribute('src') || '';
   }
 
+  if (cell.href) {
+    return cell.href;
+  }
+
   return asText(cell);
 }
 
@@ -108,7 +112,6 @@ function buildVimeoEmbed(url) {
 
 function createElement(tagName, className, text) {
   const element = document.createElement(tagName);
-
   element.className = className;
 
   if (text) {
@@ -133,25 +136,34 @@ function normalizeBlock(block) {
 
   const rows = [...block.children];
 
-  const cells = rows.map((row) => (
-    row.firstElementChild || row
-  ));
+  const cells = rows.map(
+    (row) => row.firstElementChild || row,
+  );
 
-  data.type = asText(cells[0]);
-  data.url = getCellValue(cells[1]);
-  data.title = asText(cells[2]);
-  data.caption = asText(cells[3]);
+  const [
+    typeCell,
+    urlCell,
+    titleValueCell,
+    captionValueCell,
+    alignmentCell,
+    sizeCell,
+  ] = cells;
 
-  if (cells[4]) {
-    data.alignment = asText(cells[4]);
+  data.type = asText(typeCell);
+  data.url = getCellValue(urlCell);
+  data.title = asText(titleValueCell);
+  data.caption = asText(captionValueCell);
+
+  if (alignmentCell) {
+    data.alignment = asText(alignmentCell);
   }
 
-  if (cells[5]) {
-    data.size = asText(cells[5]);
+  if (sizeCell) {
+    data.size = asText(sizeCell);
   }
 
-  titleCell = cells[2];
-  captionCell = cells[3];
+  titleCell = titleValueCell;
+  captionCell = captionValueCell;
 
   data.type = normalizeType(data.type, data.url);
   data.alignment = normalizeAlignment(data.alignment);
@@ -213,7 +225,6 @@ export default async function decorate(block) {
     message.textContent = 'Please provide an embed URL.';
 
     placeholder.append(message);
-
     block.replaceChildren(placeholder);
 
     return;

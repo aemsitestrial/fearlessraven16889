@@ -52,7 +52,7 @@
 }
 
 /* =========================================
-   SIZE
+   SIZE VARIANTS
    ========================================= */
 
 .embed.small {
@@ -74,7 +74,7 @@
 
 /* =========================================
    YOUTUBE / VIMEO
-   FLUID 16:9
+   FLUID 16:9 VIDEO
    ========================================= */
 
 .embed.youtube .embed-frame,
@@ -89,32 +89,15 @@
 }
 
 /* =========================================
-   GENERIC IFRAMES / WEBSITES
+   GENERIC IFRAME / WEBSITE
    ========================================= */
 
 .embed.iframe .embed-iframe,
 .embed.generic .embed-iframe {
   width: 100%;
-  height: 80vh;
-  min-height: 700px;
-}
-
-/* =========================================
-   FORMS
-   ========================================= */
-
-.embed.form .embed-iframe {
-  width: 100%;
-  min-height: 900px;
-}
-
-/* =========================================
-   DOCUMENTS / PDFS
-   ========================================= */
-
-.embed.document .embed-iframe {
-  width: 100%;
-  min-height: 800px;
+  height: 75vh;
+  min-height: 650px;
+  max-height: 1200px;
 }
 
 /* =========================================
@@ -124,8 +107,8 @@
 .embed-title {
   margin-top: 0.75rem;
   font-weight: 700;
-  color: rgb(31 41 55);
   line-height: 1.5;
+  color: rgb(31 41 55);
   overflow-wrap: break-word;
   hyphens: auto;
 }
@@ -183,23 +166,10 @@
     margin-top: 0.5rem;
   }
 
-  .embed.youtube .embed-frame,
-  .embed.vimeo .embed-frame {
-    aspect-ratio: 16 / 9;
-  }
-
   .embed.iframe .embed-iframe,
   .embed.generic .embed-iframe {
     height: 60vh;
     min-height: 450px;
-  }
-
-  .embed.form .embed-iframe {
-    min-height: 600px;
-  }
-
-  .embed.document .embed-iframe {
-    min-height: 500px;
   }
 
   .embedv1.embed-empty {
@@ -218,16 +188,8 @@
 
   .embed.iframe .embed-iframe,
   .embed.generic .embed-iframe {
-    height: 75vh;
-    min-height: 600px;
-  }
-
-  .embed.form .embed-iframe {
-    min-height: 750px;
-  }
-
-  .embed.document .embed-iframe {
-    min-height: 650px;
+    height: 70vh;
+    min-height: 550px;
   }
 }
 
@@ -246,15 +208,8 @@
 
   .embed.iframe .embed-iframe,
   .embed.generic .embed-iframe {
-    height: 90vh;
-    min-height: 900px;
-  }
-
-  .embed.form .embed-iframe {
-    min-height: 1000px;
-  }
-
-  .embed.document .embed-iframe {
-    min-height: 800px;
+    height: 75vh;
+    min-height: 650px;
+    max-height: 1200px;
   }
 }
