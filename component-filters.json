@@ -29,7 +29,10 @@
       "text",
       "title",
       "teaser",
-      "video"
+      "video",
+      "teaser-v2",
+      "embedv1",
+      "headerv1"
     ]
   },
   {
