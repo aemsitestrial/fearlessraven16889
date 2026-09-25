@@ -934,6 +934,59 @@
           }
         },
         {
+          "title": "Header v1",
+          "id": "headerv1",
+          "plugins": {
+            "da": {
+              "rows": 8,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "eyebrow",
+                  "selector": "div:nth-child(1)>div"
+                },
+                {
+                  "name": "title",
+                  "selector": "div:nth-child(2)>div"
+                },
+                {
+                  "name": "description",
+                  "selector": "div:nth-child(3)>div"
+                },
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(4)>div"
+                },
+                {
+                  "name": "primaryCtaText",
+                  "selector": "div:nth-child(5)>div"
+                },
+                {
+                  "name": "primaryCtaLink",
+                  "selector": "div:nth-child(6)>div"
+                },
+                {
+                  "name": "secondaryCtaText",
+                  "selector": "div:nth-child(7)>div"
+                },
+                {
+                  "name": "secondaryCtaLink",
+                  "selector": "div:nth-child(8)>div"
+                }
+              ]
+            },
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "headerv1",
+                  "model": "headerv1"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Hero",
           "id": "hero",
           "plugins": {

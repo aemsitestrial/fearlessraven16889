@@ -1,0 +1,279 @@
+/* =========================================
+   HEADER V1
+   ========================================= */
+
+.headerv1 {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.headerv1 *,
+.headerv1 *::before,
+.headerv1 *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================
+   BACKGROUND
+   ========================================= */
+
+.headerv1 .header-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.headerv1 .header-background picture,
+.headerv1 .header-background img {
+  width: 100%;
+  height: 100%;
+}
+
+.headerv1 .header-background img {
+  display: block;
+  object-fit: cover;
+}
+
+/* =========================================
+   CONTENT
+   ========================================= */
+
+.headerv1 .header-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  padding: 4rem 1.5rem;
+}
+
+.headerv1 .header-eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.headerv1 .header-title {
+  margin-bottom: 1rem;
+}
+
+.headerv1 .header-title h1,
+.headerv1 .header-title h2,
+.headerv1 .header-title h3,
+.headerv1 .header-title h4,
+.headerv1 .header-title h5,
+.headerv1 .header-title h6 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.headerv1 .header-description {
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+.headerv1 .header-description p:first-child {
+  margin-top: 0;
+}
+
+.headerv1 .header-description p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   CTA
+   ========================================= */
+
+.headerv1 .header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.headerv1 .header-actions .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+}
+
+.headerv1 .header-actions .button.primary {
+  color: #fff;
+  background: #0076a8;
+}
+
+.headerv1 .header-actions .button.secondary {
+  color: #0076a8;
+  border: 1px solid #0076a8;
+  background: transparent;
+}
+
+/* =========================================
+   DEFAULT
+   ========================================= */
+
+.headerv1.default .header-content {
+  min-height: 320px;
+}
+
+/* =========================================
+   HERO
+   ========================================= */
+
+.headerv1.hero .header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 650px;
+}
+
+.headerv1.hero .header-background::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      rgb(0 0 0 / 45%),
+      rgb(0 0 0 / 45%)
+    );
+  content: '';
+}
+
+/* =========================================
+   SPLIT
+   ========================================= */
+
+.headerv1.split {
+  display: flex;
+  align-items: stretch;
+}
+
+.headerv1.split .header-background {
+  position: relative;
+  flex: 1;
+  min-height: 500px;
+}
+
+.headerv1.split .header-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px;
+}
+
+/* =========================================
+   ALIGNMENT
+   ========================================= */
+
+.headerv1.left .header-content {
+  margin-right: auto;
+  text-align: left;
+}
+
+.headerv1.left .header-actions {
+  justify-content: flex-start;
+}
+
+.headerv1.center .header-content {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.headerv1.center .header-description {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.headerv1.center .header-actions {
+  justify-content: center;
+}
+
+/* =========================================
+   LIGHT THEME
+   ========================================= */
+
+.headerv1.light {
+  color: #1f2937;
+  background: #fff;
+}
+
+.headerv1.light .header-eyebrow {
+  color: #0076a8;
+}
+
+/* =========================================
+   DARK THEME
+   ========================================= */
+
+.headerv1.dark {
+  color: #fff;
+  background: #111;
+}
+
+.headerv1.dark .header-eyebrow {
+  color: #fff;
+}
+
+.headerv1.dark .header-description {
+  color: rgb(255 255 255 / 85%);
+}
+
+.headerv1.dark .header-actions .button.secondary {
+  color: #fff;
+  border-color: #fff;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (width <= 767px) {
+  .headerv1 .header-content {
+    padding: 2rem 1rem;
+  }
+
+  .headerv1.hero .header-content {
+    min-height: 450px;
+  }
+
+  .headerv1.split {
+    flex-direction: column;
+  }
+
+  .headerv1.split .header-background {
+    min-height: 280px;
+  }
+
+  .headerv1 .header-actions {
+    flex-direction: column;
+  }
+
+  .headerv1 .header-actions .button {
+    width: 100%;
+  }
+}
+
+@media (width >= 768px) and (width <= 1023px) {
+  .headerv1 .header-content {
+    padding: 3rem 2rem;
+  }
+
+  .headerv1.hero .header-content {
+    min-height: 550px;
+  }
+}
+
+@media (width >= 1024px) {
+  .headerv1 .header-content {
+    padding: 4rem 3rem;
+  }
+
+  .headerv1.hero .header-content {
+    min-height: 650px;
+  }
+}
