@@ -1,16 +1,5 @@
-/* ==========================================
-   BASE
-   ========================================== */
-
 .headerv1 {
   width: 100%;
-  font-family: var(--body-font-family);
-}
-
-.headerv1 *,
-.headerv1 *::before,
-.headerv1 *::after {
-  box-sizing: border-box;
 }
 
 .headerv1-authored {
@@ -19,13 +8,8 @@
 
 .headerv1 .nav-wrapper {
   width: 100%;
-  z-index: 100;
   background: #fff;
 }
-
-/* ==========================================
-   BEHAVIOR
-   ========================================== */
 
 .headerv1.fixed .nav-wrapper {
   position: fixed;
@@ -42,50 +26,33 @@
   position: static;
 }
 
-/* ==========================================
-   NAVIGATION
-   ========================================== */
-
 .headerv1 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   max-width: 1248px;
   min-height: 80px;
-  padding: 0 2rem;
   margin: 0 auto;
+  padding: 0 2rem;
   gap: 2rem;
-}
-
-/* ==========================================
-   BRAND
-   ========================================== */
-
-.headerv1 .nav-brand {
-  flex-shrink: 0;
 }
 
 .headerv1 .nav-brand a {
   display: flex;
   align-items: center;
-  text-decoration: none;
-}
-
-.headerv1 .nav-brand picture,
-.headerv1 .nav-brand img {
-  display: block;
 }
 
 .headerv1 .nav-brand img {
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-/* ==========================================
-   MENU
-   ========================================== */
+.headerv1.compact .nav-brand img {
+  width: 60px;
+  height: 60px;
+}
 
 .headerv1 .nav-sections {
   flex: 1;
@@ -95,14 +62,9 @@
   display: flex;
   justify-content: center;
   gap: 2rem;
-  padding: 0;
-  margin: 0;
   list-style: none;
-}
-
-.headerv1 .nav-sections li {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .headerv1 .nav-sections a {
@@ -111,85 +73,30 @@
   font-weight: 500;
 }
 
-.headerv1 .nav-sections a:hover {
-  opacity: 0.8;
-  color: var(--link-hover-color, #05c);
-}
-
-/* ==========================================
-   BREADCRUMBS
-   ========================================== */
-
-.headerv1 .breadcrumbs {
-  max-width: 1248px;
-  padding: 0.75rem 2rem;
-  margin: 0 auto;
-  font-size: 0.875rem;
-}
-
-.headerv1 .breadcrumbs a:any-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.headerv1 .breadcrumbs a:hover {
-  text-decoration: underline;
-}
-
-.headerv1 .breadcrumbs span {
-  margin: 0 0.5rem;
-}
-
-/* ==========================================
-   CTA
-   ========================================== */
-
-.headerv1 .nav-tools {
-  display: flex;
-  align-items: center;
-}
-
 .headerv1 .nav-tools .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
   padding: 0.75rem 1.5rem;
   border-radius: 999px;
-  text-decoration: none;
-  color: #fff;
   background: #0076a8;
-  transition: opacity 0.2s ease;
+  color: #fff;
+  text-decoration: none;
 }
-
-.headerv1 .nav-tools .button:hover {
-  opacity: 0.9;
-}
-
-/* ==========================================
-   HAMBURGER
-   ========================================== */
 
 .headerv1 .nav-hamburger {
   display: none;
   flex-direction: column;
   gap: 4px;
-  padding: 0;
   border: 0;
   background: none;
-  cursor: pointer;
 }
 
 .headerv1 .nav-hamburger span {
-  display: block;
   width: 24px;
   height: 2px;
   background: currentcolor;
 }
-
-/* ==========================================
-   THEMES
-   ========================================== */
 
 .headerv1.light .nav-wrapper {
   background: #fff;
@@ -206,65 +113,23 @@
   color: #fff;
 }
 
-/* ==========================================
-   LAYOUTS
-   ========================================== */
-
-.headerv1.compact .nav {
-  min-height: 60px;
+.headerv1 .breadcrumbs {
+  max-width: 1248px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
 }
 
-.headerv1.compact .nav-brand img {
-  width: 100px;
-}
-
-@media (width >=900px) {
-  .headerv1.center-logo .nav {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr auto 1fr;
-  }
-
-  .headerv1.center-logo .nav-brand {
-    justify-self: center;
-  }
-
-  .headerv1.center-logo .nav-sections {
-    justify-self: start;
-  }
-
-  .headerv1.center-logo .nav-tools {
-    justify-self: end;
-  }
-}
-
-/* ==========================================
-   MOBILE
-   ========================================== */
-
-@media (width <=899px) {
+@media (width <= 899px) {
   .headerv1 .nav {
     flex-wrap: wrap;
-    padding: 1rem;
   }
 
   .headerv1 .nav-hamburger {
     display: flex;
-    order: 1;
-  }
-
-  .headerv1 .nav-brand {
-    order: 2;
-  }
-
-  .headerv1 .nav-tools {
-    order: 3;
-    margin-left: auto;
   }
 
   .headerv1 .nav-sections {
     display: none;
-    order: 4;
     flex-basis: 100%;
   }
 
@@ -274,39 +139,5 @@
 
   .headerv1 .nav-sections ul {
     flex-direction: column;
-    gap: 1rem;
-    padding-top: 1rem;
-  }
-
-  .headerv1 .nav-tools .button {
-    padding: 0.625rem 1rem;
-  }
-
-  .headerv1 .breadcrumbs {
-    padding: 0.75rem 1rem;
-  }
-}
-
-/* ==========================================
-   TABLET
-   ========================================== */
-
-@media (width >=900px) and (width <=1199px) {
-  .headerv1 .nav {
-    padding: 0 1.5rem;
-  }
-
-  .headerv1 .nav-sections ul {
-    gap: 1.5rem;
-  }
-}
-
-/* ==========================================
-   LARGE DESKTOP
-   ========================================== */
-
-@media (width >=1200px) {
-  .headerv1 .nav {
-    padding: 0 2rem;
   }
 }
