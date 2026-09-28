@@ -81,6 +81,8 @@ export default function decorate(block) {
     behavior,
   );
 
+
+
   const picture = getImage(logoCell);
 
   const authoredContent = document.createElement('div');
@@ -89,9 +91,6 @@ export default function decorate(block) {
   while (block.firstChild) {
     authoredContent.append(block.firstChild);
   }
-
-  block.append(authoredContent);
-  block.append(navWrapper);
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
