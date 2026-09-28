@@ -13,6 +13,10 @@
   box-sizing: border-box;
 }
 
+.headerv1-authored {
+  display: none;
+}
+
 .headerv1 .nav-wrapper {
   width: 100%;
   z-index: 100;
