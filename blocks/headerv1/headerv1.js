@@ -32,14 +32,6 @@ export default function decorate(block) {
   const [
     logoCell,
     logoLinkCell,
-    menu1LabelCell,
-    menu1LinkCell,
-    menu2LabelCell,
-    menu2LinkCell,
-    menu3LabelCell,
-    menu3LinkCell,
-    menu4LabelCell,
-    menu4LinkCell,
     ctaLabelCell,
     ctaLinkCell,
     themeCell,
@@ -50,17 +42,16 @@ export default function decorate(block) {
 
   const logoLink = asText(logoLinkCell) || '/';
 
-  const menu1Label = asText(menu1LabelCell);
-  const menu1Link = asText(menu1LinkCell);
+  const navigationItems = rows
+    .map((row) => {
+      const cols = [...row.children];
 
-  const menu2Label = asText(menu2LabelCell);
-  const menu2Link = asText(menu2LinkCell);
-
-  const menu3Label = asText(menu3LabelCell);
-  const menu3Link = asText(menu3LinkCell);
-
-  const menu4Label = asText(menu4LabelCell);
-  const menu4Link = asText(menu4LinkCell);
+      return {
+        label: cols[0]?.textContent?.trim(),
+        link: cols[1]?.textContent?.trim(),
+      };
+    })
+    .filter((item) => item.label && item.link);
 
   const ctaLabel = asText(ctaLabelCell);
   const ctaLink = asText(ctaLinkCell);
@@ -110,7 +101,9 @@ export default function decorate(block) {
 
     brandLinkEl.href = logoLink;
 
-    brandLinkEl.append(picture);
+    brandLinkEl.append(
+      picture.cloneNode(true),
+    );
 
     brand.append(brandLinkEl);
   }
@@ -124,14 +117,16 @@ export default function decorate(block) {
 
   const ul = document.createElement('ul');
 
-  [
-    createMenuItem(menu1Label, menu1Link),
-    createMenuItem(menu2Label, menu2Link),
-    createMenuItem(menu3Label, menu3Link),
-    createMenuItem(menu4Label, menu4Link),
-  ]
-    .filter(Boolean)
-    .forEach((item) => ul.append(item));
+  navigationItems
+    .filter((item) => item.label)
+    .forEach((item) => {
+      ul.append(
+        createMenuItem(
+          item.label,
+          item.link,
+        ),
+      );
+    });
 
   navSections.append(ul);
 
@@ -196,6 +191,6 @@ export default function decorate(block) {
 
     navWrapper.append(breadcrumbs);
   }
-
+  block.append(authoredContent);
   block.append(navWrapper);
 }

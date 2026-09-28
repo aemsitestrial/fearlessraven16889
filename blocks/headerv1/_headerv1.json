@@ -101,51 +101,24 @@
           "label": "Logo Link",
           "value": "/"
         },
-
         {
-          "component": "text",
-          "name": "menu1Label",
-          "label": "Menu 1 Label"
+          "component": "multifield",
+          "name": "navigation",
+          "label": "Navigation Items",
+          "valueType": "object",
+          "fields": [
+            {
+              "component": "text",
+              "name": "label",
+              "label": "Menu Label"
+            },
+            {
+              "component": "text",
+              "name": "link",
+              "label": "Menu Link"
+            }
+          ]
         },
-        {
-          "component": "text",
-          "name": "menu1Link",
-          "label": "Menu 1 Link"
-        },
-
-        {
-          "component": "text",
-          "name": "menu2Label",
-          "label": "Menu 2 Label"
-        },
-        {
-          "component": "text",
-          "name": "menu2Link",
-          "label": "Menu 2 Link"
-        },
-
-        {
-          "component": "text",
-          "name": "menu3Label",
-          "label": "Menu 3 Label"
-        },
-        {
-          "component": "text",
-          "name": "menu3Link",
-          "label": "Menu 3 Link"
-        },
-
-        {
-          "component": "text",
-          "name": "menu4Label",
-          "label": "Menu 4 Label"
-        },
-        {
-          "component": "text",
-          "name": "menu4Link",
-          "label": "Menu 4 Link"
-        },
-
         {
           "component": "text",
           "name": "ctaLabel",
@@ -156,7 +129,6 @@
           "name": "ctaLink",
           "label": "CTA Link"
         },
-
         {
           "component": "select",
           "name": "theme",
@@ -177,7 +149,6 @@
             }
           ]
         },
-
         {
           "component": "select",
           "name": "layout",
@@ -198,7 +169,6 @@
             }
           ]
         },
-
         {
           "component": "select",
           "name": "behavior",
@@ -219,7 +189,6 @@
             }
           ]
         },
-
         {
           "component": "select",
           "name": "showBreadcrumbs",
