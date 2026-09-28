@@ -938,7 +938,7 @@
           "id": "headerv1",
           "plugins": {
             "da": {
-              "rows": 16,
+              "rows": 9,
               "columns": 1,
               "fields": [
                 {
@@ -950,60 +950,32 @@
                   "selector": "div:nth-child(2)>div"
                 },
                 {
-                  "name": "menu1Label",
+                  "name": "navigation",
                   "selector": "div:nth-child(3)>div"
                 },
                 {
-                  "name": "menu1Link",
+                  "name": "ctaLabel",
                   "selector": "div:nth-child(4)>div"
                 },
                 {
-                  "name": "menu2Label",
+                  "name": "ctaLink",
                   "selector": "div:nth-child(5)>div"
                 },
                 {
-                  "name": "menu2Link",
+                  "name": "theme",
                   "selector": "div:nth-child(6)>div"
                 },
                 {
-                  "name": "menu3Label",
+                  "name": "layout",
                   "selector": "div:nth-child(7)>div"
                 },
                 {
-                  "name": "menu3Link",
+                  "name": "behavior",
                   "selector": "div:nth-child(8)>div"
                 },
                 {
-                  "name": "menu4Label",
-                  "selector": "div:nth-child(9)>div"
-                },
-                {
-                  "name": "menu4Link",
-                  "selector": "div:nth-child(10)>div"
-                },
-                {
-                  "name": "ctaLabel",
-                  "selector": "div:nth-child(11)>div"
-                },
-                {
-                  "name": "ctaLink",
-                  "selector": "div:nth-child(12)>div"
-                },
-                {
-                  "name": "theme",
-                  "selector": "div:nth-child(13)>div"
-                },
-                {
-                  "name": "layout",
-                  "selector": "div:nth-child(14)>div"
-                },
-                {
-                  "name": "behavior",
-                  "selector": "div:nth-child(15)>div"
-                },
-                {
                   "name": "showBreadcrumbs",
-                  "selector": "div:nth-child(16)>div"
+                  "selector": "div:nth-child(9)>div"
                 }
               ]
             },
