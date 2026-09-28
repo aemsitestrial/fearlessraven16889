@@ -110,10 +110,6 @@
   transition: color 0.2s ease;
 }
 
-.headerv1 .nav-sections a:hover {
-  opacity: 0.9;
-}
-
 /* ==========================================
    BREADCRUMBS
    ========================================== */
@@ -131,6 +127,10 @@
 
 .headerv1 .breadcrumbs a:hover {
   text-decoration: underline;
+}
+
+.headerv1 .nav-sections a:hover {
+  opacity: 0.9;
 }
 
 .headerv1 .breadcrumbs span {
@@ -238,7 +238,7 @@
 }
 
 .headerv1.transparent .nav-tools .button {
-  background: rgba(255 255 255 / 20%);
+  background: rgb(255 255 255 / 20%);
   border: 1px solid rgb(255 255 255 / 50%);
   color: #fff;
 }
