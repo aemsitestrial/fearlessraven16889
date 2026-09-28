@@ -616,10 +616,22 @@ function decorateBlocks(main) {
  * @returns {Promise}
  */
 async function loadHeader(header) {
-  const headerBlock = buildBlock('headerv1', '');
-  header.append(headerBlock);
-  decorateBlock(headerBlock);
-  return loadBlock(headerBlock);
+  const resp = await fetch('/header-v1.plain.html');
+
+  if (!resp.ok) {
+    return;
+  }
+
+  const html = await resp.text();
+
+  header.innerHTML = html;
+
+  const headerBlock = header.querySelector('.headerv1');
+
+  if (headerBlock) {
+    decorateBlock(headerBlock);
+    await loadBlock(headerBlock);
+  }
 }
 
 /**
