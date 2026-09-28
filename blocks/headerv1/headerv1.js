@@ -81,8 +81,6 @@ export default function decorate(block) {
     behavior,
   );
 
-
-
   const picture = getImage(logoCell);
 
   const authoredContent = document.createElement('div');
