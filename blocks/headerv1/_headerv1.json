@@ -5,7 +5,7 @@
       "id": "headerv1",
       "plugins": {
         "da": {
-          "rows": 9,
+          "rows": 16,
           "columns": 1,
           "fields": [
             {
@@ -17,32 +17,60 @@
               "selector": "div:nth-child(2)>div"
             },
             {
-              "name": "navigation",
+              "name": "menu1Label",
               "selector": "div:nth-child(3)>div"
             },
             {
-              "name": "ctaLabel",
+              "name": "menu1Link",
               "selector": "div:nth-child(4)>div"
             },
             {
-              "name": "ctaLink",
+              "name": "menu2Label",
               "selector": "div:nth-child(5)>div"
             },
             {
-              "name": "theme",
+              "name": "menu2Link",
               "selector": "div:nth-child(6)>div"
             },
             {
-              "name": "layout",
+              "name": "menu3Label",
               "selector": "div:nth-child(7)>div"
             },
             {
-              "name": "behavior",
+              "name": "menu3Link",
               "selector": "div:nth-child(8)>div"
             },
             {
-              "name": "showBreadcrumbs",
+              "name": "menu4Label",
               "selector": "div:nth-child(9)>div"
+            },
+            {
+              "name": "menu4Link",
+              "selector": "div:nth-child(10)>div"
+            },
+            {
+              "name": "ctaLabel",
+              "selector": "div:nth-child(11)>div"
+            },
+            {
+              "name": "ctaLink",
+              "selector": "div:nth-child(12)>div"
+            },
+            {
+              "name": "theme",
+              "selector": "div:nth-child(13)>div"
+            },
+            {
+              "name": "layout",
+              "selector": "div:nth-child(14)>div"
+            },
+            {
+              "name": "behavior",
+              "selector": "div:nth-child(15)>div"
+            },
+            {
+              "name": "showBreadcrumbs",
+              "selector": "div:nth-child(16)>div"
             }
           ]
         },
@@ -74,22 +102,44 @@
           "value": "/"
         },
         {
-          "component": "multifield",
-          "name": "navigation",
-          "label": "Navigation Items",
-          "valueType": "object",
-          "fields": [
-            {
-              "component": "text",
-              "name": "label",
-              "label": "Menu Label"
-            },
-            {
-              "component": "text",
-              "name": "link",
-              "label": "Menu Link"
-            }
-          ]
+          "component": "text",
+          "name": "menu1Label",
+          "label": "Menu 1 Label"
+        },
+        {
+          "component": "text",
+          "name": "menu1Link",
+          "label": "Menu 1 Link"
+        },
+        {
+          "component": "text",
+          "name": "menu2Label",
+          "label": "Menu 2 Label"
+        },
+        {
+          "component": "text",
+          "name": "menu2Link",
+          "label": "Menu 2 Link"
+        },
+        {
+          "component": "text",
+          "name": "menu3Label",
+          "label": "Menu 3 Label"
+        },
+        {
+          "component": "text",
+          "name": "menu3Link",
+          "label": "Menu 3 Link"
+        },
+        {
+          "component": "text",
+          "name": "menu4Label",
+          "label": "Menu 4 Label"
+        },
+        {
+          "component": "text",
+          "name": "menu4Link",
+          "label": "Menu 4 Link"
         },
         {
           "component": "text",

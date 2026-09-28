@@ -6,60 +6,40 @@ function getImage(cell) {
   return cell?.querySelector('picture');
 }
 
-function getHref(cell) {
-  const anchor = cell?.querySelector('a');
-
-  if (anchor) {
-    return anchor.getAttribute('href') || anchor.href;
+function createMenuItem(label, href) {
+  if (!label) {
+    return null;
   }
 
-  return asText(cell);
-}
-
-function createMenuItem(item) {
   const li = document.createElement('li');
-  const a = document.createElement('a');
+  const link = document.createElement('a');
 
-  a.href = item.link || '#';
-  a.textContent = item.label;
+  link.href = href || '#';
+  link.textContent = label;
 
-  li.append(a);
+  li.append(link);
 
   return li;
 }
 
-function parseNavigation(cell) {
-  if (!cell) return [];
-
-  const items = [];
-
-  [...cell.children].forEach((item) => {
-    const cols = [...item.children];
-
-    if (cols.length >= 2) {
-      const label = cols[0]?.textContent?.trim();
-      const link = cols[1]?.textContent?.trim();
-
-      if (label && link) {
-        items.push({
-          label,
-          link,
-        });
-      }
-    }
-  });
-
-  return items;
-}
-
 export default function decorate(block) {
   const rows = [...block.children];
-  const cells = rows.map((row) => row.firstElementChild || row);
+
+  const cells = rows.map(
+    (row) => row.firstElementChild || row,
+  );
 
   const [
     logoCell,
     logoLinkCell,
-    navigationCell,
+    menu1LabelCell,
+    menu1LinkCell,
+    menu2LabelCell,
+    menu2LinkCell,
+    menu3LabelCell,
+    menu3LinkCell,
+    menu4LabelCell,
+    menu4LinkCell,
     ctaLabelCell,
     ctaLinkCell,
     themeCell,
@@ -68,23 +48,40 @@ export default function decorate(block) {
     breadcrumbsCell,
   ] = cells;
 
-  const theme = asText(themeCell).toLowerCase();
-  const layout = asText(layoutCell).toLowerCase();
-  const behavior = asText(behaviorCell).toLowerCase();
+  const logoLink = asText(logoLinkCell) || '/';
+
+  const menu1Label = asText(menu1LabelCell);
+  const menu1Link = asText(menu1LinkCell);
+
+  const menu2Label = asText(menu2LabelCell);
+  const menu2Link = asText(menu2LinkCell);
+
+  const menu3Label = asText(menu3LabelCell);
+  const menu3Link = asText(menu3LinkCell);
+
+  const menu4Label = asText(menu4LabelCell);
+  const menu4Link = asText(menu4LinkCell);
+
+  const ctaLabel = asText(ctaLabelCell);
+  const ctaLink = asText(ctaLinkCell);
+
+  const theme = asText(themeCell).toLowerCase() || 'light';
+
+  const layout = asText(layoutCell).toLowerCase() || 'default';
+
+  const behavior = asText(behaviorCell).toLowerCase() || 'fixed';
+
+  const showBreadcrumbs = (
+    asText(breadcrumbsCell).toLowerCase() === 'true'
+  );
 
   block.classList.add(
-    ['light', 'dark', 'transparent'].includes(theme)
-      ? theme
-      : 'light',
-
-    ['default', 'compact', 'center-logo'].includes(layout)
-      ? layout
-      : 'default',
-
-    ['fixed', 'sticky', 'static'].includes(behavior)
-      ? behavior
-      : 'fixed',
+    theme,
+    layout,
+    behavior,
   );
+
+  const picture = getImage(logoCell);
 
   const authoredContent = document.createElement('div');
   authoredContent.className = 'headerv1-authored';
@@ -98,38 +95,56 @@ export default function decorate(block) {
 
   const nav = document.createElement('nav');
   nav.className = 'nav';
-  nav.setAttribute('aria-label', 'Primary Navigation');
+  nav.setAttribute(
+    'aria-label',
+    'Primary Navigation',
+  );
+
+  /* ---------------------------
+     BRAND
+  --------------------------- */
 
   const brand = document.createElement('div');
   brand.className = 'nav-brand';
 
-  const picture = getImage(logoCell);
-
   if (picture) {
-    const logoLinkEl = document.createElement('a');
+    const brandLinkEl = document.createElement('a');
 
-    logoLinkEl.href = getHref(logoLinkCell) || '/';
-    logoLinkEl.append(picture.cloneNode(true));
+    brandLinkEl.href = logoLink;
 
-    brand.append(logoLinkEl);
+    brandLinkEl.append(
+      picture.cloneNode(true),
+    );
+
+    brand.append(brandLinkEl);
   }
+
+  /* ---------------------------
+     MENU
+  --------------------------- */
 
   const navSections = document.createElement('div');
   navSections.className = 'nav-sections';
 
   const ul = document.createElement('ul');
 
-  parseNavigation(navigationCell).forEach((item) => {
-    ul.append(createMenuItem(item));
-  });
+  [
+    createMenuItem(menu1Label, menu1Link),
+    createMenuItem(menu2Label, menu2Link),
+    createMenuItem(menu3Label, menu3Link),
+    createMenuItem(menu4Label, menu4Link),
+  ]
+    .filter(Boolean)
+    .forEach((item) => ul.append(item));
 
   navSections.append(ul);
 
+  /* ---------------------------
+     TOOLS / CTA
+  --------------------------- */
+
   const navTools = document.createElement('div');
   navTools.className = 'nav-tools';
-
-  const ctaLabel = asText(ctaLabelCell);
-  const ctaLink = getHref(ctaLinkCell);
 
   if (ctaLabel && ctaLink) {
     const cta = document.createElement('a');
@@ -141,11 +156,19 @@ export default function decorate(block) {
     navTools.append(cta);
   }
 
+  /* ---------------------------
+     MOBILE HAMBURGER
+  --------------------------- */
+
   const hamburger = document.createElement('button');
 
   hamburger.className = 'nav-hamburger';
   hamburger.type = 'button';
-  hamburger.setAttribute('aria-label', 'Toggle Navigation');
+
+  hamburger.setAttribute(
+    'aria-label',
+    'Toggle Navigation',
+  );
 
   hamburger.innerHTML = `
     <span></span>
@@ -164,9 +187,11 @@ export default function decorate(block) {
 
   navWrapper.append(nav);
 
-  if (
-    asText(breadcrumbsCell).toLowerCase() === 'true'
-  ) {
+  /* ---------------------------
+     BREADCRUMBS
+  --------------------------- */
+
+  if (showBreadcrumbs) {
     const breadcrumbs = document.createElement('div');
 
     breadcrumbs.className = 'breadcrumbs';
