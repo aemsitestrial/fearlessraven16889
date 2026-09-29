@@ -29,10 +29,7 @@
       "text",
       "title",
       "teaser",
-      "video",
-      "teaser-v1",
-      "embedv1",
-      "headerv1"
+      "video"
     ]
   },
   {
@@ -96,6 +93,12 @@
       "text-input",
       "tnc",
       "wizard"
+    ]
+  },
+  {
+    "id": "headerv1",
+    "components": [
+      "headerv1-nav-item"
     ]
   },
   {

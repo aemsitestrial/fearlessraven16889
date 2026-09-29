@@ -5447,23 +5447,6 @@
         "value": "/"
       },
       {
-        "component": "multifield",
-        "name": "navigationItems",
-        "label": "Navigation Items",
-        "fields": [
-          {
-            "component": "text",
-            "name": "label",
-            "label": "Menu Label"
-          },
-          {
-            "component": "text",
-            "name": "link",
-            "label": "Menu Link"
-          }
-        ]
-      },
-      {
         "component": "text",
         "name": "ctaLabel",
         "label": "CTA Label"
@@ -5548,6 +5531,21 @@
             "value": "false"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "headerv1-nav-item",
+    "fields": [
+      {
+        "component": "text",
+        "name": "label",
+        "label": "Menu Label"
+      },
+      {
+        "component": "text",
+        "name": "link",
+        "label": "Menu Link"
       }
     ]
   },

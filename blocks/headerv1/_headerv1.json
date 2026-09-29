@@ -5,7 +5,7 @@
       "id": "headerv1",
       "plugins": {
         "da": {
-          "rows": 9,
+          "rows": 8,
           "columns": 1,
           "fields": [
             {
@@ -17,32 +17,28 @@
               "selector": "div:nth-child(2)>div"
             },
             {
-              "name": "navigationItems",
+              "name": "ctaLabel",
               "selector": "div:nth-child(3)>div"
             },
             {
-              "name": "ctaLabel",
+              "name": "ctaLink",
               "selector": "div:nth-child(4)>div"
             },
             {
-              "name": "ctaLink",
+              "name": "theme",
               "selector": "div:nth-child(5)>div"
             },
             {
-              "name": "theme",
+              "name": "layout",
               "selector": "div:nth-child(6)>div"
             },
             {
-              "name": "layout",
+              "name": "behavior",
               "selector": "div:nth-child(7)>div"
             },
             {
-              "name": "behavior",
-              "selector": "div:nth-child(8)>div"
-            },
-            {
               "name": "showBreadcrumbs",
-              "selector": "div:nth-child(9)>div"
+              "selector": "div:nth-child(8)>div"
             }
           ]
         },
@@ -52,6 +48,23 @@
             "template": {
               "name": "headerv1",
               "model": "headerv1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Header V1 Nav Item",
+      "id": "headerv1-nav-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Header V1 Nav Item",
+              "model": "headerv1-nav-item",
+              "label": "Home",
+              "link": "/"
             }
           }
         }
@@ -72,23 +85,6 @@
           "name": "logoLink",
           "label": "Logo Link",
           "value": "/"
-        },
-        {
-          "component": "multifield",
-          "name": "navigationItems",
-          "label": "Navigation Items",
-          "fields": [
-            {
-              "component": "text",
-              "name": "label",
-              "label": "Menu Label"
-            },
-            {
-              "component": "text",
-              "name": "link",
-              "label": "Menu Link"
-            }
-          ]
         },
         {
           "component": "text",
@@ -177,7 +173,29 @@
           ]
         }
       ]
+    },
+    {
+      "id": "headerv1-nav-item",
+      "fields": [
+        {
+          "component": "text",
+          "name": "label",
+          "label": "Menu Label"
+        },
+        {
+          "component": "text",
+          "name": "link",
+          "label": "Menu Link"
+        }
+      ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "headerv1",
+      "components": [
+        "headerv1-nav-item"
+      ]
+    }
+  ]
 }
