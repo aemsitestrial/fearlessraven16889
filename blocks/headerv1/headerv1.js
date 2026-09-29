@@ -45,18 +45,21 @@ export default function decorate(block) {
 
   const navigationItems = [];
 
-  if (navigationItemsCell) {
-    [...navigationItemsCell.children].forEach((item) => {
-      const itemCells = [...(item.children || [])];
+  const navItemBlocks = [
+    ...document.querySelectorAll(
+      '[data-aue-component="headerv1-nav-item"]',
+    ),
+  ];
 
-      if (itemCells.length >= 2) {
-        navigationItems.push({
-          label: asText(itemCells[0]),
-          link: asText(itemCells[1]),
-        });
-      }
+  navItemBlocks.forEach((item) => {
+    const cols = [...item.children];
+
+    navigationItems.push({
+      label: asText(cols[0]),
+      link: asText(cols[1]),
     });
-  }
+  });
+
 
   console.log(navigationItems);
   console.log(navigationItemsCell);
@@ -198,10 +201,11 @@ export default function decorate(block) {
     breadcrumbs.className = 'breadcrumbs';
 
     breadcrumbs.innerHTML = `
-      /Home</a>
-      <span>/</span>
-      <span>${document.title}</span>
-    `;
+  /Home</a>
+  <span>/</span>
+  <span>${document.title}</span>
+`;
+
 
     navWrapper.append(breadcrumbs);
   }
