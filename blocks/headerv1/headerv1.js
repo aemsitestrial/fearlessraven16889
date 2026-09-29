@@ -60,7 +60,6 @@ export default function decorate(block) {
     });
   });
 
-
   console.log(navigationItems);
   console.log(navigationItemsCell);
 
@@ -205,7 +204,6 @@ export default function decorate(block) {
   <span>/</span>
   <span>${document.title}</span>
 `;
-
 
     navWrapper.append(breadcrumbs);
   }
