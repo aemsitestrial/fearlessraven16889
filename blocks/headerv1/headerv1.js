@@ -32,14 +32,7 @@ export default function decorate(block) {
   const [
     logoCell,
     logoLinkCell,
-    menu1LabelCell,
-    menu1LinkCell,
-    menu2LabelCell,
-    menu2LinkCell,
-    menu3LabelCell,
-    menu3LinkCell,
-    menu4LabelCell,
-    menu4LinkCell,
+    navigationItemsCell,
     ctaLabelCell,
     ctaLinkCell,
     themeCell,
@@ -50,17 +43,23 @@ export default function decorate(block) {
 
   const logoLink = asText(logoLinkCell) || '/';
 
-  const menu1Label = asText(menu1LabelCell);
-  const menu1Link = asText(menu1LinkCell);
+  const navigationItems = [];
 
-  const menu2Label = asText(menu2LabelCell);
-  const menu2Link = asText(menu2LinkCell);
+  if (navigationItemsCell) {
+    [...navigationItemsCell.children].forEach((item) => {
+      const itemCells = [...(item.children || [])];
 
-  const menu3Label = asText(menu3LabelCell);
-  const menu3Link = asText(menu3LinkCell);
+      if (itemCells.length >= 2) {
+        navigationItems.push({
+          label: asText(itemCells[0]),
+          link: asText(itemCells[1]),
+        });
+      }
+    });
+  }
 
-  const menu4Label = asText(menu4LabelCell);
-  const menu4Link = asText(menu4LinkCell);
+  console.log(navigationItems);
+  console.log(navigationItemsCell);
 
   const ctaLabel = asText(ctaLabelCell);
   const ctaLink = asText(ctaLinkCell);
@@ -128,14 +127,16 @@ export default function decorate(block) {
 
   const ul = document.createElement('ul');
 
-  [
-    createMenuItem(menu1Label, menu1Link),
-    createMenuItem(menu2Label, menu2Link),
-    createMenuItem(menu3Label, menu3Link),
-    createMenuItem(menu4Label, menu4Link),
-  ]
-    .filter(Boolean)
-    .forEach((item) => ul.append(item));
+  navigationItems
+    .filter((item) => item.label)
+    .forEach((item) => {
+      ul.append(
+        createMenuItem(
+          item.label,
+          item.link,
+        ),
+      );
+    });
 
   navSections.append(ul);
 
