@@ -29,11 +29,7 @@
       "text",
       "title",
       "teaser",
-      "video",
-      "teaser-v1",
-      "embedv1",
-      "headerv1",
-      "headerv1-nav-item"
+      "video"
     ]
   },
   {
@@ -99,7 +95,12 @@
       "wizard"
     ]
   },
-
+  {
+    "id": "headerv1",
+    "components": [
+      "headerv1-nav-item"
+    ]
+  },
   {
     "id": "table",
     "components": [

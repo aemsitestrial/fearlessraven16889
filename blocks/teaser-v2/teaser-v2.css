@@ -81,6 +81,46 @@
   text-align: left;
 }
 
+/* Text Direction */
+.teaser-v2.block.text-row .foreground .text {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.teaser-v2.block.text-column .foreground .text {
+  display: flex;
+  flex-direction: column;
+}
+
+.teaser-v2.block.text-left .foreground .text {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.teaser-v2.block.text-center .foreground .text {
+  text-align: center;
+  align-items: center;
+}
+
+.teaser-v2.block.text-right .foreground .text {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.teaser-v2.block.text-top > .foreground .text {
+  justify-content: flex-start;
+}
+
+.teaser-v2.block.text-middle > .foreground .text {
+  justify-content: center;
+}
+
+.teaser-v2.block.text-bottom > .foreground .text {
+  justify-content: flex-end;
+}
+
 .teaser-v2.block.left > .foreground > .text > .cta {
   display: flex;
   justify-content: flex-start;
@@ -110,6 +150,86 @@
   display: flex;
   justify-content: flex-end;
   gap: 16px;
+}
+
+.teaser-v2.block.cta-row > .foreground > .text > .cta {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.teaser-v2.block.cta-column > .foreground > .text > .cta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.teaser-v2.block.cta-left > .foreground > .text > .cta {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.teaser-v2.block.cta-center > .foreground > .text > .cta {
+  justify-content: center;
+  align-items: center;
+}
+
+.teaser-v2.block.cta-right > .foreground > .text > .cta {
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.teaser-v2.block.cta-pill .cta a.button {
+  border-radius: 999px;
+  padding: 14px 32px;
+  border: 0;
+  font-weight: 500;
+}
+
+.teaser-v2.block.cta-link-arrow .cta .teaser-cta {
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.teaser-v2.block.cta-link-arrow .cta a.button::after {
+  content: " ↗";
+  margin-left: 8px;
+}
+
+.teaser-v2.block.cta-light .cta a.button {
+  background: #fff;
+  color: #131313;
+}
+
+.teaser-v2.block.cta-dark .cta a.button {
+  background: #131313;
+  color: #fff;
+}
+
+.teaser-v2.block.cta-red .cta a.button {
+  background: #eb1c24;
+  color: #fff;
+}
+
+.teaser-v2.block.cta-blue .cta a.button {
+  background: #0076a8;
+  color: #fff;
+}
+
+.teaser-v2.block.cta-yellow .cta a.button {
+  background: #fc0;
+  color: #131313;
+}
+
+.teaser-v2.block.cta-beige .cta a.button {
+  background: #f5f0eb;
+  color: #131313;
 }
 
 @media (width >=900px) {
@@ -453,10 +573,7 @@
 }
 
 .teaser-v2.block.center>.foreground>.text>.cta {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
 }
 
 .teaser-v2.block.center>.foreground>.spacer {

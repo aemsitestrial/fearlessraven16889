@@ -111,7 +111,7 @@
           "label": "Style",
           "valueType": "string",
           "required": true,
-          "maxSize": 3,
+          "maxSize": 15,
           "options": [
             {
               "name": "Theme",
@@ -198,6 +198,129 @@
                 {
                   "name": "tcs Black",
                   "value": "tcs-background-black"
+                }
+              ]
+            },
+            {
+              "name": "Text Direction",
+              "children": [
+                {
+                  "name": "Row",
+                  "value": "text-row"
+                },
+                {
+                  "name": "Column",
+                  "value": "text-column"
+                }
+              ]
+            },
+            {
+              "name": "Text Horizontal Alignment",
+              "children": [
+                {
+                  "name": "Left",
+                  "value": "text-left"
+                },
+                {
+                  "name": "Center",
+                  "value": "text-center"
+                },
+                {
+                  "name": "Right",
+                  "value": "text-right"
+                }
+              ]
+            },
+            {
+              "name": "Text Vertical Alignment",
+              "children": [
+                {
+                  "name": "Top",
+                  "value": "text-top"
+                },
+                {
+                  "name": "Middle",
+                  "value": "text-middle"
+                },
+                {
+                  "name": "Bottom",
+                  "value": "text-bottom"
+                }
+              ]
+            },
+            {
+              "name": "CTA Direction",
+              "children": [
+                {
+                  "name": "Row",
+                  "value": "cta-row"
+                },
+                {
+                  "name": "Column",
+                  "value": "cta-column"
+                }
+              ]
+            },
+            {
+              "name": "CTA Alignment",
+              "children": [
+                {
+                  "name": "Left",
+                  "value": "cta-left"
+                },
+                {
+                  "name": "Center",
+                  "value": "cta-center"
+                },
+                {
+                  "name": "Right",
+                  "value": "cta-right"
+                }
+              ]
+            },
+            {
+              "name": "CTA Style",
+              "children": [
+                {
+                  "name": "Default Button",
+                  "value": "cta-default"
+                },
+                {
+                  "name": "Pill Button",
+                  "value": "cta-pill"
+                },
+                {
+                  "name": "Text Link Arrow",
+                  "value": "cta-link-arrow"
+                }
+              ]
+            },
+            {
+              "name": "CTA Color",
+              "children": [
+                {
+                  "name": "Light",
+                  "value": "cta-light"
+                },
+                {
+                  "name": "Dark",
+                  "value": "cta-dark"
+                },
+                {
+                  "name": "TCS Red",
+                  "value": "cta-red"
+                },
+                {
+                  "name": "TCS Blue",
+                  "value": "cta-blue"
+                },
+                {
+                  "name": "TCS Yellow",
+                  "value": "cta-yellow"
+                },
+                {
+                  "name": "TCS Beige",
+                  "value": "cta-beige"
                 }
               ]
             }

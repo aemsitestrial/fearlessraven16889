@@ -7,8 +7,15 @@ export function decorateButtons(...buttons) {
       const a = div.querySelector('a');
       if (a) {
         a.classList.add('button');
-        if (a.parentElement.tagName === 'EM') a.classList.add('secondary');
-        if (a.parentElement.tagName === 'STRONG') a.classList.add('primary');
+        if (a.parentElement.tagName === 'EM') {
+          a.classList.add('secondary');
+        }
+
+        if (a.parentElement.tagName === 'STRONG') {
+          a.classList.add('primary');
+        }
+
+        a.classList.add('teaser-cta');
         return a.outerHTML;
       }
       return '';
@@ -21,9 +28,23 @@ export function generateTeaserDOM(props, classes) {
   const [pictureContainer, eyebrow, title, longDescr, shortDescr, firstCta, secondCta] = props;
   const picture = pictureContainer.querySelector('picture');
 
-  if (picture) {
-    const pictureSrc = picture.querySelector('img').src;
-    const optimizedPicture = createOptimizedPicture(pictureSrc, '', false, [{ width: '1360' }]);
+  // if (picture) {
+  //   const pictureSrc = picture.querySelector('img').src;
+  //   const optimizedPicture = createOptimizedPicture(pictureSrc, '', false, [{ width: '1360' }]);
+  //   pictureContainer.textContent = '';
+  //   pictureContainer.appendChild(optimizedPicture);
+  // }
+
+  const image = picture?.querySelector('img');
+
+  if (image?.src) {
+    const optimizedPicture = createOptimizedPicture(
+      image.src,
+      image.alt || '',
+      false,
+      [{ width: '1360' }],
+    );
+
     pictureContainer.textContent = '';
     pictureContainer.appendChild(optimizedPicture);
   }
@@ -37,11 +58,10 @@ export function generateTeaserDOM(props, classes) {
     </div>
     <div class="foreground">
       <div class="text">
-        ${
-          eyebrow.textContent.trim() !== ''
-            ? `<p class="eyebrow">${eyebrow.textContent.trim().toUpperCase()}</p>`
-            : ''
-        }
+        ${eyebrow.textContent.trim() !== ''
+      ? `<p class="eyebrow">${eyebrow.textContent.trim().toUpperCase()}</p>`
+      : ''
+    }
         <div class="title">${title.innerHTML}</div>
         <div class="long-description">${longDescr.innerHTML}</div>
         ${hasShortDescr ? `<div class="short-description">${shortDescr.innerHTML}</div>` : ''}
