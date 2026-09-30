@@ -198,7 +198,7 @@
 }
 
 .teaser-v2.block.cta-link-arrow .cta a.button::after {
-  content: " ↗";
+  content: "→";
   margin-left: 8px;
 }
 
