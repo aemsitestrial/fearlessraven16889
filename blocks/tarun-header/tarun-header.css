@@ -1,0 +1,201 @@
+/* ==========================================================================
+   BASIC TARUN HEADER SHELL
+   ========================================================================== */
+.tarun-header-wrapper {
+  height: 124px;
+}
+
+.tarun-header .tarun-nav-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tarun-header nav#tarun-nav {
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 1440px;
+  height: 124px;
+  padding: 40px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logos */
+.tarun-header .nav-brand-primary img {
+  width: 146px;
+  height: 34.8px;
+  object-fit: contain;
+}
+
+.tarun-header .nav-brand-secondary img {
+  width: 50px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.tarun-header .nav-brand-primary picture,
+.tarun-header .nav-brand-secondary picture {
+  display: block;
+}
+
+.tarun-header .nav-brand-primary a,
+.tarun-header .nav-brand-secondary a {
+  text-decoration: none;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.tarun-header.variant-compact nav#tarun-nav {
+  height: 80px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.tarun-header.variant-compact .nav-brand-primary img {
+  width: 112px;
+  height: 28px;
+}
+
+.tarun-header.variant-dark .tarun-nav-wrapper {
+  background-color: #1e1e1e;
+  border-bottom-color: #333;
+}
+
+.tarun-header.variant-dark .nav-brand-primary a,
+.tarun-header.variant-dark .nav-brand-secondary a,
+.tarun-header.variant-dark .nav-sections a {
+  color: #fff;
+}
+
+.tarun-header.variant-dark .nav-hamburger-icon,
+.tarun-header.variant-dark .nav-hamburger-icon::before,
+.tarun-header.variant-dark .nav-hamburger-icon::after {
+  background-color: #fff;
+}
+
+.tarun-header.variant-dark .nav-sections {
+  background-color: #1e1e1e;
+}
+
+.tarun-header.variant-centered nav#tarun-nav {
+  position: relative;
+}
+
+.tarun-header.variant-centered .nav-brand-primary {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Desktop Links */
+@media (width >= 1025px) {
+  .tarun-header .nav-hamburger {
+    display: none;
+  }
+
+  .tarun-header .nav-sections .tarun-nav-list {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tarun-header .nav-sections a {
+    color: #1e1e1e;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  .tarun-header.variant-centered .nav-sections {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Mobile Layout */
+@media (width <= 1024px) {
+  .tarun-header-wrapper {
+    height: 64px;
+  }
+
+  .tarun-header nav#tarun-nav {
+    height: 64px;
+    padding: 12px 20px;
+  }
+
+  .tarun-header.variant-compact nav#tarun-nav {
+    height: 56px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .tarun-header.variant-centered .nav-brand-primary {
+    position: static;
+    transform: none;
+  }
+
+  .tarun-header .nav-brand-primary img {
+    width: 100px;
+    height: 24px;
+  }
+
+  .tarun-header .nav-brand-secondary {
+    display: none;
+  }
+
+  .tarun-header .nav-sections {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 64px);
+    background: #fff;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+
+  .tarun-header .nav-sections .tarun-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tarun-header nav#tarun-nav[aria-expanded="true"] .nav-sections {
+    display: block;
+  }
+
+  .tarun-header .nav-hamburger button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .tarun-header .nav-hamburger-icon,
+  .tarun-header .nav-hamburger-icon::before,
+  .tarun-header .nav-hamburger-icon::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #1e1e1e;
+  }
+
+  .tarun-header .nav-hamburger-icon::before {
+    content: "";
+    transform: translateY(-6px);
+  }
+
+  .tarun-header .nav-hamburger-icon::after {
+    content: "";
+    transform: translateY(4px);
+  }
+}
