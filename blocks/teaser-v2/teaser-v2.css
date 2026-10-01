@@ -262,12 +262,71 @@
   word-break: normal;
 }
 
+/* =========================================
+   TYPOGRAPHY VARIANTS
+   ========================================= */
+
+.teaser-v2.block.title-font-baskerville>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-family: Baskerville, serif;
+}
+
+.teaser-v2.block.title-font-roboto>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-family: Roboto, sans-serif;
+}
+
+.teaser-v2.block.title-size-sm>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 32px;
+  line-height: 36px;
+}
+
+.teaser-v2.block.title-size-md>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 48px;
+  line-height: 52px;
+}
+
+.teaser-v2.block.title-size-lg>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 56px;
+  line-height: 60px;
+}
+
+.teaser-v2.block.title-size-xl>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 72px;
+  line-height: 76px;
+}
+
+.teaser-v2.block.desc-font-roboto .long-description,
+.teaser-v2.block.desc-font-roboto .short-description {
+  font-family: Roboto, sans-serif;
+}
+
+.teaser-v2.block.desc-font-baskerville .long-description,
+.teaser-v2.block.desc-font-baskerville .short-description {
+  font-family: Baskerville, serif;
+}
+
+.teaser-v2.block.desc-size-sm .long-description,
+.teaser-v2.block.desc-size-sm .short-description {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.teaser-v2.block.desc-size-md .long-description,
+.teaser-v2.block.desc-size-md .short-description {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.teaser-v2.block.desc-size-lg .long-description,
+.teaser-v2.block.desc-size-lg .short-description {
+  font-size: 24px;
+  line-height: 34px;
+}
+
 @media (width >=900px) {
   .teaser-v2.block>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
     margin: 0;
     color: currentcolor;
     letter-spacing: 0;
-    font: normal normal normal 56px/56px Baskerville, serif;
     overflow-wrap: break-word;
     word-break: normal;
   }
@@ -442,6 +501,98 @@
   display: none;
 }
 
+/* =========================================
+   IMAGE WIDTH VARIANTS
+   ========================================= */
+
+.teaser-v2.block.image-width-30>.background {
+  width: 30%;
+}
+
+.teaser-v2.block.image-width-40>.background {
+  width: 40%;
+}
+
+.teaser-v2.block.image-width-50>.background {
+  width: 50%;
+}
+
+.teaser-v2.block.image-width-60>.background {
+  width: 60%;
+}
+
+.teaser-v2.block.image-width-70>.background {
+  width: 70%;
+}
+
+.teaser-v2.block.image-width-30>.foreground {
+  width: 70%;
+}
+
+.teaser-v2.block.image-width-40>.foreground {
+  width: 60%;
+}
+
+.teaser-v2.block.image-width-50>.foreground {
+  width: 50%;
+}
+
+.teaser-v2.block.image-width-60>.foreground {
+  width: 40%;
+}
+
+.teaser-v2.block.image-width-70>.foreground {
+  width: 30%;
+}
+
+/* Background Image (existing behavior) */
+
+/* =========================================
+   IMAGE STYLES
+   ========================================= */
+
+.teaser-v2.block.image-background>.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.teaser-v2.block.image-contained>.background {
+  position: relative;
+  inset: unset;
+  height: auto;
+}
+
+.teaser-v2.block.image-contained>.background img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.teaser-v2.block.image-contained.image-left,
+.teaser-v2.block.image-contained.image-right {
+  gap: 64px;
+  align-items: center;
+}
+
+.teaser-v2.block.image-contained > .foreground {
+  max-width: none;
+}
+
+.teaser-v2.block.image-align-top {
+  align-items: flex-start;
+}
+
+.teaser-v2.block.image-align-middle {
+  align-items: center;
+}
+
+.teaser-v2.block.image-align-bottom {
+  align-items: flex-end;
+}
+
 @media (width >=900px) {
   .teaser-v2.block.image-left {
     flex-direction: row;
@@ -455,8 +606,8 @@
   .teaser-v2.block.image-left>.foreground,
   .teaser-v2.block.image-right>.background,
   .teaser-v2.block.image-right>.foreground {
-    flex: 1;
-    width: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   .teaser-v2.block.image-left>.foreground,
@@ -677,7 +828,7 @@
   .teaser-v2.block.image-right>.background,
   .teaser-v2.block.image-left>.foreground,
   .teaser-v2.block.image-right>.foreground {
-    width: 50%;
+    flex-shrink: 0;
   }
 
   .teaser-v2.block.image-top>.background {
@@ -704,8 +855,6 @@
   }
 
   .teaser-v2.block>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
-    font-size: 56px;
-    line-height: 56px;
     overflow-wrap: break-word;
     word-break: normal;
   }

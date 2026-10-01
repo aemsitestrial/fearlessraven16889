@@ -111,7 +111,7 @@
           "label": "Style",
           "valueType": "string",
           "required": true,
-          "maxSize": 15,
+          "maxSize": 25,
           "options": [
             {
               "name": "Theme",
@@ -156,6 +156,61 @@
                 {
                   "name": "Image Top",
                   "value": "image-top"
+                }
+              ]
+            },
+            {
+              "name": "Image Style",
+              "children": [
+                {
+                  "name": "Background Image",
+                  "value": "image-background"
+                },
+                {
+                  "name": "Contained Image",
+                  "value": "image-contained"
+                }
+              ]
+            },
+            {
+              "name": "Image Width",
+              "children": [
+                {
+                  "name": "30%",
+                  "value": "image-width-30"
+                },
+                {
+                  "name": "40%",
+                  "value": "image-width-40"
+                },
+                {
+                  "name": "50%",
+                  "value": "image-width-50"
+                },
+                {
+                  "name": "60%",
+                  "value": "image-width-60"
+                },
+                {
+                  "name": "70%",
+                  "value": "image-width-70"
+                }
+              ]
+            },
+            {
+              "name": "Image Alignment",
+              "children": [
+                {
+                  "name": "Top",
+                  "value": "image-align-top"
+                },
+                {
+                  "name": "Middle",
+                  "value": "image-align-middle"
+                },
+                {
+                  "name": "Bottom",
+                  "value": "image-align-bottom"
                 }
               ]
             },
@@ -376,12 +431,92 @@
           ]
         },
         {
+          "component": "select",
+          "valueType": "string",
+          "name": "titleFontSize",
+          "label": "Title Font Size",
+          "value": "title-size-md",
+          "options": [
+            {
+              "name": "Small",
+              "value": "title-size-sm"
+            },
+            {
+              "name": "Medium",
+              "value": "title-size-md"
+            },
+            {
+              "name": "Large",
+              "value": "title-size-lg"
+            },
+            {
+              "name": "Extra Large",
+              "value": "title-size-xl"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "titleFontFamily",
+          "label": "Title Font Family",
+          "value": "title-font-baskerville",
+          "options": [
+            {
+              "name": "Baskerville",
+              "value": "title-font-baskerville"
+            },
+            {
+              "name": "Roboto",
+              "value": "title-font-roboto"
+            }
+          ]
+        },
+        {
           "component": "richtext",
           "valueType": "string",
           "name": "longDescr",
           "value": "",
           "label": "Long Description",
           "description": "The description shown in Desktop and Tablet view."
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "descriptionFontFamily",
+          "label": "Description Font Family",
+          "value": "desc-font-roboto",
+          "options": [
+            {
+              "name": "Roboto",
+              "value": "desc-font-roboto"
+            },
+            {
+              "name": "Baskerville",
+              "value": "desc-font-baskerville"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "descriptionFontSize",
+          "label": "Description Font Size",
+          "value": "desc-size-md",
+          "options": [
+            {
+              "name": "Small",
+              "value": "desc-size-sm"
+            },
+            {
+              "name": "Medium",
+              "value": "desc-size-md"
+            },
+            {
+              "name": "Large",
+              "value": "desc-size-lg"
+            }
+          ]
         },
         {
           "component": "richtext",
