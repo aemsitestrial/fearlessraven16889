@@ -262,6 +262,66 @@
   word-break: normal;
 }
 
+/* =========================================
+   TYPOGRAPHY VARIANTS
+   ========================================= */
+
+.teaser-v2.block.title-font-baskerville>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-family: Baskerville, serif;
+}
+
+.teaser-v2.block.title-font-roboto>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-family: Roboto, sans-serif;
+}
+
+.teaser-v2.block.title-size-sm>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 32px;
+  line-height: 36px;
+}
+
+.teaser-v2.block.title-size-md>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 48px;
+  line-height: 52px;
+}
+
+.teaser-v2.block.title-size-lg>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 56px;
+  line-height: 60px;
+}
+
+.teaser-v2.block.title-size-xl>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+  font-size: 72px;
+  line-height: 76px;
+}
+
+.teaser-v2.block.desc-font-roboto .long-description,
+.teaser-v2.block.desc-font-roboto .short-description {
+  font-family: Roboto, sans-serif;
+}
+
+.teaser-v2.block.desc-font-baskerville .long-description,
+.teaser-v2.block.desc-font-baskerville .short-description {
+  font-family: Baskerville, serif;
+}
+
+.teaser-v2.block.desc-size-sm .long-description,
+.teaser-v2.block.desc-size-sm .short-description {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.teaser-v2.block.desc-size-md .long-description,
+.teaser-v2.block.desc-size-md .short-description {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.teaser-v2.block.desc-size-lg .long-description,
+.teaser-v2.block.desc-size-lg .short-description {
+  font-size: 24px;
+  line-height: 34px;
+}
+
 @media (width >=900px) {
   .teaser-v2.block>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
     margin: 0;

@@ -6534,6 +6534,44 @@
         "description": "The description shown in Desktop and Tablet view."
       },
       {
+        "component": "select",
+        "valueType": "string",
+        "name": "descriptionFontFamily",
+        "label": "Description Font Family",
+        "value": "desc-font-roboto",
+        "options": [
+          {
+            "name": "Roboto",
+            "value": "desc-font-roboto"
+          },
+          {
+            "name": "Baskerville",
+            "value": "desc-font-baskerville"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "descriptionFontSize",
+        "label": "Description Font Size",
+        "value": "desc-size-md",
+        "options": [
+          {
+            "name": "Small",
+            "value": "desc-size-sm"
+          },
+          {
+            "name": "Medium",
+            "value": "desc-size-md"
+          },
+          {
+            "name": "Large",
+            "value": "desc-size-lg"
+          }
+        ]
+      },
+      {
         "component": "richtext",
         "valueType": "string",
         "name": "shortDescr",

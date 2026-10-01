@@ -96,9 +96,22 @@ export function generateTeaserDOM(props, classes) {
 }
 
 export default function decorate(block) {
-  // get the first and only cell from each row
   const props = [...block.children].map((row) => row.firstElementChild);
+
   const teaserDOM = generateTeaserDOM(props, block.classList);
+
   block.textContent = '';
   block.append(teaserDOM);
+
+  // Typography classes from authored fields
+  const typographyClasses = [
+    block.dataset.titleFontFamily,
+    block.dataset.titleFontSize,
+    block.dataset.descriptionFontFamily,
+    block.dataset.descriptionFontSize,
+  ];
+
+  typographyClasses
+    .filter(Boolean)
+    .forEach((cls) => block.classList.add(cls));
 }
