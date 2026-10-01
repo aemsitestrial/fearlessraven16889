@@ -186,7 +186,7 @@
   font-weight: 500;
 }
 
-.teaser-v2.block.cta-link-arrow .cta .teaser-cta {
+.teaser-v2.block.cta-link-arrow .teaser-cta {
   background: transparent !important;
   border: none;
   box-shadow: none;
@@ -197,7 +197,7 @@
   font-weight: 500;
 }
 
-.teaser-v2.block.cta-link-arrow .cta a.button::after {
+.teaser-v2.block.cta-link-arrow a.button::after {
   content: "→";
   margin-left: 8px;
 }
@@ -474,7 +474,6 @@
 }
 
 @media (width <=899px) {
-
   .teaser-v2.block.image-left,
   .teaser-v2.block.image-right {
     flex-direction: column;
