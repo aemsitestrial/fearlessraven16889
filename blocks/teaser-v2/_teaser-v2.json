@@ -431,92 +431,12 @@
           ]
         },
         {
-          "component": "select",
-          "valueType": "string",
-          "name": "titleFontSize",
-          "label": "Title Font Size",
-          "value": "title-size-md",
-          "options": [
-            {
-              "name": "Small",
-              "value": "title-size-sm"
-            },
-            {
-              "name": "Medium",
-              "value": "title-size-md"
-            },
-            {
-              "name": "Large",
-              "value": "title-size-lg"
-            },
-            {
-              "name": "Extra Large",
-              "value": "title-size-xl"
-            }
-          ]
-        },
-        {
-          "component": "select",
-          "valueType": "string",
-          "name": "titleFontFamily",
-          "label": "Title Font Family",
-          "value": "title-font-baskerville",
-          "options": [
-            {
-              "name": "Baskerville",
-              "value": "title-font-baskerville"
-            },
-            {
-              "name": "Roboto",
-              "value": "title-font-roboto"
-            }
-          ]
-        },
-        {
           "component": "richtext",
           "valueType": "string",
           "name": "longDescr",
           "value": "",
           "label": "Long Description",
           "description": "The description shown in Desktop and Tablet view."
-        },
-        {
-          "component": "select",
-          "valueType": "string",
-          "name": "descriptionFontFamily",
-          "label": "Description Font Family",
-          "value": "desc-font-roboto",
-          "options": [
-            {
-              "name": "Roboto",
-              "value": "desc-font-roboto"
-            },
-            {
-              "name": "Baskerville",
-              "value": "desc-font-baskerville"
-            }
-          ]
-        },
-        {
-          "component": "select",
-          "valueType": "string",
-          "name": "descriptionFontSize",
-          "label": "Description Font Size",
-          "value": "desc-size-md",
-          "options": [
-            {
-              "name": "Small",
-              "value": "desc-size-sm"
-            },
-            {
-              "name": "Medium",
-              "value": "desc-size-md"
-            },
-            {
-              "name": "Large",
-              "value": "desc-size-lg"
-            }
-          ]
         },
         {
           "component": "richtext",
