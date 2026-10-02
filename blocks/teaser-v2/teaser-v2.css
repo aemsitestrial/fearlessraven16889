@@ -109,6 +109,11 @@
   align-items: flex-end;
 }
 
+.teaser-v2.block.text-justify .foreground .text {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 .teaser-v2.block.text-top>.foreground {
   justify-content: flex-start;
 }
@@ -577,7 +582,7 @@
   align-items: center;
 }
 
-.teaser-v2.block.image-contained > .foreground {
+.teaser-v2.block.image-contained>.foreground {
   max-width: none;
 }
 
@@ -625,6 +630,7 @@
 }
 
 @media (width <=899px) {
+
   .teaser-v2.block.image-left,
   .teaser-v2.block.image-right {
     flex-direction: column;

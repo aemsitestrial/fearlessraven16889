@@ -228,6 +228,10 @@
                 {
                   "name": "Center",
                   "value": "center"
+                },
+                {
+                  "name":"Justify",
+                  "value":"justify"
                 }
               ]
             },
