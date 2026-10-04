@@ -105,6 +105,7 @@
     gap: var(--teaser-content-gap);
     width: 100%;
     max-width: var(--teaser-content-max-width);
+    min-width: 0;
     box-sizing: border-box;
     text-align: left;
   }
@@ -218,7 +219,10 @@
     margin: 0;
     color: currentcolor;
     letter-spacing: 0;
-    font: normal normal normal 54px/50px Baskerville, serif;
+    font-family: Baskerville, serif;
+    font-size: 54px;
+    line-height: 50px;
+    font-weight: 400;
     overflow-wrap: break-word;
     word-break: normal;
     text-align: inherit;
@@ -288,10 +292,11 @@
     height: 56px;
     padding: 0 24px;
     background: transparent;
-    border: 1px solid white;
+    border: 1px solid currentcolor;
     border-radius: 0;
     text-decoration: none;
     font-weight: 400;
+    color: inherit;
   }
 
   .teaser-v2.block.cta-rectangle .teaser-cta::after {
@@ -301,7 +306,7 @@
   }
 
   .teaser-v2.block.cta-link-arrow .teaser-cta {
-    background: transparent !important;
+    background: transparent;
     border: none;
     box-shadow: none;
     padding: 0;
@@ -347,6 +352,28 @@
     color: #131313;
   }
 
+  /* Rectangle outline with text arrow */
+  .teaser-v2.block.cta-rectangle.cta-link-arrow .teaser-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 230px;
+    height: 56px;
+    padding: 0 24px;
+    background: transparent;
+    border: 1px solid currentcolor;
+    border-radius: 0;
+    text-decoration: none;
+    font-weight: 400;
+    color: inherit;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-link-arrow .teaser-cta::after {
+    content: "→";
+    margin-left: 12px;
+    font-size: 20px;
+  }
+
   .teaser-v2.block.cta-rectangle.cta-light .teaser-cta {
     color: #fff;
     border-color: #fff;
@@ -383,7 +410,8 @@
     background: transparent;
   }
 
-  .teaser-v2.block.cta-rectangle .teaser-cta:hover {
+  .teaser-v2.block.cta-rectangle .teaser-cta:hover,
+  .teaser-v2.block.cta-rectangle.cta-link-arrow .teaser-cta:hover {
     background: rgb(255 255 255 / 10%);
   }
 
@@ -628,8 +656,8 @@
   .teaser-v2.block.image-top {
     display: flex;
     height: auto;
-    background-color: var(--teaser-background-color, transparent);
-    color: #131313;
+    background-color: inherit;
+    color: inherit;
   }
 
   .teaser-v2.block.image-left>.background,
@@ -672,7 +700,7 @@
 
   .teaser-v2.block.image-contained.image-left,
   .teaser-v2.block.image-contained.image-right {
-    gap: 64px;
+    gap: 64 px;
     align-items: center;
   }
 
