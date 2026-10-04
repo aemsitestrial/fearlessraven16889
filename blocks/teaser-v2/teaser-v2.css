@@ -700,7 +700,7 @@
 
   .teaser-v2.block.image-contained.image-left,
   .teaser-v2.block.image-contained.image-right {
-    gap: 64 px;
+    gap: 24px;
     align-items: center;
   }
 
