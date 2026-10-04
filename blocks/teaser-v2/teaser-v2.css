@@ -198,10 +198,8 @@
   min-width: 230px;
   height: 56px;
   padding: 0 24px;
-
   background: transparent;
   border: 1px solid currentcolor;
-
   border-radius: 0;
   text-decoration: none;
   font-weight: 400;
@@ -211,10 +209,6 @@
   content: "→";
   margin-left: 12px;
   font-size: 20px;
-}
-
-.teaser-v2.block.cta-rectangle .teaser-cta:hover {
-  background: rgb(255 255 255 / 10%);
 }
 
 .teaser-v2.block.cta-link-arrow .teaser-cta {
@@ -261,6 +255,10 @@
 .teaser-v2.block.cta-beige .teaser-cta {
   background: #f5f0eb;
   color: #131313;
+}
+
+.teaser-v2.block.cta-rectangle .teaser-cta:hover {
+  background: rgb(255 255 255 / 10%);
 }
 
 @media (width >=900px) {
@@ -656,7 +654,6 @@
 }
 
 @media (width <=899px) {
-
   .teaser-v2.block.image-left,
   .teaser-v2.block.image-right {
     flex-direction: column;
