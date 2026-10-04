@@ -1,935 +1,954 @@
-/* =========================================
-   BASE TEASERV2 STYLES & COLOR VARIABLES
-   ========================================= */
-.teaser-v2.block {
-  --tcs-bg-red: #eb1c24;
-  --tcs-bg-yellow: #fc0;
-  --tcs-bg-blue: #0076a8;
-  --tcs-bg-beige: #f5f0eb;
-  --tcs-bg-black: #111;
-  --teaser-content-gap: 18px;
-  --teaser-cta-gap: 16px;
-  --teaser-padding-y: 60px;
-  --teaser-padding-x: 80px;
-  --teaser-content-max-width: 580px;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 490px;
-  height: auto;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: var(--teaser-background-color, transparent);
-  color: #fff;
-}
-
-.teaser-v2.block *,
-.teaser-v2.block *::before,
-.teaser-v2.block *::after {
-  box-sizing: border-box;
-}
-
-/* Background Color Variants applied directly as block classes */
-.teaser-v2.block.tcs-background-red {
-  background-color: var(--red, var(--tcs-background-red, var(--tcs-bg-red)));
-}
-
-.teaser-v2.block.tcs-background-yellow {
-  background-color: var(--yellow, var(--tcs-background-yellow, var(--tcs-bg-yellow)));
-}
-
-.teaser-v2.block.tcs-background-blue {
-  background-color: var(--blue, var(--tcs-background-blue, var(--tcs-bg-blue)));
-}
-
-.teaser-v2.block.tcs-background-beige {
-  background-color: var(--beige, var(--tcs-background-beige, var(--tcs-bg-beige)));
-}
-
-.teaser-v2.block.tcs-background-black {
-  background-color: var(--black, var(--tcs-background-black, var(--tcs-bg-black)));
-}
-
-.teaser-v2.block.half-height {
-  min-height: 260px;
-  height: auto;
-}
-
-/* Background (Overlay / Hero image) */
-.teaser-v2.block > .background {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.teaser-v2.block.half-height .background {
-  height: 100%;
-}
-
-.teaser-v2.block > .background img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Foreground container */
-.teaser-v2.block > .foreground {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  width: 100%;
-  min-height: inherit;
-  padding: var(--teaser-padding-y) var(--teaser-padding-x);
-  background-color: var(--teaser-background-color, transparent);
-  box-sizing: border-box;
-  /* Default positioning: middle-left */
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.teaser-v2.block > .foreground > .spacer {
-  display: none;
-}
-
-/* Content box (.text) */
-.teaser-v2.block > .foreground > .text {
-  display: flex;
-  flex-direction: column;
-  gap: var(--teaser-content-gap);
-  width: 100%;
-  max-width: var(--teaser-content-max-width);
-  box-sizing: border-box;
-  text-align: left;
-}
-
-/* =========================================
-   3x3 POSITIONING SYSTEM (9-POINT MATRIX)
-   ========================================= */
-
-/* Vertical Axis (justify-content) */
-.teaser-v2.block.top > .foreground,
-.teaser-v2.block.text-top > .foreground,
-.teaser-v2.block.top-left > .foreground,
-.teaser-v2.block.top-center > .foreground,
-.teaser-v2.block.top-right > .foreground {
-  justify-content: flex-start;
-}
-
-.teaser-v2.block.middle > .foreground,
-.teaser-v2.block.text-middle > .foreground,
-.teaser-v2.block.middle-left > .foreground,
-.teaser-v2.block.middle-center > .foreground,
-.teaser-v2.block.middle-right > .foreground {
-  justify-content: center;
-}
-
-.teaser-v2.block.bottom > .foreground,
-.teaser-v2.block.text-bottom > .foreground,
-.teaser-v2.block.bottom-left > .foreground,
-.teaser-v2.block.bottom-center > .foreground,
-.teaser-v2.block.bottom-right > .foreground {
-  justify-content: flex-end;
-}
-
-/* Horizontal Axis (align-items) */
-.teaser-v2.block.left > .foreground,
-.teaser-v2.block.top-left > .foreground,
-.teaser-v2.block.middle-left > .foreground,
-.teaser-v2.block.bottom-left > .foreground {
-  align-items: flex-start;
-}
-
-.teaser-v2.block.center > .foreground,
-.teaser-v2.block.top-center > .foreground,
-.teaser-v2.block.middle-center > .foreground,
-.teaser-v2.block.bottom-center > .foreground {
-  align-items: center;
-  --teaser-content-max-width: 800px;
-}
-
-.teaser-v2.block.right > .foreground,
-.teaser-v2.block.top-right > .foreground,
-.teaser-v2.block.middle-right > .foreground,
-.teaser-v2.block.bottom-right > .foreground {
-  align-items: flex-end;
-}
-
-/* =========================================
-   SEPARATION OF TEXT ALIGNMENT LOGIC
-   ========================================= */
-
-/* Default text alignment derived from position if not explicitly overridden */
-.teaser-v2.block.center:not(.text-left):not(.text-right):not(.text-justify) > .foreground > .text,
-.teaser-v2.block.top-center:not(.text-left):not(.text-right):not(.text-justify) > .foreground > .text,
-.teaser-v2.block.middle-center:not(.text-left):not(.text-right):not(.text-justify) > .foreground > .text,
-.teaser-v2.block.bottom-center:not(.text-left):not(.text-right):not(.text-justify) > .foreground > .text {
-  text-align: center;
-}
-
-.teaser-v2.block.right:not(.text-left):not(.text-center):not(.text-justify) > .foreground > .text,
-.teaser-v2.block.top-right:not(.text-left):not(.text-center):not(.text-justify) > .foreground > .text,
-.teaser-v2.block.middle-right:not(.text-left):not(.text-center):not(.text-justify) > .foreground > .text,
-.teaser-v2.block.bottom-right:not(.text-left):not(.text-center):not(.text-justify) > .foreground > .text {
-  text-align: right;
-}
-
-/* Explicit text alignment classes */
-.teaser-v2.block.text-left .foreground .text {
-  text-align: left;
-}
-
-.teaser-v2.block.text-center .foreground .text {
-  text-align: center;
-}
-
-.teaser-v2.block.text-right .foreground .text {
-  text-align: right;
-}
-
-.teaser-v2.block.text-justify .foreground .text {
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-/* Text Direction */
-.teaser-v2.block.text-row .foreground .text {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-}
-
-.teaser-v2.block.text-column .foreground .text {
-  display: flex;
-  flex-direction: column;
-}
-
-/* =========================================
-   CONSISTENT CONTENT SPACING & ELEMENTS
-   ========================================= */
-.teaser-v2.block .foreground .text > * {
-  margin: 0;
-}
-
-.teaser-v2.block .foreground .text .eyebrow {
-  display: block;
-  font: normal normal bold 12px/16px Roboto, sans-serif;
-  letter-spacing: 0.96px;
-  color: currentcolor;
-  text-transform: uppercase;
-  text-align: inherit;
-  margin: 0;
-}
-
-.teaser-v2.block .foreground .text .title {
-  margin: 0;
-  text-align: inherit;
-}
-
-.teaser-v2.block .foreground .text .title :where(h1, h2, h3, h4, h5, h6) {
-  margin: 0;
-  color: currentcolor;
-  letter-spacing: 0;
-  font: normal normal normal 54px/50px Baskerville, serif;
-  overflow-wrap: break-word;
-  word-break: normal;
-  text-align: inherit;
-}
-
-.teaser-v2.block .foreground .text .long-description,
-.teaser-v2.block .foreground .text .short-description {
-  color: currentcolor;
-  text-align: inherit;
-  margin: 0;
-}
-
-.teaser-v2.block .foreground .text .long-description p,
-.teaser-v2.block .foreground .text .short-description p {
-  margin: 0;
-  color: inherit;
-  text-align: inherit;
-}
-
-.teaser-v2.block .foreground .text .long-description p + p,
-.teaser-v2.block .foreground .text .short-description p + p {
-  margin-top: 0.75em;
-}
-
-/* =========================================
-   PROPER CTA ALIGNMENT RELATIVE TO CONTENT
-   ========================================= */
-.teaser-v2.block .foreground .text .cta {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: var(--teaser-cta-gap);
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-/* Contextual CTA alignment relative to content & text alignment */
-.teaser-v2.block.text-center .foreground .text .cta,
-.teaser-v2.block.center:not(.text-left):not(.text-right):not(.cta-left):not(.cta-right) .foreground .text .cta,
-.teaser-v2.block.top-center:not(.text-left):not(.text-right):not(.cta-left):not(.cta-right) .foreground .text .cta,
-.teaser-v2.block.middle-center:not(.text-left):not(.text-right):not(.cta-left):not(.cta-right) .foreground .text .cta,
-.teaser-v2.block.bottom-center:not(.text-left):not(.text-right):not(.cta-left):not(.cta-right) .foreground .text .cta {
-  justify-content: center;
-}
-
-.teaser-v2.block.text-right .foreground .text .cta,
-.teaser-v2.block.right:not(.text-left):not(.text-center):not(.cta-left):not(.cta-center) .foreground .text .cta,
-.teaser-v2.block.top-right:not(.text-left):not(.text-center):not(.cta-left):not(.cta-center) .foreground .text .cta,
-.teaser-v2.block.middle-right:not(.text-left):not(.text-center):not(.cta-left):not(.cta-center) .foreground .text .cta,
-.teaser-v2.block.bottom-right:not(.text-left):not(.text-center):not(.cta-left):not(.cta-center) .foreground .text .cta {
-  justify-content: flex-end;
-}
-
-/* Explicit CTA Alignment Classes */
-.teaser-v2.block.cta-left .foreground .text .cta {
-  justify-content: flex-start;
-}
-
-.teaser-v2.block.cta-center .foreground .text .cta {
-  justify-content: center;
-}
-
-.teaser-v2.block.cta-right .foreground .text .cta {
-  justify-content: flex-end;
-}
-
-/* CTA Direction */
-.teaser-v2.block.cta-row .foreground .text .cta {
-  flex-direction: row;
-}
-
-.teaser-v2.block.cta-column .foreground .text .cta {
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.teaser-v2.block.cta-column.text-center .foreground .text .cta,
-.teaser-v2.block.cta-column.center:not(.text-left):not(.cta-left) .foreground .text .cta,
-.teaser-v2.block.cta-column.cta-center .foreground .text .cta {
-  align-items: center;
-}
-
-.teaser-v2.block.cta-column.text-right .foreground .text .cta,
-.teaser-v2.block.cta-column.right:not(.text-left):not(.cta-left) .foreground .text .cta,
-.teaser-v2.block.cta-column.cta-right .foreground .text .cta {
-  align-items: flex-end;
-}
-
-/* CTA Button Normalization & Styling */
-.teaser-v2.block .foreground .text .cta a.button,
-.teaser-v2.block .foreground .text .cta .teaser-cta {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  text-decoration: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-/* CTA Styles */
-.teaser-v2.block.cta-pill .cta a.button {
-  border-radius: 999px;
-  padding: 14px 32px;
-  font-weight: 500;
-}
-
-.teaser-v2.block.cta-rectangle .teaser-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 230px;
-  height: 56px;
-  padding: 0 24px;
-  background: transparent;
-  border: 1px solid white;
-  border-radius: 0;
-  text-decoration: none;
-  font-weight: 400;
-}
-
-.teaser-v2.block.cta-rectangle .teaser-cta::after {
-  content: "→";
-  margin-left: 12px;
-  font-size: 20px;
-}
-
-.teaser-v2.block.cta-link-arrow .teaser-cta {
-  background: transparent !important;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-  border-radius: 0;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.teaser-v2.block.cta-link-arrow a.button::after {
-  content: "→";
-  margin-left: 8px;
-}
-
-/* CTA Color Variants */
-.teaser-v2.block.cta-light .teaser-cta {
-  background: #fff;
-  color: #131313;
-}
-
-.teaser-v2.block.cta-dark .teaser-cta {
-  background: #131313;
-  color: #fff;
-}
-
-.teaser-v2.block.cta-red .teaser-cta {
-  background: #eb1c24;
-  color: #fff;
-}
-
-.teaser-v2.block.cta-blue .teaser-cta {
-  background: #0076a8;
-  color: #fff;
-}
-
-.teaser-v2.block.cta-yellow .teaser-cta {
-  background: #fc0;
-  color: #131313;
-}
-
-.teaser-v2.block.cta-beige .teaser-cta {
-  background: #f5f0eb;
-  color: #131313;
-}
-
-.teaser-v2.block.cta-rectangle.cta-light .teaser-cta {
-  color: #fff;
-  border-color: #fff;
-  background: transparent;
-}
-
-.teaser-v2.block.cta-rectangle.cta-dark .teaser-cta {
-  color: #131313;
-  border-color: #131313;
-  background: transparent;
-}
-
-.teaser-v2.block.cta-rectangle.cta-red .teaser-cta {
-  color: #eb1c24;
-  border-color: #eb1c24;
-  background: transparent;
-}
-
-.teaser-v2.block.cta-rectangle.cta-blue .teaser-cta {
-  color: #0076a8;
-  border-color: #0076a8;
-  background: transparent;
-}
-
-.teaser-v2.block.cta-rectangle.cta-yellow .teaser-cta {
-  color: #fc0;
-  border-color: #fc0;
-  background: transparent;
-}
-
-.teaser-v2.block.cta-rectangle.cta-beige .teaser-cta {
-  color: #f5f0eb;
-  border-color: #f5f0eb;
-  background: transparent;
-}
-
-.teaser-v2.block.cta-rectangle .teaser-cta:hover {
-  background: rgb(255 255 255 / 10%);
-}
-
-/* =========================================
-   TYPOGRAPHY VARIANTS
-   ========================================= */
-
-.teaser-v2.block.title-font-baskerville > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  font-family: Baskerville, serif;
-}
-
-.teaser-v2.block.title-font-roboto > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  font-family: Roboto, sans-serif;
-}
-
-.teaser-v2.block.title-size-sm > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  font-size: 32px;
-  line-height: 36px;
-}
-
-.teaser-v2.block.title-size-md > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  font-size: 48px;
-  line-height: 52px;
-}
-
-.teaser-v2.block.title-size-lg > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  font-size: 56px;
-  line-height: 60px;
-}
-
-.teaser-v2.block.title-size-xl > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  font-size: 72px;
-  line-height: 76px;
-}
-
-.teaser-v2.block.desc-font-roboto .long-description,
-.teaser-v2.block.desc-font-roboto .short-description {
-  font-family: Roboto, sans-serif;
-}
-
-.teaser-v2.block.desc-font-baskerville .long-description,
-.teaser-v2.block.desc-font-baskerville .short-description {
-  font-family: Baskerville, serif;
-}
-
-.teaser-v2.block.desc-size-sm .long-description,
-.teaser-v2.block.desc-size-sm .short-description {
-  font-size: 14px;
-  line-height: 22px;
-}
-
-.teaser-v2.block.desc-size-md .long-description,
-.teaser-v2.block.desc-size-md .short-description {
-  font-size: 18px;
-  line-height: 28px;
-}
-
-.teaser-v2.block.desc-size-lg .long-description,
-.teaser-v2.block.desc-size-lg .short-description {
-  font-size: 24px;
-  line-height: 34px;
-}
-
-/* =========================================
-   THEME STYLES (LIGHT / DARK MODES)
-   ========================================= */
-
-/* Light Mode */
-.teaser-v2.block.light,
-.teaser-v2.block.tcs-background-beige,
-.teaser-v2.block.tcs-background-yellow {
-  color: #131313;
-}
-
-.teaser-v2.block.light > .foreground > .text > .eyebrow,
-.teaser-v2.block.tcs-background-beige > .foreground > .text > .eyebrow,
-.teaser-v2.block.tcs-background-yellow > .foreground > .text > .eyebrow {
-  color: #555;
-}
-
-.teaser-v2.block.light > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6),
-.teaser-v2.block.tcs-background-beige > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6),
-.teaser-v2.block.tcs-background-yellow > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  color: #131313;
-}
-
-.teaser-v2.block.light > .foreground > .text > .long-description,
-.teaser-v2.block.light > .foreground > .text > .short-description,
-.teaser-v2.block.tcs-background-beige > .foreground > .text > .long-description,
-.teaser-v2.block.tcs-background-beige > .foreground > .text > .short-description,
-.teaser-v2.block.tcs-background-yellow > .foreground > .text > .long-description,
-.teaser-v2.block.tcs-background-yellow > .foreground > .text > .short-description {
-  color: #222;
-}
-
-.teaser-v2.block.light > .foreground > .text > .cta > a.button.secondary,
-.teaser-v2.block.tcs-background-beige > .foreground > .text > .cta > a.button.secondary,
-.teaser-v2.block.tcs-background-yellow > .foreground > .text > .cta > a.button.secondary {
-  color: #131313;
-  border-color: #131313;
-}
-
-/* Dark Mode */
-.teaser-v2.block.dark,
-.teaser-v2.block.tcs-background-black,
-.teaser-v2.block.tcs-background-red,
-.teaser-v2.block.tcs-background-blue {
-  color: #fff;
-}
-
-.teaser-v2.block.dark > .foreground > .text > .eyebrow,
-.teaser-v2.block.tcs-background-black > .foreground > .text > .eyebrow,
-.teaser-v2.block.tcs-background-red > .foreground > .text > .eyebrow,
-.teaser-v2.block.tcs-background-blue > .foreground > .text > .eyebrow {
-  color: #e5e5e5;
-}
-
-.teaser-v2.block.dark > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6),
-.teaser-v2.block.tcs-background-black > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6),
-.teaser-v2.block.tcs-background-red > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6),
-.teaser-v2.block.tcs-background-blue > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-  color: #fff;
-}
-
-.teaser-v2.block.dark > .foreground > .text > .long-description,
-.teaser-v2.block.dark > .foreground > .text > .short-description,
-.teaser-v2.block.tcs-background-black > .foreground > .text > .long-description,
-.teaser-v2.block.tcs-background-black > .foreground > .text > .short-description,
-.teaser-v2.block.tcs-background-red > .foreground > .text > .long-description,
-.teaser-v2.block.tcs-background-red > .foreground > .text > .short-description,
-.teaser-v2.block.tcs-background-blue > .foreground > .text > .long-description,
-.teaser-v2.block.tcs-background-blue > .foreground > .text > .short-description {
-  color: #f0f0f0;
-}
-
-.teaser-v2.block.dark > .foreground > .text > .cta > a.button.secondary,
-.teaser-v2.block.tcs-background-black > .foreground > .text > .cta > a.button.secondary,
-.teaser-v2.block.tcs-background-red > .foreground > .text > .cta > a.button.secondary,
-.teaser-v2.block.tcs-background-blue > .foreground > .text > .cta > a.button.secondary {
-  color: #fff;
-  border-color: #fff;
-}
-
-/* =========================================
-   STRUCTURAL VARIANTS (Hero, Split, Card, Side)
-   ========================================= */
-
-/* Hero */
-.teaser-v2.block.hero {
-  min-height: 600px;
-  height: auto;
-}
-
-/* Image Positions (image-left, image-right, image-top) */
-.teaser-v2.block.image-left,
-.teaser-v2.block.image-right,
-.teaser-v2.block.image-top {
-  display: flex;
-  height: auto;
-  background-color: var(--teaser-background-color, transparent);
-  color: #131313;
-}
-
-.teaser-v2.block.image-left > .background,
-.teaser-v2.block.image-right > .background,
-.teaser-v2.block.image-top > .background {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.teaser-v2.block.image-left > .foreground,
-.teaser-v2.block.image-right > .foreground,
-.teaser-v2.block.image-top > .foreground {
-  position: relative;
-  max-width: 100%;
-  padding: 40px;
-}
-
-/* Contained Image & Background Image */
-.teaser-v2.block.image-background > .background {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.teaser-v2.block.image-contained > .background {
-  position: relative;
-  inset: unset;
-  height: auto;
-}
-
-.teaser-v2.block.image-contained > .background img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.teaser-v2.block.image-contained.image-left,
-.teaser-v2.block.image-contained.image-right {
-  gap: 64px;
-  align-items: center;
-}
-
-.teaser-v2.block.image-contained > .foreground {
-  max-width: none;
-}
-
-.teaser-v2.block.image-align-top {
-  align-items: flex-start;
-}
-
-.teaser-v2.block.image-align-middle {
-  align-items: center;
-}
-
-.teaser-v2.block.image-align-bottom {
-  align-items: flex-end;
-}
-
-/* Image Width Variants */
-.teaser-v2.block.image-width-30 > .background {
-  width: 30%;
-}
-
-.teaser-v2.block.image-width-40 > .background {
-  width: 40%;
-}
-
-.teaser-v2.block.image-width-50 > .background {
-  width: 50%;
-}
-
-.teaser-v2.block.image-width-60 > .background {
-  width: 60%;
-}
-
-.teaser-v2.block.image-width-70 > .background {
-  width: 70%;
-}
-
-.teaser-v2.block.image-width-30 > .foreground {
-  width: 70%;
-}
-
-.teaser-v2.block.image-width-40 > .foreground {
-  width: 60%;
-}
-
-.teaser-v2.block.image-width-50 > .foreground {
-  width: 50%;
-}
-
-.teaser-v2.block.image-width-60 > .foreground {
-  width: 40%;
-}
-
-.teaser-v2.block.image-width-70 > .foreground {
-  width: 30%;
-}
-
-/* Split */
-.teaser-v2.block.split {
-  display: flex;
-  flex-direction: row;
-  background-color: var(--teaser-background-color, #f4f4f4);
-  color: #131313;
-}
-
-.teaser-v2.block.split > .background {
-  position: relative;
-  width: 50%;
-  height: auto;
-}
-
-.teaser-v2.block.split > .foreground {
-  position: relative;
-  width: 50%;
-  max-width: none;
-  background-color: transparent;
-}
-
-.teaser-v2.block.split.right {
-  flex-direction: row-reverse;
-}
-
-/* Card */
-.teaser-v2.block.card {
-  display: flex;
-  align-items: center;
-}
-
-.teaser-v2.block.card > .foreground {
-  margin: 40px;
-  padding: 40px;
-  background-color: #fff;
-  color: inherit;
-  border-radius: 8px;
-  max-width: 450px;
-  height: auto;
-  align-self: center;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-}
-
-.teaser-v2.block.card.dark > .foreground {
-  background-color: #222;
-  color: #fff;
-}
-
-.teaser-v2.block.card.light > .foreground {
-  background-color: #fff;
-  color: #131313;
-}
-
-/* =========================================
-   RESPONSIVE DESIGN ACROSS ALL BREAKPOINTS
-   ========================================= */
-
-/* Mobile (< 768px) */
-@media (width <= 767px) {
+  /* =========================================
+    BASE TEASERV2 STYLES & COLOR VARIABLES
+    ========================================= */
   .teaser-v2.block {
-    --teaser-padding-y: 28px;
-    --teaser-padding-x: 20px;
-    --teaser-content-gap: 14px;
-    --teaser-cta-gap: 12px;
-    --teaser-content-max-width: 100%;
+    --tcs-bg-red: #eb1c24;
+    --tcs-bg-yellow: #fc0;
+    --tcs-bg-blue: #0076a8;
+    --tcs-bg-beige: #f5f0eb;
+    --tcs-bg-black: #111;
+    --teaser-content-gap: 18px;
+    --teaser-cta-gap: 16px;
+    --teaser-padding-y: 60px;
+    --teaser-padding-x: 80px;
+    --teaser-content-max-width: 580px;
 
-    min-height: 400px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 490px;
+    height: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--teaser-background-color, transparent);
+    color: #fff;
+  }
+
+  .teaser-v2.block *,
+  .teaser-v2.block *::before,
+  .teaser-v2.block *::after {
+    box-sizing: border-box;
+  }
+
+  /* Background Color Variants applied directly as block classes */
+  .teaser-v2.block.tcs-background-red {
+    background-color: var(--red, var(--tcs-background-red, var(--tcs-bg-red)));
+  }
+
+  .teaser-v2.block.tcs-background-yellow {
+    background-color: var(--yellow, var(--tcs-background-yellow, var(--tcs-bg-yellow)));
+  }
+
+  .teaser-v2.block.tcs-background-blue {
+    background-color: var(--blue, var(--tcs-background-blue, var(--tcs-bg-blue)));
+  }
+
+  .teaser-v2.block.tcs-background-beige {
+    background-color: var(--beige, var(--tcs-background-beige, var(--tcs-bg-beige)));
+  }
+
+  .teaser-v2.block.tcs-background-black {
+    background-color: var(--black, var(--tcs-background-black, var(--tcs-bg-black)));
+  }
+
+  .teaser-v2.block.half-height {
+    min-height: 260px;
     height: auto;
   }
 
-  .teaser-v2.block > .foreground {
+  /* Background (Overlay / Hero image) */
+  .teaser-v2.block>.background {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    max-width: 100%;
+    height: 100%;
+    z-index: 0;
   }
 
-  .teaser-v2.block > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-    font-size: 32px;
-    line-height: 36px;
+  .teaser-v2.block.half-height .background {
+    height: 100%;
   }
 
-  .teaser-v2.block .short-description,
-  .teaser-v2.block .long-description {
-    font-size: 16px;
-    line-height: 24px;
+  .teaser-v2.block>.background img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .teaser-v2.block.hero {
-    min-height: 480px;
+  /* Foreground container */
+  .teaser-v2.block>.foreground {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: inherit;
+    padding: var(--teaser-padding-y) var(--teaser-padding-x);
+    background-color: var(--teaser-background-color, transparent);
+    box-sizing: border-box;
+
+    /* Default positioning: middle-left */
+    justify-content: center;
+    align-items: flex-start;
   }
 
-  .teaser-v2.block.card > .foreground {
-    margin: 16px;
-    padding: 24px;
-    max-width: calc(100% - 32px);
+  .teaser-v2.block>.foreground>.spacer {
+    display: none;
   }
 
-  .teaser-v2.block.split,
-  .teaser-v2.block.image-left,
-  .teaser-v2.block.image-right {
+  /* Content box (.text) */
+  .teaser-v2.block>.foreground>.text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--teaser-content-gap);
+    width: 100%;
+    max-width: var(--teaser-content-max-width);
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  /* =========================================
+    3x3 POSITIONING SYSTEM (9-POINT MATRIX)
+    ========================================= */
+
+  /* Vertical Axis (justify-content) */
+  .teaser-v2.block.top>.foreground,
+  .teaser-v2.block.text-top>.foreground,
+  .teaser-v2.block.top-left>.foreground,
+  .teaser-v2.block.top-center>.foreground,
+  .teaser-v2.block.top-right>.foreground {
+    justify-content: flex-start;
+  }
+
+  .teaser-v2.block.middle>.foreground,
+  .teaser-v2.block.text-middle>.foreground,
+  .teaser-v2.block.middle-left>.foreground,
+  .teaser-v2.block.middle-center>.foreground,
+  .teaser-v2.block.middle-right>.foreground {
+    justify-content: center;
+  }
+
+  .teaser-v2.block.bottom>.foreground,
+  .teaser-v2.block.text-bottom>.foreground,
+  .teaser-v2.block.bottom-left>.foreground,
+  .teaser-v2.block.bottom-center>.foreground,
+  .teaser-v2.block.bottom-right>.foreground {
+    justify-content: flex-end;
+  }
+
+  /* Horizontal Axis (align-items) */
+  .teaser-v2.block.left>.foreground,
+  .teaser-v2.block.top-left>.foreground,
+  .teaser-v2.block.middle-left>.foreground,
+  .teaser-v2.block.bottom-left>.foreground {
+    align-items: flex-start;
+  }
+
+  .teaser-v2.block.center>.foreground,
+  .teaser-v2.block.top-center>.foreground,
+  .teaser-v2.block.middle-center>.foreground,
+  .teaser-v2.block.bottom-center>.foreground {
+    align-items: center;
+
+    --teaser-content-max-width: 800px;
+  }
+
+  .teaser-v2.block.right>.foreground,
+  .teaser-v2.block.top-right>.foreground,
+  .teaser-v2.block.middle-right>.foreground,
+  .teaser-v2.block.bottom-right>.foreground {
+    align-items: flex-end;
+  }
+
+  /* Explicit text alignment classes */
+  .teaser-v2.block.text-left .foreground .text {
+    text-align: left;
+  }
+
+  .teaser-v2.block.text-center .foreground .text {
+    text-align: center;
+  }
+
+  .teaser-v2.block.text-right .foreground .text {
+    text-align: right;
+  }
+
+  .teaser-v2.block.text-justify .foreground .text {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Text Direction */
+  .teaser-v2.block.text-row .foreground .text {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .teaser-v2.block.text-column .foreground .text {
+    display: flex;
     flex-direction: column;
   }
 
-  .teaser-v2.block.split > .background,
-  .teaser-v2.block.split > .foreground,
-  .teaser-v2.block.image-left > .background,
-  .teaser-v2.block.image-left > .foreground,
-  .teaser-v2.block.image-right > .background,
-  .teaser-v2.block.image-right > .foreground {
-    width: 100%;
+  /* =========================================
+    CONSISTENT CONTENT SPACING & ELEMENTS
+    ========================================= */
+  .teaser-v2.block .foreground .text>* {
+    margin: 0;
   }
 
-  .teaser-v2.block.split > .background {
-    min-height: 250px;
+  .teaser-v2.block .foreground .text .eyebrow {
+    display: block;
+    font: normal normal bold 12px/16px Roboto, sans-serif;
+    letter-spacing: 0.96px;
+    color: currentcolor;
+    text-transform: uppercase;
+    text-align: inherit;
+    margin: 0;
   }
 
-  .teaser-v2.block .foreground .text .cta {
-    width: 100%;
+  .teaser-v2.block .foreground .text .title {
+    margin: 0;
+    text-align: inherit;
   }
 
-  .teaser-v2.block .foreground .text .cta a.button {
-    max-width: 100%;
-  }
-}
-
-/* Tablet (768px - 1023px) */
-@media (width >= 768px) and (width <= 1023px) {
-  .teaser-v2.block {
-    --teaser-padding-y: 44px;
-    --teaser-padding-x: 40px;
-    --teaser-content-gap: 16px;
-    --teaser-cta-gap: 16px;
-    --teaser-content-max-width: 100%;
-
-    min-height: 450px;
-    height: auto;
+  .teaser-v2.block .foreground .text .title :where(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    color: currentcolor;
+    letter-spacing: 0;
+    font: normal normal normal 54px/50px Baskerville, serif;
+    overflow-wrap: break-word;
+    word-break: normal;
+    text-align: inherit;
   }
 
-  .teaser-v2.block > .foreground > .text > .title :where(h1, h2, h3, h4, h5, h6) {
-    font-size: 42px;
-    line-height: 46px;
+  .teaser-v2.block .foreground .text .long-description,
+  .teaser-v2.block .foreground .text .short-description {
+    color: currentcolor;
+    text-align: inherit;
+    margin: 0;
   }
 
-  .teaser-v2.block .short-description,
-  .teaser-v2.block .long-description {
+  .teaser-v2.block .foreground .text .long-description p,
+  .teaser-v2.block .foreground .text .short-description p {
+    margin: 0;
+    color: inherit;
+    text-align: inherit;
+  }
+
+  .teaser-v2.block .foreground .text .long-description p+p,
+  .teaser-v2.block .foreground .text .short-description p+p {
+    margin-top: 0.75em;
+  }
+
+  .teaser-v2.block.desc-font-roboto .foreground .text .long-description,
+  .teaser-v2.block.desc-font-roboto .foreground .text .short-description {
+    font-family: Roboto, sans-serif;
+  }
+
+  .teaser-v2.block.desc-font-baskerville .foreground .text .long-description,
+  .teaser-v2.block.desc-font-baskerville .foreground .text .short-description {
+    font-family: Baskerville, serif;
+  }
+
+  .teaser-v2.block.desc-size-sm .foreground .text .long-description,
+  .teaser-v2.block.desc-size-sm .foreground .text .short-description {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .teaser-v2.block.desc-size-md .foreground .text .long-description,
+  .teaser-v2.block.desc-size-md .foreground .text .short-description {
     font-size: 18px;
     line-height: 28px;
   }
 
-  .teaser-v2.block.hero {
-    min-height: 550px;
+  .teaser-v2.block.desc-size-lg .foreground .text .long-description,
+  .teaser-v2.block.desc-size-lg .foreground .text .short-description {
+    font-size: 24px;
+    line-height: 34px;
   }
 
-  .teaser-v2.block.card > .foreground {
-    max-width: 420px;
+  /* =========================================
+    CTA STYLES, VARIANTS & BUTTON NORMALIZATION
+    ========================================= */
+  .teaser-v2.block.cta-pill .cta a.button {
+    border-radius: 999px;
+    padding: 14px 32px;
+    font-weight: 500;
   }
 
-  .teaser-v2.block.image-left > .background,
-  .teaser-v2.block.image-right > .background,
-  .teaser-v2.block.image-left > .foreground,
-  .teaser-v2.block.image-right > .foreground {
-    flex-shrink: 0;
+  .teaser-v2.block.cta-rectangle .teaser-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 230px;
+    height: 56px;
+    padding: 0 24px;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 0;
+    text-decoration: none;
+    font-weight: 400;
   }
 
-  .teaser-v2.block.image-top > .background {
-    max-height: 320px;
+  .teaser-v2.block.cta-rectangle .teaser-cta::after {
+    content: "→";
+    margin-left: 12px;
+    font-size: 20px;
   }
 
-  .teaser-v2.block.split.right {
-    flex-direction: row-reverse;
-  }
-}
-
-/* Desktop (>= 1024px) */
-@media (width >= 1024px) {
-  .teaser-v2.block {
-    --teaser-padding-y: 60px;
-    --teaser-padding-x: 80px;
-    --teaser-content-gap: 18px;
-    --teaser-cta-gap: 16px;
-    --teaser-content-max-width: 580px;
-
-    min-height: 490px;
-    height: auto;
+  .teaser-v2.block.cta-link-arrow .teaser-cta {
+    background: transparent !important;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    text-decoration: none;
+    font-weight: 500;
   }
 
+  .teaser-v2.block.cta-link-arrow a.button::after {
+    content: "→";
+    margin-left: 8px;
+  }
+
+  /* CTA Color Variants */
+  .teaser-v2.block.cta-light .teaser-cta {
+    background: #fff;
+    color: #131313;
+  }
+
+  .teaser-v2.block.cta-dark .teaser-cta {
+    background: #131313;
+    color: #fff;
+  }
+
+  .teaser-v2.block.cta-red .teaser-cta {
+    background: #eb1c24;
+    color: #fff;
+  }
+
+  .teaser-v2.block.cta-blue .teaser-cta {
+    background: #0076a8;
+    color: #fff;
+  }
+
+  .teaser-v2.block.cta-yellow .teaser-cta {
+    background: #fc0;
+    color: #131313;
+  }
+
+  .teaser-v2.block.cta-beige .teaser-cta {
+    background: #f5f0eb;
+    color: #131313;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-light .teaser-cta {
+    color: #fff;
+    border-color: #fff;
+    background: transparent;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-dark .teaser-cta {
+    color: #131313;
+    border-color: #131313;
+    background: transparent;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-red .teaser-cta {
+    color: #eb1c24;
+    border-color: #eb1c24;
+    background: transparent;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-blue .teaser-cta {
+    color: #0076a8;
+    border-color: #0076a8;
+    background: transparent;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-yellow .teaser-cta {
+    color: #fc0;
+    border-color: #fc0;
+    background: transparent;
+  }
+
+  .teaser-v2.block.cta-rectangle.cta-beige .teaser-cta {
+    color: #f5f0eb;
+    border-color: #f5f0eb;
+    background: transparent;
+  }
+
+  .teaser-v2.block.cta-rectangle .teaser-cta:hover {
+    background: rgb(255 255 255 / 10%);
+  }
+
+  .teaser-v2.block .foreground .text .cta a.button,
+  .teaser-v2.block .foreground .text .cta .teaser-cta {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  /* =========================================
+    PROPER CTA ALIGNMENT & DIRECTION
+    ========================================= */
+  .teaser-v2.block .foreground .text .cta {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--teaser-cta-gap);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .teaser-v2.block.cta-row .foreground .text .cta {
+    flex-direction: row;
+  }
+
+  .teaser-v2.block.cta-column .foreground .text .cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Explicit CTA Alignment Classes */
+  .teaser-v2.block.cta-left .foreground .text .cta {
+    justify-content: flex-start;
+  }
+
+  .teaser-v2.block.cta-center .foreground .text .cta {
+    justify-content: center;
+  }
+
+  .teaser-v2.block.cta-right .foreground .text .cta {
+    justify-content: flex-end;
+  }
+
+  .teaser-v2.block.text-center .foreground .text .cta {
+    justify-content: center;
+  }
+
+  .teaser-v2.block.text-right .foreground .text .cta {
+    justify-content: flex-end;
+  }
+
+  .teaser-v2.block.cta-column.cta-center .foreground .text .cta {
+    align-items: center;
+  }
+
+  .teaser-v2.block.cta-column.cta-right .foreground .text .cta {
+    align-items: flex-end;
+  }
+
+  .teaser-v2.block.cta-column.text-center .foreground .text .cta {
+    align-items: center;
+  }
+
+  .teaser-v2.block.cta-column.text-right .foreground .text .cta {
+    align-items: flex-end;
+  }
+
+  /* Contextual CTA alignment relative to content & text alignment */
+  .teaser-v2.block.center:not(.text-left, .text-right, .cta-left, .cta-right) .foreground .text .cta,
+  .teaser-v2.block.top-center:not(.text-left, .text-right, .cta-left, .cta-right) .foreground .text .cta,
+  .teaser-v2.block.middle-center:not(.text-left, .text-right, .cta-left, .cta-right) .foreground .text .cta,
+  .teaser-v2.block.bottom-center:not(.text-left, .text-right, .cta-left, .cta-right) .foreground .text .cta {
+    justify-content: center;
+  }
+
+  .teaser-v2.block.right:not(.text-left, .text-center, .cta-left, .cta-center) .foreground .text .cta,
+  .teaser-v2.block.top-right:not(.text-left, .text-center, .cta-left, .cta-center) .foreground .text .cta,
+  .teaser-v2.block.middle-right:not(.text-left, .text-center, .cta-left, .cta-center) .foreground .text .cta,
+  .teaser-v2.block.bottom-right:not(.text-left, .text-center, .cta-left, .cta-center) .foreground .text .cta {
+    justify-content: flex-end;
+  }
+
+  .teaser-v2.block.cta-column.center:not(.text-left, .cta-left) .foreground .text .cta {
+    align-items: center;
+  }
+
+  .teaser-v2.block.cta-column.right:not(.text-left, .cta-left) .foreground .text .cta {
+    align-items: flex-end;
+  }
+
+  /* =========================================
+    SEPARATION OF TEXT ALIGNMENT LOGIC
+    ========================================= */
+
+  /* Default text alignment derived from position if not explicitly overridden */
+  .teaser-v2.block.center:not(.text-left, .text-right, .text-justify)>.foreground>.text,
+  .teaser-v2.block.top-center:not(.text-left, .text-right, .text-justify)>.foreground>.text,
+  .teaser-v2.block.middle-center:not(.text-left, .text-right, .text-justify)>.foreground>.text,
+  .teaser-v2.block.bottom-center:not(.text-left, .text-right, .text-justify)>.foreground>.text {
+    text-align: center;
+  }
+
+  .teaser-v2.block.right:not(.text-left, .text-center, .text-justify)>.foreground>.text,
+  .teaser-v2.block.top-right:not(.text-left, .text-center, .text-justify)>.foreground>.text,
+  .teaser-v2.block.middle-right:not(.text-left, .text-center, .text-justify)>.foreground>.text,
+  .teaser-v2.block.bottom-right:not(.text-left, .text-center, .text-justify)>.foreground>.text {
+    text-align: right;
+  }
+
+  /* =========================================
+    TYPOGRAPHY VARIANTS
+    ========================================= */
+
+  .teaser-v2.block.title-font-baskerville>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    font-family: Baskerville, serif;
+  }
+
+  .teaser-v2.block.title-font-roboto>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    font-family: Roboto, sans-serif;
+  }
+
+  .teaser-v2.block.title-size-sm>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .teaser-v2.block.title-size-md>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    font-size: 48px;
+    line-height: 52px;
+  }
+
+  .teaser-v2.block.title-size-lg>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    font-size: 56px;
+    line-height: 60px;
+  }
+
+  .teaser-v2.block.title-size-xl>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    font-size: 72px;
+    line-height: 76px;
+  }
+
+  /* =========================================
+    THEME STYLES (LIGHT / DARK MODES)
+    ========================================= */
+
+  /* Light Mode */
+  .teaser-v2.block.light,
+  .teaser-v2.block.tcs-background-beige,
+  .teaser-v2.block.tcs-background-yellow {
+    color: #131313;
+  }
+
+  .teaser-v2.block.light>.foreground>.text>.eyebrow,
+  .teaser-v2.block.tcs-background-beige>.foreground>.text>.eyebrow,
+  .teaser-v2.block.tcs-background-yellow>.foreground>.text>.eyebrow {
+    color: #555;
+  }
+
+  .teaser-v2.block.light>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6),
+  .teaser-v2.block.tcs-background-beige>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6),
+  .teaser-v2.block.tcs-background-yellow>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    color: #131313;
+  }
+
+  .teaser-v2.block.light>.foreground>.text>.long-description,
+  .teaser-v2.block.light>.foreground>.text>.short-description,
+  .teaser-v2.block.tcs-background-beige>.foreground>.text>.long-description,
+  .teaser-v2.block.tcs-background-beige>.foreground>.text>.short-description,
+  .teaser-v2.block.tcs-background-yellow>.foreground>.text>.long-description,
+  .teaser-v2.block.tcs-background-yellow>.foreground>.text>.short-description {
+    color: #222;
+  }
+
+  .teaser-v2.block.light>.foreground>.text>.cta>a.button.secondary,
+  .teaser-v2.block.tcs-background-beige>.foreground>.text>.cta>a.button.secondary,
+  .teaser-v2.block.tcs-background-yellow>.foreground>.text>.cta>a.button.secondary {
+    color: #131313;
+    border-color: #131313;
+  }
+
+  /* Dark Mode */
+  .teaser-v2.block.dark,
+  .teaser-v2.block.tcs-background-black,
+  .teaser-v2.block.tcs-background-red,
+  .teaser-v2.block.tcs-background-blue {
+    color: #fff;
+  }
+
+  .teaser-v2.block.dark>.foreground>.text>.eyebrow,
+  .teaser-v2.block.tcs-background-black>.foreground>.text>.eyebrow,
+  .teaser-v2.block.tcs-background-red>.foreground>.text>.eyebrow,
+  .teaser-v2.block.tcs-background-blue>.foreground>.text>.eyebrow {
+    color: #e5e5e5;
+  }
+
+  .teaser-v2.block.dark>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6),
+  .teaser-v2.block.tcs-background-black>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6),
+  .teaser-v2.block.tcs-background-red>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6),
+  .teaser-v2.block.tcs-background-blue>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+    color: #fff;
+  }
+
+  .teaser-v2.block.dark>.foreground>.text>.long-description,
+  .teaser-v2.block.dark>.foreground>.text>.short-description,
+  .teaser-v2.block.tcs-background-black>.foreground>.text>.long-description,
+  .teaser-v2.block.tcs-background-black>.foreground>.text>.short-description,
+  .teaser-v2.block.tcs-background-red>.foreground>.text>.long-description,
+  .teaser-v2.block.tcs-background-red>.foreground>.text>.short-description,
+  .teaser-v2.block.tcs-background-blue>.foreground>.text>.long-description,
+  .teaser-v2.block.tcs-background-blue>.foreground>.text>.short-description {
+    color: #f0f0f0;
+  }
+
+  .teaser-v2.block.dark>.foreground>.text>.cta>a.button.secondary,
+  .teaser-v2.block.tcs-background-black>.foreground>.text>.cta>a.button.secondary,
+  .teaser-v2.block.tcs-background-red>.foreground>.text>.cta>a.button.secondary,
+  .teaser-v2.block.tcs-background-blue>.foreground>.text>.cta>a.button.secondary {
+    color: #fff;
+    border-color: #fff;
+  }
+
+  /* =========================================
+    STRUCTURAL VARIANTS (Hero, Split, Card, Side)
+    ========================================= */
+
+  /* Hero */
   .teaser-v2.block.hero {
     min-height: 600px;
     height: auto;
   }
 
-  .teaser-v2.block.image-left {
-    flex-direction: row;
+  /* Image Positions (image-left, image-right, image-top) */
+  .teaser-v2.block.image-left,
+  .teaser-v2.block.image-right,
+  .teaser-v2.block.image-top {
+    display: flex;
+    height: auto;
+    background-color: var(--teaser-background-color, transparent);
+    color: #131313;
   }
 
-  .teaser-v2.block.image-right {
+  .teaser-v2.block.image-left>.background,
+  .teaser-v2.block.image-right>.background,
+  .teaser-v2.block.image-top>.background {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .teaser-v2.block.image-left>.foreground,
+  .teaser-v2.block.image-right>.foreground,
+  .teaser-v2.block.image-top>.foreground {
+    position: relative;
+    max-width: 100%;
+    padding: 40px;
+  }
+
+  /* Contained Image & Background Image */
+  .teaser-v2.block.image-background>.background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .teaser-v2.block.image-contained>.background {
+    position: relative;
+    inset: unset;
+    height: auto;
+  }
+
+  .teaser-v2.block.image-contained>.background img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .teaser-v2.block.image-contained.image-left,
+  .teaser-v2.block.image-contained.image-right {
+    gap: 64px;
+    align-items: center;
+  }
+
+  .teaser-v2.block.image-contained>.foreground {
+    max-width: none;
+  }
+
+  .teaser-v2.block.image-align-top {
+    align-items: flex-start;
+  }
+
+  .teaser-v2.block.image-align-middle {
+    align-items: center;
+  }
+
+  .teaser-v2.block.image-align-bottom {
+    align-items: flex-end;
+  }
+
+  /* Image Width Variants */
+  .teaser-v2.block.image-width-30>.background {
+    width: 30%;
+  }
+
+  .teaser-v2.block.image-width-40>.background {
+    width: 40%;
+  }
+
+  .teaser-v2.block.image-width-50>.background {
+    width: 50%;
+  }
+
+  .teaser-v2.block.image-width-60>.background {
+    width: 60%;
+  }
+
+  .teaser-v2.block.image-width-70>.background {
+    width: 70%;
+  }
+
+  .teaser-v2.block.image-width-30>.foreground {
+    width: 70%;
+  }
+
+  .teaser-v2.block.image-width-40>.foreground {
+    width: 60%;
+  }
+
+  .teaser-v2.block.image-width-50>.foreground {
+    width: 50%;
+  }
+
+  .teaser-v2.block.image-width-60>.foreground {
+    width: 40%;
+  }
+
+  .teaser-v2.block.image-width-70>.foreground {
+    width: 30%;
+  }
+
+  /* Split */
+  .teaser-v2.block.split {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--teaser-background-color, #f4f4f4);
+    color: #131313;
+  }
+
+  .teaser-v2.block.split>.background {
+    position: relative;
+    width: 50%;
+    height: auto;
+  }
+
+  .teaser-v2.block.split>.foreground {
+    position: relative;
+    width: 50%;
+    max-width: none;
+    background-color: transparent;
+  }
+
+  .teaser-v2.block.split.right {
     flex-direction: row-reverse;
   }
 
-  .teaser-v2.block.image-top {
-    flex-direction: column;
+  /* Card */
+  .teaser-v2.block.card {
+    display: flex;
+    align-items: center;
   }
 
-  .teaser-v2.block.image-top > .background {
-    max-height: 400px;
+  .teaser-v2.block.card>.foreground {
+    margin: 40px;
+    padding: 40px;
+    background-color: #fff;
+    color: inherit;
+    border-radius: 8px;
+    max-width: 450px;
+    height: auto;
+    align-self: center;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
   }
 
-  .teaser-v2.block.image-left > .background,
-  .teaser-v2.block.image-left > .foreground,
-  .teaser-v2.block.image-right > .background,
-  .teaser-v2.block.image-right > .foreground {
-    flex-grow: 0;
-    flex-shrink: 0;
+  .teaser-v2.block.card.dark>.foreground {
+    background-color: #222;
+    color: #fff;
   }
 
-  .teaser-v2.block.image-left > .foreground,
-  .teaser-v2.block.image-right > .foreground {
-    justify-content: center;
+  .teaser-v2.block.card.light>.foreground {
+    background-color: #fff;
+    color: #131313;
   }
-}
+
+  /* =========================================
+    RESPONSIVE DESIGN ACROSS ALL BREAKPOINTS
+    ========================================= */
+
+  /* Mobile (< 768px) */
+  @media (width <=767px) {
+    .teaser-v2.block {
+      --teaser-padding-y: 28px;
+      --teaser-padding-x: 20px;
+      --teaser-content-gap: 14px;
+      --teaser-cta-gap: 12px;
+      --teaser-content-max-width: 100%;
+
+      min-height: 400px;
+      height: auto;
+    }
+
+    .teaser-v2.block>.foreground {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .teaser-v2.block>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+      font-size: 32px;
+      line-height: 36px;
+    }
+
+    .teaser-v2.block .short-description,
+    .teaser-v2.block .long-description {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .teaser-v2.block.hero {
+      min-height: 480px;
+    }
+
+    .teaser-v2.block.card>.foreground {
+      margin: 16px;
+      padding: 24px;
+      max-width: calc(100% - 32px);
+    }
+
+    .teaser-v2.block.split,
+    .teaser-v2.block.image-left,
+    .teaser-v2.block.image-right {
+      flex-direction: column;
+    }
+
+    .teaser-v2.block.split>.background,
+    .teaser-v2.block.split>.foreground,
+    .teaser-v2.block.image-left>.background,
+    .teaser-v2.block.image-left>.foreground,
+    .teaser-v2.block.image-right>.background,
+    .teaser-v2.block.image-right>.foreground {
+      width: 100%;
+    }
+
+    .teaser-v2.block.split>.background {
+      min-height: 250px;
+    }
+
+    .teaser-v2.block .foreground .text .cta {
+      width: 100%;
+    }
+
+    .teaser-v2.block .foreground .text .cta a.button {
+      max-width: 100%;
+    }
+  }
+
+  /* Tablet (768px - 1023px) */
+  @media (width >=768px) and (width <=1023px) {
+    .teaser-v2.block {
+      --teaser-padding-y: 44px;
+      --teaser-padding-x: 40px;
+      --teaser-content-gap: 16px;
+      --teaser-cta-gap: 16px;
+      --teaser-content-max-width: 100%;
+
+      min-height: 450px;
+      height: auto;
+    }
+
+    .teaser-v2.block>.foreground>.text>.title :where(h1, h2, h3, h4, h5, h6) {
+      font-size: 42px;
+      line-height: 46px;
+    }
+
+    .teaser-v2.block .short-description,
+    .teaser-v2.block .long-description {
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .teaser-v2.block.hero {
+      min-height: 550px;
+    }
+
+    .teaser-v2.block.card>.foreground {
+      max-width: 420px;
+    }
+
+    .teaser-v2.block.image-left>.background,
+    .teaser-v2.block.image-right>.background,
+    .teaser-v2.block.image-left>.foreground,
+    .teaser-v2.block.image-right>.foreground {
+      flex-shrink: 0;
+    }
+
+    .teaser-v2.block.image-top>.background {
+      max-height: 320px;
+    }
+
+    .teaser-v2.block.split.right {
+      flex-direction: row-reverse;
+    }
+  }
+
+  /* Desktop (>= 1024px) */
+  @media (width >=1024px) {
+    .teaser-v2.block {
+      --teaser-padding-y: 60px;
+      --teaser-padding-x: 80px;
+      --teaser-content-gap: 18px;
+      --teaser-cta-gap: 16px;
+      --teaser-content-max-width: 580px;
+
+      min-height: 490px;
+      height: auto;
+    }
+
+    .teaser-v2.block.hero {
+      min-height: 600px;
+      height: auto;
+    }
+
+    .teaser-v2.block.image-left {
+      flex-direction: row;
+    }
+
+    .teaser-v2.block.image-right {
+      flex-direction: row-reverse;
+    }
+
+    .teaser-v2.block.image-top {
+      flex-direction: column;
+    }
+
+    .teaser-v2.block.image-top>.background {
+      max-height: 400px;
+    }
+
+    .teaser-v2.block.image-left>.background,
+    .teaser-v2.block.image-left>.foreground,
+    .teaser-v2.block.image-right>.background,
+    .teaser-v2.block.image-right>.foreground {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    .teaser-v2.block.image-left>.foreground,
+    .teaser-v2.block.image-right>.foreground {
+      justify-content: center;
+    }
+  }
