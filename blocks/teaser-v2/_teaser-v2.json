@@ -215,19 +215,77 @@
               ]
             },
             {
-              "name": "Alignment",
+              "name": "Content Positioning (3x3 Matrix)",
+              "children": [
+                {
+                  "name": "Top Left",
+                  "value": "top-left"
+                },
+                {
+                  "name": "Top Center",
+                  "value": "top-center"
+                },
+                {
+                  "name": "Top Right",
+                  "value": "top-right"
+                },
+                {
+                  "name": "Middle Left",
+                  "value": "middle-left"
+                },
+                {
+                  "name": "Middle Center",
+                  "value": "middle-center"
+                },
+                {
+                  "name": "Middle Right",
+                  "value": "middle-right"
+                },
+                {
+                  "name": "Bottom Left",
+                  "value": "bottom-left"
+                },
+                {
+                  "name": "Bottom Center",
+                  "value": "bottom-center"
+                },
+                {
+                  "name": "Bottom Right",
+                  "value": "bottom-right"
+                }
+              ]
+            },
+            {
+              "name": "Horizontal Alignment",
               "children": [
                 {
                   "name": "Left",
                   "value": "left"
                 },
                 {
-                  "name": "Right",
-                  "value": "right"
-                },
-                {
                   "name": "Center",
                   "value": "center"
+                },
+                {
+                  "name": "Right",
+                  "value": "right"
+                }
+              ]
+            },
+            {
+              "name": "Vertical Alignment",
+              "children": [
+                {
+                  "name": "Top",
+                  "value": "top"
+                },
+                {
+                  "name": "Middle",
+                  "value": "middle"
+                },
+                {
+                  "name": "Bottom",
+                  "value": "bottom"
                 }
               ]
             },
@@ -386,6 +444,70 @@
                   "value": "cta-beige"
                 }
               ]
+            },
+            {
+              "name": "Title Font Family",
+              "children": [
+                {
+                  "name": "Baskerville",
+                  "value": "title-font-baskerville"
+                },
+                {
+                  "name": "Roboto",
+                  "value": "title-font-roboto"
+                }
+              ]
+            },
+            {
+              "name": "Title Font Size",
+              "children": [
+                {
+                  "name": "Small",
+                  "value": "title-size-sm"
+                },
+                {
+                  "name": "Medium",
+                  "value": "title-size-md"
+                },
+                {
+                  "name": "Large",
+                  "value": "title-size-lg"
+                },
+                {
+                  "name": "Extra Large",
+                  "value": "title-size-xl"
+                }
+              ]
+            },
+            {
+              "name": "Description Font Family",
+              "children": [
+                {
+                  "name": "Roboto",
+                  "value": "desc-font-roboto"
+                },
+                {
+                  "name": "Baskerville",
+                  "value": "desc-font-baskerville"
+                }
+              ]
+            },
+            {
+              "name": "Description Font Size",
+              "children": [
+                {
+                  "name": "Small",
+                  "value": "desc-size-sm"
+                },
+                {
+                  "name": "Medium",
+                  "value": "desc-size-md"
+                },
+                {
+                  "name": "Large",
+                  "value": "desc-size-lg"
+                }
+              ]
             }
           ]
         },
@@ -445,6 +567,14 @@
           "value": "",
           "label": "Long Description",
           "description": "The description shown in Desktop and Tablet view."
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "shortDescr",
+          "value": "",
+          "label": "Short Description",
+          "description": "The description shown in Mobile view. If not set long text is used."
         },
         {
           "component": "select",
@@ -525,14 +655,6 @@
               "value": "desc-size-lg"
             }
           ]
-        },
-        {
-          "component": "richtext",
-          "valueType": "string",
-          "name": "shortDescr",
-          "value": "",
-          "label": "Short Description",
-          "description": "The description shown in Mobile view. If not set long text is used."
         },
         {
           "component": "select",
