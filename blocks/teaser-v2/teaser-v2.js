@@ -25,7 +25,19 @@ export function decorateButtons(...buttons) {
 
 export function generateTeaserDOM(props, classes) {
   // Extract properties, always same order as in model, empty string if not set
-  const [pictureContainer, eyebrow, title, longDescr, shortDescr, firstCta, secondCta] = props;
+  const [
+    pictureContainer,
+    eyebrow,
+    title,
+    longDescr,
+    titleFontFamily,
+    titleFontSize,
+    descriptionFontFamily,
+    descriptionFontSize,
+    shortDescr,
+    firstCta,
+    secondCta,
+  ] = props;
   const picture = pictureContainer.querySelector('picture');
 
   // if (picture) {
@@ -141,10 +153,10 @@ export default function decorate(block) {
   block.append(teaserDOM);
 
   const typographyClasses = [
-    block.dataset.titleFontFamily,
-    block.dataset.titleFontSize,
-    block.dataset.descriptionFontFamily,
-    block.dataset.descriptionFontSize,
+    props[4]?.textContent.trim(),
+    props[5]?.textContent.trim(),
+    props[6]?.textContent.trim(),
+    props[7]?.textContent.trim(),
   ];
 
   console.log('====================');
