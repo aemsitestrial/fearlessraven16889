@@ -96,16 +96,50 @@ export function generateTeaserDOM(props, classes) {
 }
 
 export default function decorate(block) {
+  console.log('====================');
+  console.log('BLOCK');
+  console.log(block);
+
+  console.log('====================');
+  console.log('BLOCK DATASET');
+  console.log(block.dataset);
+
+  console.log('====================');
+  console.log('BLOCK CLASSES');
+  console.log([...block.classList]);
+
+  console.log('====================');
+  console.log('BLOCK OUTER HTML');
+  console.log(block.outerHTML);
+
+  console.log('====================');
+  console.log('BLOCK INNER HTML');
+  console.log(block.innerHTML);
+
   const props = [...block.children].map((row) => row.firstElementChild);
+
+  console.log('====================');
+  console.log('PROPS');
+  console.log(props);
+
+  console.log('====================');
+  console.log('PROP VALUES');
+  props.forEach((prop, index) => {
+    console.log(`PROP ${index + 1}`, prop?.outerHTML);
+  });
+
+  console.log('====================');
+  console.log('TYPOGRAPHY VALUES');
+  console.log('titleFontFamily:', block.dataset.titleFontFamily);
+  console.log('titleFontSize:', block.dataset.titleFontSize);
+  console.log('descriptionFontFamily:', block.dataset.descriptionFontFamily);
+  console.log('descriptionFontSize:', block.dataset.descriptionFontSize);
 
   const teaserDOM = generateTeaserDOM(props, block.classList);
 
   block.textContent = '';
   block.append(teaserDOM);
 
-  console.log('Teaser dataset:', block.dataset);
-
-  // Typography classes from authored fields
   const typographyClasses = [
     block.dataset.titleFontFamily,
     block.dataset.titleFontSize,
@@ -113,7 +147,19 @@ export default function decorate(block) {
     block.dataset.descriptionFontSize,
   ];
 
+  console.log('====================');
+  console.log('TYPOGRAPHY CLASSES TO APPLY');
+  console.log(typographyClasses);
+
   typographyClasses
     .filter(Boolean)
-    .forEach((cls) => block.classList.add(cls));
+    .forEach((cls) => {
+      console.log('ADDING CLASS:', cls);
+      block.classList.add(cls);
+    });
+
+  console.log('====================');
+  console.log('FINAL BLOCK CLASSES');
+  console.log([...block.classList]);
+
 }
