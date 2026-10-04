@@ -136,6 +136,7 @@
 .teaser-v2.block.center>.foreground {
   margin-left: auto;
   margin-right: auto;
+  max-width: 800px;
 }
 
 .teaser-v2.block.center>.foreground>.text {
