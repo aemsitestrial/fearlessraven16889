@@ -36,30 +36,43 @@ function extractProps(props) {
     };
   }
 
-  // If 11 or more rows are passed (legacy order where rows 4-7 are typography tokens)
-  if (props.length >= 11) {
-    return {
-      pictureContainer: props[0],
-      eyebrow: props[1],
-      title: props[2],
-      longDescr: props[3],
-      typographyTokens: [props[4], props[5], props[6], props[7]],
-      shortDescr: props[8],
-      firstCta: props[9],
-      secondCta: props[10],
-    };
-  }
+  const typoPattern = /^(title-font-|title-size-|desc-font-|desc-size-)/;
+  const isTypoToken = (el) => {
+    const text = el?.textContent?.trim() || '';
+    return typoPattern.test(text);
+  };
 
-  // Standard 7-row EDS / DA order
+  const isAnchorContainer = (el) => Boolean(el?.querySelector('a') || el?.tagName === 'A');
+
+  // If authored with typography token rows mixed in (e.g., 8-11 rows)
+  const typographyTokens = props.filter(isTypoToken);
+  const contentProps = props.filter((prop) => !isTypoToken(prop));
+
+  // If longDescr is just a typography string that leaked through, suppress it
+  const rawLongDescr = contentProps[3] || null;
+  const longDescr = (rawLongDescr && !isTypoToken(rawLongDescr)) ? rawLongDescr : null;
+
+  // Find CTA elements dynamically (rows that contain <a> links)
+  const ctaCandidates = contentProps.filter(isAnchorContainer);
+  const nonCtaContent = contentProps.filter((prop) => !isAnchorContainer(prop));
+
+  const pictureContainer = nonCtaContent[0] || null;
+  const eyebrow = nonCtaContent[1] || null;
+  const title = nonCtaContent[2] || null;
+  const shortDescr = nonCtaContent[4] || null;
+
+  const firstCta = ctaCandidates[0] || contentProps[5] || null;
+  const secondCta = ctaCandidates[1] || contentProps[6] || null;
+
   return {
-    pictureContainer: props[0] || null,
-    eyebrow: props[1] || null,
-    title: props[2] || null,
-    longDescr: props[3] || null,
-    shortDescr: props[4] || null,
-    firstCta: props[5] || null,
-    secondCta: props[6] || null,
-    typographyTokens: [],
+    pictureContainer,
+    eyebrow,
+    title,
+    longDescr,
+    shortDescr,
+    firstCta,
+    secondCta,
+    typographyTokens,
   };
 }
 
