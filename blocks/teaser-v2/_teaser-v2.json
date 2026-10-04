@@ -351,6 +351,10 @@
                 {
                   "name": "Text Link Arrow",
                   "value": "cta-link-arrow"
+                },
+                {
+                  "name": "Rectangle Outline",
+                  "value": "cta-rectangle"
                 }
               ]
             },
