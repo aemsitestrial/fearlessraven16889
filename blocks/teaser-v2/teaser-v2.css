@@ -200,7 +200,7 @@
   height: 56px;
   padding: 0 24px;
   background: transparent;
-  border: 1px solid currentcolor;
+  border: 1px solid white;
   border-radius: 0;
   text-decoration: none;
   font-weight: 400;
@@ -405,7 +405,7 @@
 }
 
 .teaser-v2.block>.foreground>.text>.cta>a.button {
-  border: 0;
+  border: 1;
 }
 
 /* =========================================
