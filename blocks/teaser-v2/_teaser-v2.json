@@ -228,10 +228,6 @@
                 {
                   "name": "Center",
                   "value": "center"
-                },
-                {
-                  "name":"Justify",
-                  "value":"justify"
                 }
               ]
             },
@@ -287,6 +283,10 @@
                 {
                   "name": "Right",
                   "value": "text-right"
+                },
+                {
+                  "name": "Justify",
+                  "value": "text-justify"
                 }
               ]
             },
@@ -441,6 +441,48 @@
           "value": "",
           "label": "Long Description",
           "description": "The description shown in Desktop and Tablet view."
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "titleFontFamily",
+          "label": "Title Font Family",
+          "value": "title-font-baskerville",
+          "options": [
+            {
+              "name": "Baskerville",
+              "value": "title-font-baskerville"
+            },
+            {
+              "name": "Roboto",
+              "value": "title-font-roboto"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "titleFontSize",
+          "label": "Title Font Size",
+          "value": "title-size-md",
+          "options": [
+            {
+              "name": "Small",
+              "value": "title-size-sm"
+            },
+            {
+              "name": "Medium",
+              "value": "title-size-md"
+            },
+            {
+              "name": "Large",
+              "value": "title-size-lg"
+            },
+            {
+              "name": "Extra Large",
+              "value": "title-size-xl"
+            }
+          ]
         },
         {
           "component": "select",

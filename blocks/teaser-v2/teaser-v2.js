@@ -103,6 +103,8 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(teaserDOM);
 
+  console.log('Teaser dataset:', block.dataset);
+
   // Typography classes from authored fields
   const typographyClasses = [
     block.dataset.titleFontFamily,

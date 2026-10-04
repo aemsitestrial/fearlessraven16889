@@ -337,10 +337,10 @@
   }
 }
 
-.teaser-v2.block>.foreground>.text>.long-description,
-.teaser-v2.block>.foreground>.text>.short-description {
+.teaser-v2.block > .foreground > .text > .long-description,
+.teaser-v2.block > .foreground > .text > .short-description {
   color: currentcolor;
-  text-align: justify;
+  text-align: inherit;
 }
 
 .teaser-v2.block>.foreground>.text>.cta>a.button {
