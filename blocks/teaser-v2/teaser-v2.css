@@ -257,6 +257,42 @@
   color: #131313;
 }
 
+.teaser-v2.block.cta-rectangle.cta-light .teaser-cta {
+  color: #fff;
+  border-color: #fff;
+  background: transparent;
+}
+
+.teaser-v2.block.cta-rectangle.cta-dark .teaser-cta {
+  color: #131313;
+  border-color: #131313;
+  background: transparent;
+}
+
+.teaser-v2.block.cta-rectangle.cta-red .teaser-cta {
+  color: #eb1c24;
+  border-color: #eb1c24;
+  background: transparent;
+}
+
+.teaser-v2.block.cta-rectangle.cta-blue .teaser-cta {
+  color: #0076a8;
+  border-color: #0076a8;
+  background: transparent;
+}
+
+.teaser-v2.block.cta-rectangle.cta-yellow .teaser-cta {
+  color: #fc0;
+  border-color: #fc0;
+  background: transparent;
+}
+
+.teaser-v2.block.cta-rectangle.cta-beige .teaser-cta {
+  color: #f5f0eb;
+  border-color: #f5f0eb;
+  background: transparent;
+}
+
 .teaser-v2.block.cta-rectangle .teaser-cta:hover {
   background: rgb(255 255 255 / 10%);
 }
