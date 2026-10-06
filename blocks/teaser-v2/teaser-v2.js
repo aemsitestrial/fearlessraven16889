@@ -6,7 +6,11 @@ export function decorateButtons(...buttons) {
     .map((div, index) => {
       const a = div.tagName === 'A' ? div : div.querySelector('a');
       if (a) {
-        a.classList.add('button', 'teaser-cta');
+        a.classList.add(
+          'button',
+          'teaser-cta',
+          index === 0 ? 'cta-one' : 'cta-two',
+        );
         if (a.parentElement?.tagName === 'EM') {
           a.classList.add('secondary');
         } else if (a.parentElement?.tagName === 'STRONG') {
