@@ -6245,6 +6245,297 @@
     ]
   },
   {
+    "id": "teaserv1",
+    "fields": [
+      {
+        "component": "select",
+        "name": "sectionType",
+        "label": "Section Type",
+        "value": "curated",
+        "options": [
+          {
+            "name": "Curated",
+            "value": "curated"
+          },
+          {
+            "name": "Dynamic",
+            "value": "dynamic"
+          }
+        ]
+      },
+      {
+        "component": "checkbox",
+        "name": "personalizationEnabled",
+        "label": "Personalization",
+        "value": false
+      },
+      {
+        "component": "text",
+        "name": "audienceSegment",
+        "label": "Audience Segment"
+      },
+      {
+        "component": "checkbox",
+        "name": "fallbackToCurated",
+        "label": "Fallback To Curated",
+        "value": true
+      },
+      {
+        "component": "select",
+        "name": "teaserType",
+        "label": "Teaser Type",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Right Image",
+            "value": "right-image"
+          },
+          {
+            "name": "No Image",
+            "value": "no-image"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "backgroundColor",
+        "label": "Background Color",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Grey",
+            "value": "grey"
+          },
+          {
+            "name": "Dark",
+            "value": "dark"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "motionType",
+        "label": "Motion Type",
+        "value": "none",
+        "options": [
+          {
+            "name": "None",
+            "value": "none"
+          },
+          {
+            "name": "Fade In",
+            "value": "fade-in"
+          },
+          {
+            "name": "Slide Up",
+            "value": "slide-up"
+          },
+          {
+            "name": "Zoom In",
+            "value": "zoom-in"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "eyebrow",
+        "label": "Eyebrow"
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "select",
+        "name": "titleType",
+        "label": "Title Type",
+        "value": "h2",
+        "options": [
+          {
+            "name": "H1",
+            "value": "h1"
+          },
+          {
+            "name": "H2",
+            "value": "h2"
+          },
+          {
+            "name": "H3",
+            "value": "h3"
+          },
+          {
+            "name": "H4",
+            "value": "h4"
+          },
+          {
+            "name": "H5",
+            "value": "h5"
+          },
+          {
+            "name": "H6",
+            "value": "h6"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "label": "Description"
+      },
+      {
+        "component": "richtext",
+        "name": "shortDescription",
+        "label": "Short Description"
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image Path"
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Image Alt Text"
+      },
+      {
+        "component": "checkbox",
+        "name": "showEyebrow",
+        "label": "Show Eyebrow",
+        "value": true
+      },
+      {
+        "component": "checkbox",
+        "name": "hideTitle",
+        "label": "Hide Title",
+        "value": false
+      },
+      {
+        "component": "checkbox",
+        "name": "showDescription",
+        "label": "Show Description",
+        "value": true
+      },
+      {
+        "component": "checkbox",
+        "name": "hideImage",
+        "label": "Hide Image",
+        "value": false
+      },
+      {
+        "component": "checkbox",
+        "name": "showDate",
+        "label": "Show Date",
+        "value": false
+      },
+      {
+        "component": "checkbox",
+        "name": "displayTags",
+        "label": "Display Tags",
+        "value": false
+      },
+      {
+        "component": "select",
+        "name": "dateFormat",
+        "label": "Date Format",
+        "value": "mmm-d-yyyy",
+        "options": [
+          {
+            "name": "DD-MM-YYYY",
+            "value": "dd-mm-yyyy"
+          },
+          {
+            "name": "MM-DD-YYYY",
+            "value": "mm-dd-yyyy"
+          },
+          {
+            "name": "MMM d, yyyy",
+            "value": "mmm-d-yyyy"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "dynamicSource",
+        "label": "Dynamic Source"
+      },
+      {
+        "component": "text",
+        "name": "dynamicTag",
+        "label": "Dynamic Tag"
+      },
+      {
+        "component": "number",
+        "name": "dynamicLimit",
+        "label": "Dynamic Limit",
+        "value": 3
+      },
+      {
+        "component": "text",
+        "name": "viewAllText",
+        "label": "View All Text"
+      },
+      {
+        "component": "aem-content",
+        "name": "viewAllLink",
+        "label": "View All Link"
+      },
+      {
+        "component": "multifield",
+        "name": "links",
+        "label": "Links",
+        "fields": [
+          {
+            "component": "text",
+            "name": "title",
+            "label": "CTA Title"
+          },
+          {
+            "component": "aem-content",
+            "name": "link",
+            "label": "CTA Link"
+          },
+          {
+            "component": "select",
+            "name": "style",
+            "label": "CTA Style",
+            "value": "default",
+            "options": [
+              {
+                "name": "Default",
+                "value": "default"
+              },
+              {
+                "name": "Primary Button",
+                "value": "primary"
+              },
+              {
+                "name": "Secondary Button",
+                "value": "secondary"
+              },
+              {
+                "name": "List Link",
+                "value": "list"
+              },
+              {
+                "name": "Text Link",
+                "value": "text"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "teaser-v2",
     "fields": [
       {
@@ -7100,297 +7391,6 @@
         "value": "",
         "label": "Second CTA Link",
         "description": "What link to open when clicking the button."
-      }
-    ]
-  },
-  {
-    "id": "teaserv1",
-    "fields": [
-      {
-        "component": "select",
-        "name": "sectionType",
-        "label": "Section Type",
-        "value": "curated",
-        "options": [
-          {
-            "name": "Curated",
-            "value": "curated"
-          },
-          {
-            "name": "Dynamic",
-            "value": "dynamic"
-          }
-        ]
-      },
-      {
-        "component": "checkbox",
-        "name": "personalizationEnabled",
-        "label": "Personalization",
-        "value": false
-      },
-      {
-        "component": "text",
-        "name": "audienceSegment",
-        "label": "Audience Segment"
-      },
-      {
-        "component": "checkbox",
-        "name": "fallbackToCurated",
-        "label": "Fallback To Curated",
-        "value": true
-      },
-      {
-        "component": "select",
-        "name": "teaserType",
-        "label": "Teaser Type",
-        "value": "default",
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "Right Image",
-            "value": "right-image"
-          },
-          {
-            "name": "No Image",
-            "value": "no-image"
-          }
-        ]
-      },
-      {
-        "component": "select",
-        "name": "backgroundColor",
-        "label": "Background Color",
-        "value": "default",
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "Grey",
-            "value": "grey"
-          },
-          {
-            "name": "Dark",
-            "value": "dark"
-          }
-        ]
-      },
-      {
-        "component": "select",
-        "name": "motionType",
-        "label": "Motion Type",
-        "value": "none",
-        "options": [
-          {
-            "name": "None",
-            "value": "none"
-          },
-          {
-            "name": "Fade In",
-            "value": "fade-in"
-          },
-          {
-            "name": "Slide Up",
-            "value": "slide-up"
-          },
-          {
-            "name": "Zoom In",
-            "value": "zoom-in"
-          }
-        ]
-      },
-      {
-        "component": "text",
-        "name": "eyebrow",
-        "label": "Eyebrow"
-      },
-      {
-        "component": "text",
-        "name": "title",
-        "label": "Title"
-      },
-      {
-        "component": "select",
-        "name": "titleType",
-        "label": "Title Type",
-        "value": "h2",
-        "options": [
-          {
-            "name": "H1",
-            "value": "h1"
-          },
-          {
-            "name": "H2",
-            "value": "h2"
-          },
-          {
-            "name": "H3",
-            "value": "h3"
-          },
-          {
-            "name": "H4",
-            "value": "h4"
-          },
-          {
-            "name": "H5",
-            "value": "h5"
-          },
-          {
-            "name": "H6",
-            "value": "h6"
-          }
-        ]
-      },
-      {
-        "component": "richtext",
-        "name": "description",
-        "label": "Description"
-      },
-      {
-        "component": "richtext",
-        "name": "shortDescription",
-        "label": "Short Description"
-      },
-      {
-        "component": "reference",
-        "name": "image",
-        "label": "Image Path"
-      },
-      {
-        "component": "text",
-        "name": "imageAlt",
-        "label": "Image Alt Text"
-      },
-      {
-        "component": "checkbox",
-        "name": "showEyebrow",
-        "label": "Show Eyebrow",
-        "value": true
-      },
-      {
-        "component": "checkbox",
-        "name": "hideTitle",
-        "label": "Hide Title",
-        "value": false
-      },
-      {
-        "component": "checkbox",
-        "name": "showDescription",
-        "label": "Show Description",
-        "value": true
-      },
-      {
-        "component": "checkbox",
-        "name": "hideImage",
-        "label": "Hide Image",
-        "value": false
-      },
-      {
-        "component": "checkbox",
-        "name": "showDate",
-        "label": "Show Date",
-        "value": false
-      },
-      {
-        "component": "checkbox",
-        "name": "displayTags",
-        "label": "Display Tags",
-        "value": false
-      },
-      {
-        "component": "select",
-        "name": "dateFormat",
-        "label": "Date Format",
-        "value": "mmm-d-yyyy",
-        "options": [
-          {
-            "name": "DD-MM-YYYY",
-            "value": "dd-mm-yyyy"
-          },
-          {
-            "name": "MM-DD-YYYY",
-            "value": "mm-dd-yyyy"
-          },
-          {
-            "name": "MMM d, yyyy",
-            "value": "mmm-d-yyyy"
-          }
-        ]
-      },
-      {
-        "component": "text",
-        "name": "dynamicSource",
-        "label": "Dynamic Source"
-      },
-      {
-        "component": "text",
-        "name": "dynamicTag",
-        "label": "Dynamic Tag"
-      },
-      {
-        "component": "number",
-        "name": "dynamicLimit",
-        "label": "Dynamic Limit",
-        "value": 3
-      },
-      {
-        "component": "text",
-        "name": "viewAllText",
-        "label": "View All Text"
-      },
-      {
-        "component": "aem-content",
-        "name": "viewAllLink",
-        "label": "View All Link"
-      },
-      {
-        "component": "multifield",
-        "name": "links",
-        "label": "Links",
-        "fields": [
-          {
-            "component": "text",
-            "name": "title",
-            "label": "CTA Title"
-          },
-          {
-            "component": "aem-content",
-            "name": "link",
-            "label": "CTA Link"
-          },
-          {
-            "component": "select",
-            "name": "style",
-            "label": "CTA Style",
-            "value": "default",
-            "options": [
-              {
-                "name": "Default",
-                "value": "default"
-              },
-              {
-                "name": "Primary Button",
-                "value": "primary"
-              },
-              {
-                "name": "Secondary Button",
-                "value": "secondary"
-              },
-              {
-                "name": "List Link",
-                "value": "list"
-              },
-              {
-                "name": "Text Link",
-                "value": "text"
-              }
-            ]
-          }
-        ]
       }
     ]
   },
