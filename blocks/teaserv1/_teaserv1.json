@@ -33,13 +33,94 @@
             {
               "name": "Dynamic",
               "value": "dynamic"
-            },
-            {
-              "name": "Personalization",
-              "value": "personalization"
             }
           ]
         },
+        {
+          "component": "checkbox",
+          "name": "personalizationEnabled",
+          "label": "Personalization",
+          "value": false
+        },
+        {
+          "component": "text",
+          "name": "audienceSegment",
+          "label": "Audience Segment"
+        },
+        {
+          "component": "checkbox",
+          "name": "fallbackToCurated",
+          "label": "Fallback To Curated",
+          "value": true
+        },
+
+        {
+          "component": "select",
+          "name": "teaserType",
+          "label": "Teaser Type",
+          "value": "default",
+          "options": [
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "Right Image",
+              "value": "right-image"
+            },
+            {
+              "name": "No Image",
+              "value": "no-image"
+            }
+          ]
+        },
+
+        {
+          "component": "select",
+          "name": "backgroundColor",
+          "label": "Background Color",
+          "value": "default",
+          "options": [
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "Grey",
+              "value": "grey"
+            },
+            {
+              "name": "Dark",
+              "value": "dark"
+            }
+          ]
+        },
+
+        {
+          "component": "select",
+          "name": "motionType",
+          "label": "Motion Type",
+          "value": "none",
+          "options": [
+            {
+              "name": "None",
+              "value": "none"
+            },
+            {
+              "name": "Fade In",
+              "value": "fade-in"
+            },
+            {
+              "name": "Slide Up",
+              "value": "slide-up"
+            },
+            {
+              "name": "Zoom In",
+              "value": "zoom-in"
+            }
+          ]
+        },
+
         {
           "component": "text",
           "name": "eyebrow",
@@ -56,12 +137,30 @@
           "label": "Title Type",
           "value": "h2",
           "options": [
-            { "name": "H1", "value": "h1" },
-            { "name": "H2", "value": "h2" },
-            { "name": "H3", "value": "h3" },
-            { "name": "H4", "value": "h4" },
-            { "name": "H5", "value": "h5" },
-            { "name": "H6", "value": "h6" }
+            {
+              "name": "H1",
+              "value": "h1"
+            },
+            {
+              "name": "H2",
+              "value": "h2"
+            },
+            {
+              "name": "H3",
+              "value": "h3"
+            },
+            {
+              "name": "H4",
+              "value": "h4"
+            },
+            {
+              "name": "H5",
+              "value": "h5"
+            },
+            {
+              "name": "H6",
+              "value": "h6"
+            }
           ]
         },
         {
@@ -74,69 +173,18 @@
           "name": "shortDescription",
           "label": "Short Description"
         },
+
         {
           "component": "reference",
           "name": "image",
-          "label": "Image"
+          "label": "Image Path"
         },
         {
           "component": "text",
-          "name": "viewAllText",
-          "label": "View All Text"
+          "name": "imageAlt",
+          "label": "Image Alt Text"
         },
-        {
-          "component": "aem-content",
-          "name": "viewAllLink",
-          "label": "View All Link"
-        },
-        {
-          "component": "select",
-          "name": "style",
-          "label": "Style",
-          "value": "default",
-          "options": [
-            {
-              "name": "Default",
-              "value": "default"
-            },
-            {
-              "name": "No Image, Right Desc & Links",
-              "value": "no-image-right-desc-links"
-            }
-          ]
-        },
-        {
-          "component": "select",
-          "name": "backgroundColor",
-          "label": "Background Color",
-          "value": "default",
-          "options": [
-            {
-              "name": "Default",
-              "value": "default"
-            },
-            {
-              "name": "Grey",
-              "value": "grey"
-            }
-          ]
-        },
-        {
-          "component": "select",
-          "name": "imagePosition",
-          "label": "Image Position",
-          "value": "left",
-          "options": [
-            {
-              "name": "Left",
-              "value": "left"
-            },
-            {
-              "name": "Right",
-              "value": "right"
-            }
-          ]
-        },
+
         {
           "component": "checkbox",
           "name": "showEyebrow",
@@ -168,10 +216,17 @@
           "value": false
         },
         {
+          "component": "checkbox",
+          "name": "displayTags",
+          "label": "Display Tags",
+          "value": false
+        },
+
+        {
           "component": "select",
           "name": "dateFormat",
           "label": "Date Format",
-          "value": "MMM d, yyyy",
+          "value": "mmm-d-yyyy",
           "options": [
             {
               "name": "DD-MM-YYYY",
@@ -187,12 +242,7 @@
             }
           ]
         },
-        {
-          "component": "checkbox",
-          "name": "displayTags",
-          "label": "Display Tags",
-          "value": false
-        },
+
         {
           "component": "text",
           "name": "dynamicSource",
@@ -209,17 +259,18 @@
           "label": "Dynamic Limit",
           "value": 3
         },
+
         {
           "component": "text",
-          "name": "audienceSegment",
-          "label": "Audience Segment"
+          "name": "viewAllText",
+          "label": "View All Text"
         },
         {
-          "component": "checkbox",
-          "name": "fallbackToCurated",
-          "label": "Fallback To Curated",
-          "value": true
+          "component": "aem-content",
+          "name": "viewAllLink",
+          "label": "View All Link"
         },
+
         {
           "component": "multifield",
           "name": "links",
@@ -239,8 +290,12 @@
               "component": "select",
               "name": "style",
               "label": "CTA Style",
-              "value": "primary",
+              "value": "default",
               "options": [
+                {
+                  "name": "Default",
+                  "value": "default"
+                },
                 {
                   "name": "Primary Button",
                   "value": "primary"

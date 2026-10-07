@@ -98,7 +98,7 @@ function readBlockData(block) {
         } else if (text.toLowerCase() === 'false') {
           data[key] = false;
         } else if (!Number.isNaN(Number(text)) && text !== '') {
-          data[key] = text;
+          data[key] = Number(text);
         } else {
           data[key] = cell.innerHTML.trim();
         }
@@ -132,19 +132,13 @@ function readBlockData(block) {
 function applyClasses(block, data) {
   const classes = ['teaser-v1'];
 
-  const { style } = data;
-  if (style && style !== 'default') {
-    classes.push(style);
+  if (data.teaserType && data.teaserType !== 'default') {
+    classes.push(data.teaserType);
   }
 
   const bgColor = data.backgroundColor;
   if (bgColor && bgColor !== 'default') {
     classes.push(bgColor);
-  }
-
-  const imagePos = data.imagePosition;
-  if (imagePos === 'right') {
-    classes.push('image-right');
   }
 
   const sectionType = data.sectionType || 'curated';
@@ -164,6 +158,10 @@ function applyClasses(block, data) {
 
   if (data.showEyebrow === false || data.showEyebrow === 'false') {
     classes.push('hide-eyebrow');
+  }
+
+  if (data.motionType && data.motionType !== 'none') {
+    classes.push(data.motionType);
   }
 
   block.classList.add(...classes);
@@ -207,7 +205,7 @@ function renderImageElement(data) {
   if (data.image) {
     const cleanSrc = data.image.replace(/<[^>]*>?/gm, '').trim();
     if (cleanSrc) {
-      const pic = createOptimizedPicture(cleanSrc, data.title || 'Teaser image', false, [{ width: '800' }]);
+      const pic = createOptimizedPicture(cleanSrc, data.imageAlt || data.title || 'Teaser image', false, [{ width: '800' }]);
       imageContainer.append(pic);
       return imageContainer;
     }
@@ -260,6 +258,24 @@ function renderContent(data) {
       link: data.viewAllLink.replace(/<[^>]*>?/gm, '').trim(),
       style: 'primary',
     });
+  }
+
+  function createViewAll(viewAllData) {
+    if (!viewAllData.viewAllText || !viewAllData.viewAllLink) {
+      return null;
+    }
+
+    const link = document.createElement('a');
+    link.className = 'teaser-view-all';
+    link.href = viewAllData.viewAllLink;
+    link.textContent = viewAllData.viewAllText;
+
+    return link;
+  }
+  const viewAll = createViewAll(data);
+
+  if (viewAll) {
+    wrapper.append(viewAll);
   }
 
   const ctas = createCTAs(ctasList);
@@ -372,19 +388,15 @@ export default async function decorate(block) {
   const sectionType = (data.sectionType || data.sectiontype || 'curated').toLowerCase().trim();
 
   let content;
-  switch (sectionType) {
-    case 'dynamic':
-      content = await renderDynamic(data);
-      break;
-
-    case 'personalization':
+  if (sectionType === 'dynamic') {
+    if (data.personalizationEnabled) {
       content = await renderPersonalization(block, data);
-      break;
-
-    case 'curated':
-    default:
-      content = renderCurated(data);
-      break;
+    } else {
+      content = await renderDynamic(data);
+    }
+  }
+  if (sectionType === 'curated' || !content) {
+    content = renderCurated(data);
   }
 
   block.textContent = '';
