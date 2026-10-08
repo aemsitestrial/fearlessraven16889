@@ -123,6 +123,76 @@ function readBlockData(block) {
     }
   });
 
+  const fieldOrder = [
+    'sectionType',
+    'personalizationEnabled',
+    'audienceSegment',
+    'fallbackToCurated',
+    'teaserType',
+    'backgroundColor',
+    'motionType',
+    'eyebrow',
+    'title',
+    'description',
+    'shortDescription',
+    'image',
+    'showEyebrow',
+    'hideTitle',
+    'showDescription',
+    'hideImage',
+    'showDate',
+    'displayTags',
+    'dateFormat',
+    'dynamicSource',
+    'dynamicTag',
+    'dynamicLimit',
+    'viewAllText',
+    'viewAllLink',
+    'links',
+  ];
+
+  [...block.children].forEach((row, index) => {
+    const key = fieldOrder[index];
+
+    if (!key || data[key]) {
+      return;
+    }
+
+    if (key === 'image') {
+      const picture = row.querySelector('picture');
+      const image = row.querySelector('img');
+
+      if (picture) {
+        data.imagePicture = picture;
+      }
+
+      if (image) {
+        data.image = image.getAttribute('src');
+      }
+
+      return;
+    }
+
+    const propEl = row.querySelector('[data-aue-prop]');
+    const value = propEl
+      ? propEl.textContent.trim()
+      : row.textContent.trim();
+
+    if (!value) {
+      return;
+    }
+
+    if (value === 'true') {
+      data[key] = true;
+    } else if (value === 'false') {
+      data[key] = false;
+    } else if (!Number.isNaN(Number(value)) && value !== '') {
+      data[key] = Number(value);
+    } else {
+      data[key] = value;
+    }
+  });
+
   return data;
 }
 
