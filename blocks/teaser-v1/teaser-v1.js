@@ -390,6 +390,10 @@ export default async function decorate(block) {
     value: a.value,
   })));
   console.log('TEASER DATA', data);
+  console.log('CHILDREN');
+  [...block.children].forEach((c, i) => {
+    console.log(`Child ${i}`, c.outerHTML);
+  });
   applyClasses(block, data);
 
   const sectionType = (data.sectionType || data.sectiontype || 'curated').toLowerCase().trim();
