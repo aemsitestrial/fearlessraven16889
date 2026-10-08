@@ -10,6 +10,8 @@ const FIELD_ORDER = [
   'eyebrow',
   'title',
   'titleType',
+  'image',
+  'imageAlt',
   'description',
   'shortDescription',
   'viewAllText',
@@ -104,20 +106,25 @@ function extractValue(key, element) {
     return '';
   }
 
-  if (key === 'image') {
+  if (
+    key === 'image'
+    || key === 'fileReference'
+    || key === 'filereference'
+  ) {
+    const image = element.matches?.('img')
+      ? element
+      : element.querySelector('img');
+
     const picture = element.matches?.('picture')
       ? element
       : element.closest('picture')
-      || element.querySelector('picture');
-
-    const image = element.matches?.('img')
-      ? element
-      : element.querySelector('img')
-      || picture?.querySelector('img');
+        || element.querySelector('picture')
+        || image?.closest('picture');
 
     return {
-      picture: picture || image?.closest('picture') || null,
-      src: image?.getAttribute('src') || '',
+      picture: picture || null,
+      src: image?.getAttribute('src')
+        || element.textContent.trim(),
     };
   }
 
@@ -127,10 +134,14 @@ function extractValue(key, element) {
     || key === 'secondaryCtaLink'
     || key === 'link'
   ) {
-    return getAnchorHref(element) || element.textContent.trim();
+    return getAnchorHref(element)
+      || element.textContent.trim();
   }
 
-  if (key === 'description' || key === 'shortDescription') {
+  if (
+    key === 'description'
+    || key === 'shortDescription'
+  ) {
     return element.innerHTML.trim();
   }
 
@@ -565,12 +576,16 @@ function renderImage(data) {
   const imageContainer = document.createElement('div');
   imageContainer.className = 'teaser-image';
 
+  const altText = stripHtml(
+    data.imageAlt || data.title || 'Teaser image',
+  );
+
   if (data.imagePicture) {
     const picture = data.imagePicture.cloneNode(true);
     const image = picture.querySelector('img');
 
-    if (image && data.imageAlt) {
-      image.alt = stripHtml(data.imageAlt);
+    if (image) {
+      image.alt = altText;
     }
 
     imageContainer.append(picture);
@@ -581,9 +596,15 @@ function renderImage(data) {
     return null;
   }
 
+  const imageSrc = stripHtml(data.image).trim();
+
+  if (!imageSrc) {
+    return null;
+  }
+
   const picture = createOptimizedPicture(
-    stripHtml(data.image),
-    stripHtml(data.imageAlt || data.title || 'Teaser image'),
+    imageSrc,
+    altText,
     false,
     [{ width: '800' }],
   );

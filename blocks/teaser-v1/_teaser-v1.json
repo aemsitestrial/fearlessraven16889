@@ -63,6 +63,19 @@
           ]
         },
         {
+          "component": "reference",
+          "name": "image",
+          "label": "Image Path",
+          "valueType": "string",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "name": "imageAlt",
+          "label": "Image Alt Text",
+          "valueType": "string"
+        },
+        {
           "component": "richtext",
           "name": "description",
           "label": "Description"
@@ -187,7 +200,7 @@
               "value": "mm-dd-yyyy"
             },
             {
-              "name": "MMM d, yyyy",
+              "name": "MMM-D-YYYY",
               "value": "mmm-d-yyyy"
             }
           ]
