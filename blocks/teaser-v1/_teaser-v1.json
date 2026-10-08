@@ -9,7 +9,23 @@
             "resourceType": "core/franklin/components/block/v1/block",
             "template": {
               "name": "Teaser V1",
-              "model": "teaser-v1"
+              "model": "teaser-v1",
+              "filter": "teaser-v1-children"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Teaser Link",
+      "id": "teaser-v1-link",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Teaser Link",
+              "model": "teaser-v1-link"
             }
           }
         }
@@ -200,7 +216,7 @@
               "value": "mm-dd-yyyy"
             },
             {
-              "name": "MMM-D-YYYY",
+              "name": "MMM d, yyyy",
               "value": "mmm-d-yyyy"
             }
           ]
@@ -218,47 +234,6 @@
           "label": "Multi Links",
           "value": false,
           "valueType": "boolean"
-        },
-        {
-          "component": "multifield",
-          "name": "links",
-          "label": "Links",
-          "fields": [
-            {
-              "component": "text",
-              "name": "title",
-              "label": "CTA Title"
-            },
-            {
-              "component": "aem-content",
-              "name": "link",
-              "label": "CTA Link"
-            },
-            {
-              "component": "select",
-              "name": "linkType",
-              "label": "CTA Link Type",
-              "value": "default",
-              "options": [
-                {
-                  "name": "Default",
-                  "value": "default"
-                },
-                {
-                  "name": "List",
-                  "value": "list"
-                },
-                {
-                  "name": "Primary Button",
-                  "value": "primary"
-                },
-                {
-                  "name": "Secondary Button",
-                  "value": "secondary"
-                }
-              ]
-            }
-          ]
         },
         {
           "component": "text",
@@ -353,7 +328,53 @@
           ]
         }
       ]
+    },
+    {
+      "id": "teaser-v1-link",
+      "fields": [
+        {
+          "component": "text",
+          "name": "title",
+          "label": "CTA Title"
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "CTA Link"
+        },
+        {
+          "component": "select",
+          "name": "linkType",
+          "label": "CTA Link Type",
+          "value": "default",
+          "options": [
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "List",
+              "value": "list"
+            },
+            {
+              "name": "Primary Button",
+              "value": "primary"
+            },
+            {
+              "name": "Secondary Button",
+              "value": "secondary"
+            }
+          ]
+        }
+      ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "teaser-v1-children",
+      "components": [
+        "teaser-v1-link"
+      ]
+    }
+  ]
 }

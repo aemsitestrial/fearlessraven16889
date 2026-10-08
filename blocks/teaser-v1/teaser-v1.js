@@ -28,7 +28,6 @@ const FIELD_ORDER = [
   'dateFormat',
   'displayTags',
   'multiLinksEnabled',
-  'links',
   'primaryCtaTitle',
   'primaryCtaLink',
   'primaryCtaLinkType',
@@ -36,6 +35,12 @@ const FIELD_ORDER = [
   'secondaryCtaLink',
   'secondaryCtaLinkType',
   'linkStyle',
+];
+
+const LINK_ITEM_FIELD_ORDER = [
+  'title',
+  'link',
+  'linkType',
 ];
 
 const VALID_HEADING_TAGS = [
@@ -85,7 +90,7 @@ function parseBoolean(value, defaultValue = false) {
 
 function stripHtml(value = '') {
   const element = document.createElement('div');
-  element.innerHTML = value;
+  element.innerHTML = String(value);
   return element.textContent.trim();
 }
 
@@ -118,8 +123,8 @@ function extractValue(key, element) {
     const picture = element.matches?.('picture')
       ? element
       : element.closest('picture')
-        || element.querySelector('picture')
-        || image?.closest('picture');
+      || element.querySelector('picture')
+      || image?.closest('picture');
 
     return {
       picture: picture || null,
@@ -181,10 +186,66 @@ function applyDefaults(data) {
   };
 }
 
+function isTeaserLinkItem(element) {
+  return Boolean(element) && (
+    element.dataset?.aueComponent === 'teaser-v1-link'
+    || element.dataset?.aueModel === 'teaser-v1-link'
+    || element.dataset?.blockName === 'teaser-v1-link'
+    || element.classList?.contains('teaser-v1-link')
+  );
+}
+
+function getClosestTeaserLinkItem(element, block) {
+  let current = element;
+
+  while (current && current !== block) {
+    if (isTeaserLinkItem(current)) {
+      return current;
+    }
+
+    current = current.parentElement;
+  }
+
+  return null;
+}
+
+function getTeaserLinkItems(block) {
+  const directItems = [...block.children].filter(isTeaserLinkItem);
+
+  if (directItems.length) {
+    return directItems;
+  }
+
+  return [
+    ...block.querySelectorAll(
+      '[data-aue-component="teaser-v1-link"], '
+      + '[data-aue-model="teaser-v1-link"], '
+      + '[data-block-name="teaser-v1-link"], '
+      + '.teaser-v1-link',
+    ),
+  ].filter((item, index, items) => items.indexOf(item) === index);
+}
+
+function getParentPropertyRows(block) {
+  const childItems = new Set(getTeaserLinkItems(block));
+
+  return [...block.children].filter((child) => {
+    if (isTeaserLinkItem(child) || childItems.has(child)) {
+      return false;
+    }
+
+    return ![...childItems].some((item) => child.contains(item));
+  });
+}
+
 function parseNamedProperties(block) {
   const data = {};
 
   block.querySelectorAll('[data-aue-prop]').forEach((element) => {
+    if (getClosestTeaserLinkItem(element, block)) {
+      return;
+    }
+
     const property = element.getAttribute('data-aue-prop');
 
     if (!property) {
@@ -212,7 +273,7 @@ function parseNamedProperties(block) {
 
 function parsePositionalProperties(block, existingData) {
   const data = { ...existingData };
-  const rows = [...block.children];
+  const rows = getParentPropertyRows(block);
 
   rows.forEach((row, index) => {
     const key = FIELD_ORDER[index];
@@ -242,94 +303,84 @@ function parsePositionalProperties(block, existingData) {
   return data;
 }
 
-/**
- * Attempts to parse the experimental composite multifield.
- *
- * The method intentionally supports multiple possible DOM structures because
- * multifield serialization can differ between Universal Editor environments.
- */
-function parseMultifieldLinks(block) {
-  const linksRoot = block.querySelector('[data-aue-prop="links"]');
+function getTopLevelRow(element, block) {
+  let current = element;
 
-  if (!linksRoot) {
-    return [];
+  while (current?.parentElement && current.parentElement !== block) {
+    current = current.parentElement;
   }
 
-  let itemElements = [
-    ...linksRoot.querySelectorAll(
-      ':scope > [data-aue-type="item"], '
-      + ':scope > [data-aue-prop="item"], '
-      + ':scope > [data-aue-resource]',
-    ),
-  ];
-
-  if (!itemElements.length) {
-    itemElements = [...linksRoot.children];
-  }
-
-  return itemElements
-    .map((item) => {
-      const titleElement = item.querySelector(
-        '[data-aue-prop="title"], '
-        + '[data-aue-prop="ctaTitle"]',
-      );
-
-      const linkElement = item.querySelector(
-        '[data-aue-prop="link"], '
-        + '[data-aue-prop="ctaLink"]',
-      );
-
-      const linkTypeElement = item.querySelector(
-        '[data-aue-prop="linkType"], '
-        + '[data-aue-prop="ctaLinkType"]',
-      );
-
-      const title = titleElement?.textContent.trim() || '';
-      const link = getAnchorHref(linkElement)
-        || linkElement?.textContent.trim()
-        || '';
-
-      const linkType = linkTypeElement?.textContent.trim()
-        || 'default';
-
-      return {
-        title,
-        link,
-        linkType,
-      };
-    })
-    .filter(({ title, link }) => title && link);
+  return current?.parentElement === block ? current : null;
 }
 
-function extractAuthoredPathLinks(block) {
-  return [...block.querySelectorAll('.button-container a')]
-    .map((anchor) => anchor.getAttribute('href'))
-    .filter(Boolean);
+function findNextParentLink(block, propertyName) {
+  const propertyElement = [...block.querySelectorAll(
+    `[data-aue-prop="${propertyName}"]`,
+  )].find((element) => !getClosestTeaserLinkItem(element, block));
+
+  if (!propertyElement) {
+    return '';
+  }
+
+  const propertyRow = getTopLevelRow(propertyElement, block);
+
+  if (!propertyRow) {
+    return '';
+  }
+
+  let nextRow = propertyRow.nextElementSibling;
+
+  while (nextRow) {
+    if (!isTeaserLinkItem(nextRow)) {
+      const anchor = [...nextRow.querySelectorAll('a')]
+        .find((item) => !getClosestTeaserLinkItem(item, block));
+
+      if (anchor) {
+        return anchor.getAttribute('href') || '';
+      }
+
+      const namedProperty = nextRow.querySelector('[data-aue-prop]');
+      const name = namedProperty?.getAttribute('data-aue-prop');
+
+      if (
+        name === 'viewAllText'
+        || name === 'primaryCtaTitle'
+        || name === 'secondaryCtaTitle'
+      ) {
+        break;
+      }
+    }
+
+    nextRow = nextRow.nextElementSibling;
+  }
+  return '';
 }
 
 function assignFixedLinksFromDom(data, block) {
   const nextData = { ...data };
-  const authoredPaths = extractAuthoredPathLinks(block);
 
-  let pathIndex = 0;
+  if (nextData.viewAllText) {
+    const viewAllLink = findNextParentLink(block, 'viewAllText');
 
-  if (nextData.viewAllText && authoredPaths[pathIndex]) {
-    nextData.viewAllLink = nextData.viewAllLink
-      || authoredPaths[pathIndex];
-
-    pathIndex += 1;
+    if (viewAllLink) {
+      nextData.viewAllLink = viewAllLink;
+    }
   }
 
-  if (nextData.primaryCtaTitle && authoredPaths[pathIndex]) {
-    nextData.primaryCtaLink = nextData.primaryCtaLink
-      || authoredPaths[pathIndex];
+  if (nextData.primaryCtaTitle) {
+    const primaryLink = findNextParentLink(block, 'primaryCtaTitle');
 
-    pathIndex += 1;
+    if (primaryLink) {
+      nextData.primaryCtaLink = primaryLink;
+    }
   }
 
-  if (nextData.secondaryCtaTitle && authoredPaths[pathIndex]) {
-    nextData.secondaryCtaLink = nextData.secondaryCtaLink
-      || authoredPaths[pathIndex];
+  if (nextData.secondaryCtaTitle) {
+    const secondaryLink = findNextParentLink(block, 'secondaryCtaTitle');
+
+    if (secondaryLink) {
+      nextData.secondaryCtaLink = secondaryLink;
+    }
   }
 
   return nextData;
@@ -354,16 +405,16 @@ function resolveLinkStyle(linkType, linkStyle) {
   return 'default';
 }
 
-function normalizeMultifieldLinks(links, linkStyle) {
+function normalizeLinks(links, linkStyle) {
   if (!Array.isArray(links)) {
     return [];
   }
 
   return links
-    .filter(({ title, link }) => title && link)
+    .filter((item) => item?.title && item?.link)
     .map((item) => ({
-      title: item.title,
-      link: item.link,
+      title: stripHtml(item.title),
+      link: String(item.link).trim(),
       style: resolveLinkStyle(
         item.linkType || item.style,
         linkStyle,
@@ -371,13 +422,100 @@ function normalizeMultifieldLinks(links, linkStyle) {
     }));
 }
 
+function readChildItemRows(item) {
+  return [...item.children].map((row) => (
+    row.children[0] || row
+  ));
+}
+
+function readTeaserLinkItem(item, fallbackStyle = 'default') {
+  const data = {};
+
+  item.querySelectorAll('[data-aue-prop]').forEach((element) => {
+    const property = element.getAttribute('data-aue-prop');
+
+    if (!property) {
+      return;
+    }
+
+    const key = normalizeKey(property);
+
+    if (data[key] === undefined) {
+      data[key] = extractValue(key, element);
+    }
+  });
+
+  const rows = readChildItemRows(item);
+
+  rows.forEach((row, index) => {
+    const key = LINK_ITEM_FIELD_ORDER[index];
+
+    if (!key || data[key] !== undefined) {
+      return;
+    }
+
+    const value = extractValue(key, row);
+
+    if (
+      value !== ''
+      && value !== undefined
+      && value !== null
+    ) {
+      data[key] = value;
+    }
+  });
+
+  const title = typeof data.title === 'string'
+    ? stripHtml(data.title).trim()
+    : '';
+
+  let link = typeof data.link === 'string'
+    ? data.link.trim()
+    : '';
+
+  if (!link) {
+    link = item.querySelector('a')?.getAttribute('href') || '';
+  }
+
+  if (!title || !link) {
+    return null;
+  }
+
+  return {
+    title,
+    link,
+    style: resolveLinkStyle(
+      data.linkType,
+      fallbackStyle,
+    ),
+  };
+}
+
+function readTeaserLinkItems(block, fallbackStyle = 'default') {
+  return getTeaserLinkItems(block)
+    .map((item) => readTeaserLinkItem(item, fallbackStyle))
+    .filter(Boolean);
+}
+
+function isValidText(value) {
+  return (
+    typeof value === 'string'
+    && value.trim() !== ''
+    && value.trim() !== 'true'
+    && value.trim() !== 'false'
+  );
+}
+
 function createFixedLinks(data) {
   const links = [];
 
-  if (data.primaryCtaTitle && data.primaryCtaLink) {
+  if (
+    isValidText(data.primaryCtaTitle)
+    && isValidText(data.primaryCtaLink)
+  ) {
     links.push({
-      title: data.primaryCtaTitle,
-      link: data.primaryCtaLink,
+      title: stripHtml(data.primaryCtaTitle),
+      link: data.primaryCtaLink.trim(),
       style: resolveLinkStyle(
         data.primaryCtaLinkType,
         data.linkStyle,
@@ -385,10 +523,13 @@ function createFixedLinks(data) {
     });
   }
 
-  if (data.secondaryCtaTitle && data.secondaryCtaLink) {
+  if (
+    isValidText(data.secondaryCtaTitle)
+    && isValidText(data.secondaryCtaLink)
+  ) {
     links.push({
-      title: data.secondaryCtaTitle,
-      link: data.secondaryCtaLink,
+      title: stripHtml(data.secondaryCtaTitle),
+      link: data.secondaryCtaLink.trim(),
       style: resolveLinkStyle(
         data.secondaryCtaLinkType,
         data.linkStyle,
@@ -406,16 +547,14 @@ function readBlockData(block) {
   data = assignFixedLinksFromDom(data, block);
   data = applyDefaults(data);
 
-  const multifieldLinks = parseMultifieldLinks(block);
+  const childLinks = readTeaserLinkItems(
+    block,
+    data.linkStyle,
+  );
 
-  if (parseBoolean(data.multiLinksEnabled)) {
-    data.links = normalizeMultifieldLinks(
-      multifieldLinks,
-      data.linkStyle,
-    );
-  } else {
-    data.links = createFixedLinks(data);
-  }
+  data.links = parseBoolean(data.multiLinksEnabled)
+    ? childLinks
+    : createFixedLinks(data);
 
   return data;
 }
@@ -450,7 +589,7 @@ function formatDate(dateValue, format = 'mmm-d-yyyy') {
     'Dec',
   ][date.getMonth()];
 
-  switch (format.toLowerCase()) {
+  switch (String(format).toLowerCase()) {
     case 'dd-mm-yyyy':
       return `${day}-${month}-${year}`;
 
@@ -552,15 +691,31 @@ function createCTAs(links = []) {
 }
 
 function createViewAll(data) {
-  if (!data.viewAllText || !data.viewAllLink) {
+  const text = typeof data.viewAllText === 'string'
+    ? data.viewAllText.trim()
+    : '';
+
+  const href = typeof data.viewAllLink === 'string'
+    ? data.viewAllLink.trim()
+    : '';
+
+  if (
+    !text
+    || !href
+    || text === 'true'
+    || text === 'false'
+    || href === 'true'
+    || href === 'false'
+    || VALID_LINK_STYLES.includes(text)
+  ) {
     return null;
   }
 
   const anchor = document.createElement('a');
 
   anchor.className = 'teaser-view-all';
-  anchor.href = data.viewAllLink;
-  anchor.textContent = data.viewAllText;
+  anchor.href = href;
+  anchor.textContent = stripHtml(text);
 
   return anchor;
 }
@@ -713,6 +868,8 @@ async function renderPersonalized(block, data) {
       return renderTeaser(data);
     }
 
+    const personalizedImage = decision.data.image || '';
+
     const personalizedData = {
       ...data,
       eyebrow: decision.data.eyebrow || data.eyebrow,
@@ -722,10 +879,13 @@ async function renderPersonalized(block, data) {
       shortDescription:
         decision.data.shortDescription
         || data.shortDescription,
-      image: decision.data.image || data.image,
+      image: personalizedImage || data.image,
+      imagePicture: personalizedImage
+        ? null
+        : data.imagePicture,
       imageAlt: decision.data.imageAlt || data.imageAlt,
       links: Array.isArray(decision.data.links)
-        ? normalizeMultifieldLinks(
+        ? normalizeLinks(
           decision.data.links,
           data.linkStyle,
         )
@@ -754,7 +914,7 @@ async function renderPersonalized(block, data) {
 }
 
 export default async function decorate(block) {
-  // Multifield content must be parsed before clearing the raw block.
+  // Parent and child authoring data must be parsed before clearing the block.
   const data = readBlockData(block);
 
   applyClasses(block, data);

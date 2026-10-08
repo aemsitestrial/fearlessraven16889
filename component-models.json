@@ -6427,7 +6427,7 @@
             "value": "mm-dd-yyyy"
           },
           {
-            "name": "MMM-D-YYYY",
+            "name": "MMM d, yyyy",
             "value": "mmm-d-yyyy"
           }
         ]
@@ -6445,47 +6445,6 @@
         "label": "Multi Links",
         "value": false,
         "valueType": "boolean"
-      },
-      {
-        "component": "multifield",
-        "name": "links",
-        "label": "Links",
-        "fields": [
-          {
-            "component": "text",
-            "name": "title",
-            "label": "CTA Title"
-          },
-          {
-            "component": "aem-content",
-            "name": "link",
-            "label": "CTA Link"
-          },
-          {
-            "component": "select",
-            "name": "linkType",
-            "label": "CTA Link Type",
-            "value": "default",
-            "options": [
-              {
-                "name": "Default",
-                "value": "default"
-              },
-              {
-                "name": "List",
-                "value": "list"
-              },
-              {
-                "name": "Primary Button",
-                "value": "primary"
-              },
-              {
-                "name": "Secondary Button",
-                "value": "secondary"
-              }
-            ]
-          }
-        ]
       },
       {
         "component": "text",
@@ -6559,6 +6518,45 @@
         "component": "select",
         "name": "linkStyle",
         "label": "Link Style",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "List",
+            "value": "list"
+          },
+          {
+            "name": "Primary Button",
+            "value": "primary"
+          },
+          {
+            "name": "Secondary Button",
+            "value": "secondary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "teaser-v1-link",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "CTA Title"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "CTA Link"
+      },
+      {
+        "component": "select",
+        "name": "linkType",
+        "label": "CTA Link Type",
         "value": "default",
         "options": [
           {

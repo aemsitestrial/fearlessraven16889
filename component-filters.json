@@ -134,6 +134,12 @@
     ]
   },
   {
+    "id": "teaser-v1-children",
+    "components": [
+      "teaser-v1-link"
+    ]
+  },
+  {
     "id": "video",
     "components": []
   }
