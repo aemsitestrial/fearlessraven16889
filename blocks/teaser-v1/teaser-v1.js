@@ -540,12 +540,105 @@ function createFixedLinks(data) {
   return links;
 }
 
+function normalizeConfiguration(data) {
+  const normalizedData = { ...data };
+
+  const validStyles = [
+    'default',
+    'no-image-right-desc-links',
+  ];
+
+  const validBackgroundColors = [
+    'default',
+    'grey',
+  ];
+
+  const validImagePositions = [
+    'left',
+    'right',
+  ];
+
+  const validDateFormats = [
+    'dd-mm-yyyy',
+    'mm-dd-yyyy',
+    'mmm-d-yyyy',
+  ];
+
+  if (!validStyles.includes(normalizedData.style)) {
+    normalizedData.style = 'default';
+  }
+
+  if (!validBackgroundColors.includes(normalizedData.backgroundColor)) {
+    normalizedData.backgroundColor = 'default';
+  }
+
+  if (!validImagePositions.includes(normalizedData.imagePosition)) {
+    normalizedData.imagePosition = 'left';
+  }
+
+  if (!validDateFormats.includes(normalizedData.dateFormat)) {
+    normalizedData.dateFormat = 'mmm-d-yyyy';
+  }
+
+  normalizedData.personalizationEnabled = parseBoolean(
+    normalizedData.personalizationEnabled,
+    false,
+  );
+
+  normalizedData.showEyebrow = parseBoolean(
+    normalizedData.showEyebrow,
+    true,
+  );
+
+  normalizedData.hideTitle = parseBoolean(
+    normalizedData.hideTitle,
+    false,
+  );
+
+  normalizedData.showDescription = parseBoolean(
+    normalizedData.showDescription,
+    true,
+  );
+
+  normalizedData.hideImage = parseBoolean(
+    normalizedData.hideImage,
+    false,
+  );
+
+  normalizedData.showDate = parseBoolean(
+    normalizedData.showDate,
+    false,
+  );
+
+  normalizedData.displayTags = parseBoolean(
+    normalizedData.displayTags,
+    false,
+  );
+
+  normalizedData.multiLinksEnabled = parseBoolean(
+    normalizedData.multiLinksEnabled,
+    false,
+  );
+
+  return normalizedData;
+}
+
 function readBlockData(block) {
   let data = parseNamedProperties(block);
 
-  data = parsePositionalProperties(block, data);
+  const parentRows = getParentPropertyRows(block);
+
+  /*
+   * Positional parsing is safe only when every model field produced
+   * exactly one parent row. Otherwise values shift into wrong fields.
+   */
+  if (parentRows.length === FIELD_ORDER.length) {
+    data = parsePositionalProperties(block, data);
+  }
+
   data = assignFixedLinksFromDom(data, block);
   data = applyDefaults(data);
+  data = normalizeConfiguration(data);
 
   const childLinks = readTeaserLinkItems(
     block,
@@ -605,52 +698,52 @@ function formatDate(dateValue, format = 'mmm-d-yyyy') {
 function applyClasses(block, data) {
   const classes = [];
 
-  if (data.style && data.style !== 'default') {
+  if (
+    typeof data.style === 'string'
+    && data.style === 'no-image-right-desc-links'
+  ) {
     classes.push(data.style);
   }
 
   if (
-    data.backgroundColor
-    && data.backgroundColor !== 'default'
+    typeof data.backgroundColor === 'string'
+    && data.backgroundColor === 'grey'
   ) {
     classes.push(data.backgroundColor);
   }
 
   if (
-    data.imagePosition
+    typeof data.imagePosition === 'string'
+    && ['left', 'right'].includes(data.imagePosition)
     && data.style !== 'no-image-right-desc-links'
   ) {
     classes.push(`image-${data.imagePosition}`);
   }
 
   if (
-    parseBoolean(data.hideImage)
+    data.hideImage
     || data.style === 'no-image-right-desc-links'
   ) {
     classes.push('hide-image');
   }
 
-  if (parseBoolean(data.hideTitle)) {
+  if (data.hideTitle) {
     classes.push('hide-title');
   }
 
-  if (!parseBoolean(data.showDescription, true)) {
+  if (!data.showDescription) {
     classes.push('hide-description');
   }
 
-  if (!parseBoolean(data.showEyebrow, true)) {
+  if (!data.showEyebrow) {
     classes.push('hide-eyebrow');
   }
 
-  if (parseBoolean(data.personalizationEnabled)) {
+  if (data.personalizationEnabled) {
     classes.push('personalized');
   }
 
-  block.classList.add(
-    ...classes.filter((className) => (
-      /^[a-zA-Z0-9_-]+$/.test(className)
-    )),
-  );
+  block.classList.add(...classes);
 }
 
 function createCTA(link) {
