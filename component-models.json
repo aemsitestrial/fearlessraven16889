@@ -6245,105 +6245,8 @@
     ]
   },
   {
-    "id": "teaserv1",
+    "id": "teaser-v1",
     "fields": [
-      {
-        "component": "select",
-        "name": "sectionType",
-        "label": "Section Type",
-        "value": "curated",
-        "options": [
-          {
-            "name": "Curated",
-            "value": "curated"
-          },
-          {
-            "name": "Dynamic",
-            "value": "dynamic"
-          }
-        ]
-      },
-      {
-        "component": "checkbox",
-        "name": "personalizationEnabled",
-        "label": "Personalization",
-        "value": false
-      },
-      {
-        "component": "text",
-        "name": "audienceSegment",
-        "label": "Audience Segment"
-      },
-      {
-        "component": "checkbox",
-        "name": "fallbackToCurated",
-        "label": "Fallback To Curated",
-        "value": true
-      },
-      {
-        "component": "select",
-        "name": "teaserType",
-        "label": "Teaser Type",
-        "value": "default",
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "Right Image",
-            "value": "right-image"
-          },
-          {
-            "name": "No Image",
-            "value": "no-image"
-          }
-        ]
-      },
-      {
-        "component": "select",
-        "name": "backgroundColor",
-        "label": "Background Color",
-        "value": "default",
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "Grey",
-            "value": "grey"
-          },
-          {
-            "name": "Dark",
-            "value": "dark"
-          }
-        ]
-      },
-      {
-        "component": "select",
-        "name": "motionType",
-        "label": "Motion Type",
-        "value": "none",
-        "options": [
-          {
-            "name": "None",
-            "value": "none"
-          },
-          {
-            "name": "Fade In",
-            "value": "fade-in"
-          },
-          {
-            "name": "Slide Up",
-            "value": "slide-up"
-          },
-          {
-            "name": "Zoom In",
-            "value": "zoom-in"
-          }
-        ]
-      },
       {
         "component": "text",
         "name": "eyebrow",
@@ -6397,14 +6300,68 @@
         "label": "Short Description"
       },
       {
-        "component": "reference",
-        "name": "image",
-        "label": "Image Path"
+        "component": "text",
+        "name": "viewAllText",
+        "label": "View All Text"
       },
       {
-        "component": "text",
-        "name": "imageAlt",
-        "label": "Image Alt Text"
+        "component": "aem-content",
+        "name": "viewAllLink",
+        "label": "View All Link"
+      },
+      {
+        "component": "select",
+        "name": "style",
+        "label": "Style",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "No Image, Right Desc & Links",
+            "value": "no-image-right-desc-links"
+          }
+        ]
+      },
+      {
+        "component": "checkbox",
+        "name": "personalizationEnabled",
+        "label": "Personalization",
+        "value": false
+      },
+      {
+        "component": "select",
+        "name": "backgroundColor",
+        "label": "BG Color",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Grey",
+            "value": "grey"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "imagePosition",
+        "label": "Image Position",
+        "value": "left",
+        "options": [
+          {
+            "name": "Left",
+            "value": "left"
+          },
+          {
+            "name": "Right",
+            "value": "right"
+          }
+        ]
       },
       {
         "component": "checkbox",
@@ -6437,12 +6394,6 @@
         "value": false
       },
       {
-        "component": "checkbox",
-        "name": "displayTags",
-        "label": "Display Tags",
-        "value": false
-      },
-      {
         "component": "select",
         "name": "dateFormat",
         "label": "Date Format",
@@ -6463,81 +6414,82 @@
         ]
       },
       {
-        "component": "text",
-        "name": "dynamicSource",
-        "label": "Dynamic Source"
+        "component": "checkbox",
+        "name": "displayTags",
+        "label": "Display Tags",
+        "value": false
       },
       {
-        "component": "text",
-        "name": "dynamicTag",
-        "label": "Dynamic Tag"
+        "component": "checkbox",
+        "name": "multiLinksEnabled",
+        "label": "Multi Links",
+        "value": false
       },
       {
-        "component": "number",
-        "name": "dynamicLimit",
-        "label": "Dynamic Limit",
-        "value": 3
-      },
-      {
-        "component": "text",
-        "name": "viewAllText",
-        "label": "View All Text"
-      },
-      {
-        "component": "aem-content",
-        "name": "viewAllLink",
-        "label": "View All Link"
-      },
-      {
-        "component": "text",
-        "name": "cta1Title",
-        "label": "CTA 1 Title"
-      },
-      {
-        "component": "aem-content",
-        "name": "cta1Link",
-        "label": "CTA 1 Link"
-      },
-      {
-        "component": "select",
-        "name": "cta1Style",
-        "label": "CTA 1 Style",
-        "value": "primary",
-        "options": [
+        "component": "multifield",
+        "name": "links",
+        "label": "Links",
+        "fields": [
           {
-            "name": "Primary Button",
-            "value": "primary"
+            "component": "text",
+            "name": "title",
+            "label": "CTA Title"
           },
           {
-            "name": "Secondary Button",
-            "value": "secondary"
+            "component": "aem-content",
+            "name": "link",
+            "label": "CTA Link"
           },
           {
-            "name": "List Link",
-            "value": "list"
-          },
-          {
-            "name": "Text Link",
-            "value": "text"
+            "component": "select",
+            "name": "linkType",
+            "label": "CTA Link Type",
+            "value": "default",
+            "options": [
+              {
+                "name": "Default",
+                "value": "default"
+              },
+              {
+                "name": "List",
+                "value": "list"
+              },
+              {
+                "name": "Primary Button",
+                "value": "primary"
+              },
+              {
+                "name": "Secondary Button",
+                "value": "secondary"
+              }
+            ]
           }
         ]
       },
       {
         "component": "text",
-        "name": "cta2Title",
-        "label": "CTA 2 Title"
+        "name": "primaryCtaTitle",
+        "label": "Primary CTA Title"
       },
       {
         "component": "aem-content",
-        "name": "cta2Link",
-        "label": "CTA 2 Link"
+        "name": "primaryCtaLink",
+        "label": "Primary CTA Link"
       },
       {
         "component": "select",
-        "name": "cta2Style",
-        "label": "CTA 2 Style",
-        "value": "primary",
+        "name": "primaryCtaLinkType",
+        "label": "Primary CTA Link Type",
+        "value": "default",
         "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "List",
+            "value": "list"
+          },
           {
             "name": "Primary Button",
             "value": "primary"
@@ -6545,14 +6497,64 @@
           {
             "name": "Secondary Button",
             "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "secondaryCtaTitle",
+        "label": "Secondary CTA Title"
+      },
+      {
+        "component": "aem-content",
+        "name": "secondaryCtaLink",
+        "label": "Secondary CTA Link"
+      },
+      {
+        "component": "select",
+        "name": "secondaryCtaLinkType",
+        "label": "Secondary CTA Link Type",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
           },
           {
-            "name": "List Link",
+            "name": "List",
             "value": "list"
           },
           {
-            "name": "Text Link",
-            "value": "text"
+            "name": "Primary Button",
+            "value": "primary"
+          },
+          {
+            "name": "Secondary Button",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "linkStyle",
+        "label": "Link Style",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "List",
+            "value": "list"
+          },
+          {
+            "name": "Primary Button",
+            "value": "primary"
+          },
+          {
+            "name": "Secondary Button",
+            "value": "secondary"
           }
         ]
       }

@@ -6,557 +6,649 @@ import {
   setPersonalizationAttributes,
 } from '../../scripts/target-personalization.js';
 
-const INDEX_SOURCES = ['/query-index.json', '/sitemap.json'];
+const FIELD_ORDER = [
+  'eyebrow',
+  'title',
+  'titleType',
+  'description',
+  'shortDescription',
+  'viewAllText',
+  'viewAllLink',
+  'style',
+  'personalizationEnabled',
+  'backgroundColor',
+  'imagePosition',
+  'showEyebrow',
+  'hideTitle',
+  'showDescription',
+  'hideImage',
+  'showDate',
+  'dateFormat',
+  'displayTags',
+  'multiLinksEnabled',
+  'links',
+  'primaryCtaTitle',
+  'primaryCtaLink',
+  'primaryCtaLinkType',
+  'secondaryCtaTitle',
+  'secondaryCtaLink',
+  'secondaryCtaLinkType',
+  'linkStyle',
+];
 
-function formatDate(dateValue, format = 'MMM d, yyyy') {
-  if (!dateValue) return '';
-  const date = new Date(dateValue);
-  if (Number.isNaN(date.valueOf())) return dateValue;
+const VALID_HEADING_TAGS = [
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+];
 
-  const monthsShort = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ];
-  const day = String(date.getDate()).padStart(2, '0');
-  const monthNum = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  const monthName = monthsShort[date.getMonth()];
+const VALID_LINK_STYLES = [
+  'default',
+  'list',
+  'primary',
+  'secondary',
+];
 
-  const fmt = (format || '').toLowerCase();
-  if (fmt.includes('dd-mm-yyyy')) return `${day}-${monthNum}-${year}`;
-  if (fmt.includes('mm-dd-yyyy')) return `${monthNum}-${day}-${year}`;
-  return `${monthName} ${date.getDate()}, ${year}`;
-}
-
-function getItems(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.data)) return data.data;
-  if (Array.isArray(data?.items)) return data.items;
-  return [];
-}
-
-async function loadIndex() {
-  const responses = await Promise.all(
-    INDEX_SOURCES.map(async (source) => {
-      try {
-        const response = await fetch(source);
-        return response.ok ? response.json() : null;
-      } catch (error) {
-        return null;
-      }
-    }),
-  );
-  const data = responses.find(Boolean);
-  return data ? getItems(data) : [];
-}
-
-/**
- * Normalizes property keys to standard camelCase
- */
-function normalizeKey(str) {
-  return str
+function normalizeKey(value = '') {
+  return value
     .trim()
-    .replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
-    .replace(/^(.)/, (c) => c.toLowerCase());
+    .replace(/[-_\s]+(.)?/g, (_, character) => (
+      character ? character.toUpperCase() : ''
+    ))
+    .replace(/^(.)/, (character) => character.toLowerCase());
 }
 
-/**
- * Applies default values for teaser-v1 properties as defined in the component model.
- */
-function applyDefaults(data) {
-  if (data.sectionType === undefined) data.sectionType = 'curated';
-  if (data.personalizationEnabled === undefined) data.personalizationEnabled = false;
-  if (data.fallbackToCurated === undefined) data.fallbackToCurated = true;
-  if (data.teaserType === undefined) data.teaserType = 'default';
-  if (data.backgroundColor === undefined) data.backgroundColor = 'default';
-  if (data.motionType === undefined) data.motionType = 'none';
-  if (data.titleType === undefined) data.titleType = 'h2';
-  if (data.showEyebrow === undefined) data.showEyebrow = true;
-  if (data.hideTitle === undefined) data.hideTitle = false;
-  if (data.showDescription === undefined) data.showDescription = true;
-  if (data.hideImage === undefined) data.hideImage = false;
-  if (data.showDate === undefined) data.showDate = false;
-  if (data.displayTags === undefined) data.displayTags = false;
-  if (data.dateFormat === undefined) data.dateFormat = 'mmm-d-yyyy';
-  if (data.dynamicLimit === undefined) data.dynamicLimit = 3;
-  if (data.cta1Style === undefined) data.cta1Style = 'primary';
-  if (data.cta2Style === undefined) data.cta2Style = 'primary';
+function parseBoolean(value, defaultValue = false) {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    const normalizedValue = value.trim().toLowerCase();
+
+    if (normalizedValue === 'true') {
+      return true;
+    }
+
+    if (normalizedValue === 'false') {
+      return false;
+    }
+  }
+
+  return defaultValue;
 }
 
-/**
- * Extracts property value from an element based on key type.
- */
-function extractValue(key, el) {
-  if (key === 'image' || key === 'filereference') {
-    const pic = el.querySelector('picture') || el.closest('picture') || (el.tagName === 'PICTURE' ? el : null);
-    const img = el.querySelector('img') || (el.tagName === 'IMG' ? el : null);
+function stripHtml(value = '') {
+  const element = document.createElement('div');
+  element.innerHTML = value;
+  return element.textContent.trim();
+}
+
+function getAnchorHref(element) {
+  if (!element) {
+    return '';
+  }
+
+  const anchor = element.matches?.('a')
+    ? element
+    : element.querySelector('a');
+
+  return anchor?.getAttribute('href') || '';
+}
+
+function extractValue(key, element) {
+  if (!element) {
+    return '';
+  }
+
+  if (key === 'image') {
+    const picture = element.matches?.('picture')
+      ? element
+      : element.closest('picture')
+      || element.querySelector('picture');
+
+    const image = element.matches?.('img')
+      ? element
+      : element.querySelector('img')
+      || picture?.querySelector('img');
+
     return {
-      picture: pic || img?.closest('picture') || null,
-      src: img?.getAttribute('src') || el.textContent.trim(),
+      picture: picture || image?.closest('picture') || null,
+      src: image?.getAttribute('src') || '',
     };
   }
 
-  const text = el.textContent.trim();
-  const lower = text.toLowerCase();
-  if (lower === 'true') return true;
-  if (lower === 'false') return false;
-
-  if (key === 'dynamicLimit' || (text !== '' && !Number.isNaN(Number(text)) && /^\d+$/.test(text))) {
-    return Number(text);
+  if (
+    key === 'viewAllLink'
+    || key === 'primaryCtaLink'
+    || key === 'secondaryCtaLink'
+    || key === 'link'
+  ) {
+    return getAnchorHref(element) || element.textContent.trim();
   }
 
   if (key === 'description' || key === 'shortDescription') {
-    return el.innerHTML.trim();
+    return element.innerHTML.trim();
   }
 
-  const a = el.querySelector('a');
-  if (
-    a
-    && (
-      key === 'viewAllLink'
-      || key === 'cta1Link'
-      || key === 'cta2Link'
-    )
-  ) {
-    return a.getAttribute('href') || a.textContent.trim();
+  const text = element.textContent.trim();
+  const normalizedText = text.toLowerCase();
+
+  if (normalizedText === 'true') {
+    return true;
+  }
+
+  if (normalizedText === 'false') {
+    return false;
   }
 
   return text;
 }
 
-/**
- * Parses block data supporting Universal Editor instrumentation, EDS 2-column key-value rows,
- * and 1-column positional authoring.
- */
-function readBlockData(block) {
+function applyDefaults(data) {
+  return {
+    titleType: 'h2',
+    style: 'default',
+    personalizationEnabled: false,
+    backgroundColor: 'default',
+    imagePosition: 'left',
+    showEyebrow: true,
+    hideTitle: false,
+    showDescription: true,
+    hideImage: false,
+    showDate: false,
+    dateFormat: 'mmm-d-yyyy',
+    displayTags: false,
+    multiLinksEnabled: false,
+    primaryCtaLinkType: 'default',
+    secondaryCtaLinkType: 'default',
+    linkStyle: 'default',
+    ...data,
+  };
+}
+
+function parseNamedProperties(block) {
   const data = {};
 
-  // 1. Check Universal Editor instrumentation attributes (data-aue-prop)
-  const ueElements = [...block.querySelectorAll('[data-aue-prop]')];
-  if (block.hasAttribute('data-aue-prop')) {
-    ueElements.unshift(block);
-  }
+  block.querySelectorAll('[data-aue-prop]').forEach((element) => {
+    const property = element.getAttribute('data-aue-prop');
 
-  if (ueElements.length > 0) {
-    ueElements.forEach((el) => {
-      const prop = el.getAttribute('data-aue-prop');
-      const key = normalizeKey(prop);
-      if (data[key] !== undefined) return;
-
-      const val = extractValue(key, el);
-      if (key === 'image' || key === 'filereference') {
-        data.imagePicture = val.picture;
-        data.image = val.src;
-      } else {
-        data[key] = val;
-      }
-    });
-
-    const authoredLinks = [
-      ...block.querySelectorAll('.button-container a'),
-    ];
-
-    let linkIndex = 0;
-
-    if (data.viewAllText && authoredLinks[linkIndex]) {
-      data.viewAllLink = data.viewAllLink
-        || authoredLinks[linkIndex].getAttribute('href');
-      linkIndex += 1;
+    if (!property) {
+      return;
     }
 
-    if (data.cta1Title && authoredLinks[linkIndex]) {
-      data.cta1Link = data.cta1Link
-        || authoredLinks[linkIndex].getAttribute('href');
-      linkIndex += 1;
+    const key = normalizeKey(property);
+
+    if (data[key] !== undefined) {
+      return;
     }
 
-    if (data.cta2Title && authoredLinks[linkIndex]) {
-      data.cta2Link = data.cta2Link
-        || authoredLinks[linkIndex].getAttribute('href');
-    }
+    const value = extractValue(key, element);
 
-    if (!Array.isArray(data.links)) {
-      data.links = [];
+    if (key === 'image') {
+      data.imagePicture = value.picture;
+      data.image = value.src;
+    } else {
+      data[key] = value;
     }
-    if (data.cta1Title && data.cta1Link) {
-      data.links.push({
-        title: data.cta1Title,
-        link: data.cta1Link,
-        style: data.cta1Style || 'primary',
-      });
-    }
-    if (data.cta2Title && data.cta2Link) {
-      data.links.push({
-        title: data.cta2Title,
-        link: data.cta2Link,
-        style: data.cta2Style || 'primary',
-      });
-    }
+  });
 
-    applyDefaults(data);
-    return data;
-  }
+  return data;
+}
 
-  // 2. Check EDS 2-column key-value format (| Key | Value |)
+function parsePositionalProperties(block, existingData) {
+  const data = { ...existingData };
   const rows = [...block.children];
-  const isKeyValue = rows.some((row) => row.children.length >= 2);
-  if (isKeyValue) {
-    rows.forEach((row) => {
-      const cells = [...row.children];
-      if (cells.length >= 2) {
-        const keyRaw = cells[0].textContent.trim();
-        const key = normalizeKey(keyRaw);
-        const cell = cells[1];
 
-        const picture = cell.querySelector('picture');
-        const links = [...cell.querySelectorAll('a')];
+  rows.forEach((row, index) => {
+    const key = FIELD_ORDER[index];
 
-        if (key === 'image' || key === 'filereference') {
-          data.imagePicture = picture || cell.querySelector('img');
-          data.image = cell.querySelector('img')?.getAttribute('src') || cell.textContent.trim();
-        } else if (key === 'links' || key === 'cta' || key === 'ctas') {
-          data.links = links.map((a) => {
-            let style = 'primary';
-            if (a.parentElement?.tagName === 'EM') style = 'secondary';
-            if (a.parentElement?.tagName === 'STRONG') style = 'primary';
-            if (a.classList.contains('secondary')) style = 'secondary';
-            return {
-              title: a.textContent.trim(),
-              link: a.getAttribute('href') || '#',
-              style,
-            };
-          });
-        } else {
-          data[key] = extractValue(key, cell);
-        }
-      }
-    });
-
-    if (!Array.isArray(data.links)) {
-      data.links = [];
-    }
-    if (data.cta1Title && data.cta1Link) {
-      data.links.push({
-        title: data.cta1Title,
-        link: data.cta1Link,
-        style: data.cta1Style || 'primary',
-      });
-    }
-    if (data.cta2Title && data.cta2Link) {
-      data.links.push({
-        title: data.cta2Title,
-        link: data.cta2Link,
-        style: data.cta2Style || 'primary',
-      });
+    if (!key || data[key] !== undefined) {
+      return;
     }
 
-    applyDefaults(data);
-    return data;
-  }
+    const valueElement = row.children[0] || row;
+    const value = extractValue(key, valueElement);
 
-  // 3. Single-column positional format (when neither UE nor 2-column format is present)
-  const fieldOrder = [
-    'sectionType',
-    'personalizationEnabled',
-    'audienceSegment',
-    'fallbackToCurated',
-    'teaserType',
-    'backgroundColor',
-    'motionType',
-    'eyebrow',
-    'title',
-    'titleType',
-    'description',
-    'shortDescription',
-    'image',
-    'imageAlt',
-    'showEyebrow',
-    'hideTitle',
-    'showDescription',
-    'hideImage',
-    'showDate',
-    'displayTags',
-    'dateFormat',
-    'dynamicSource',
-    'dynamicTag',
-    'dynamicLimit',
-    'viewAllText',
-    'viewAllLink',
-    'cta1Title',
-    'cta1Link',
-    'cta1Style',
-    'cta2Title',
-    'cta2Link',
-    'cta2Style',
-  ];
-
-  const cells = rows.map((row) => (row.children.length > 0 ? row.children[0] : row));
-
-  if (cells.length === fieldOrder.length) {
-    cells.forEach((cell, index) => {
-      const key = fieldOrder[index];
-      const val = extractValue(key, cell);
-      if (key === 'image') {
-        data.imagePicture = cell.querySelector('picture') || null;
-        data.image = cell.querySelector('img')?.getAttribute('src') || cell.textContent.trim();
-      } else {
-        data[key] = val;
-      }
-    });
-  } else {
-    // Dynamic content-type classification when optional/empty fields are omitted
-    let remainingCells = [...cells];
-
-    // Find image cell
-    const imgIndex = remainingCells.findIndex((c) => {
-      if (c.querySelector('picture, img')) return true;
-      const text = c.textContent.trim();
-      return (
-        /\.(avif|webp|jpe?g|png|svg)(\?.*)?$/i.test(text)
-        || /urn:aaid:aem:/i.test(text)
-        || /\/adobe\/assets\//i.test(text)
-        || /\/content\/dam\/.*\.(avif|webp|jpe?g|png|svg)/i.test(text)
-      );
-    });
-    if (imgIndex !== -1) {
-      const imgCell = remainingCells.splice(imgIndex, 1)[0];
-      data.imagePicture = imgCell.querySelector('picture') || null;
-      data.image = imgCell.querySelector('img')?.getAttribute('src') || imgCell.textContent.trim();
+    if (key === 'image') {
+      data.imagePicture = value.picture;
+      data.image = value.src;
+      return;
     }
 
-    // Extract CTAs / Links
-    const ctaLinks = [];
-    remainingCells = remainingCells.filter((c) => {
-      const a = c.querySelector('a');
-      const txt = c.textContent.trim();
-      if (a) {
-        ctaLinks.push({
-          title: txt,
-          link: a ? a.getAttribute('href') : txt,
-          style: 'primary',
-        });
-        return false;
-      }
-      return true;
-    });
-    if (ctaLinks.length) {
-      data.links = ctaLinks;
+    if (
+      value !== ''
+      && value !== null
+      && value !== undefined
+    ) {
+      data[key] = value;
     }
+  });
 
-    // Classify config keywords vs content
-    const contentTextCells = [];
-    remainingCells.forEach((c) => {
-      const txt = c.textContent.trim();
-      const lower = txt.toLowerCase();
-
-      if (lower === 'curated' || lower === 'dynamic') {
-        data.sectionType = lower;
-      } else if (['default', 'right-image', 'no-image'].includes(lower)) {
-        data.teaserType = lower;
-      } else if (['grey', 'dark'].includes(lower)) {
-        data.backgroundColor = lower;
-      } else if (['fade-in', 'slide-up', 'zoom-in'].includes(lower)) {
-        data.motionType = lower;
-      } else if (/^h[1-6]$/i.test(lower)) {
-        data.titleType = lower;
-      } else if (['dd-mm-yyyy', 'mm-dd-yyyy', 'mmm-d-yyyy'].includes(lower)) {
-        data.dateFormat = lower;
-      } else if (!Number.isNaN(Number(lower)) && lower !== '') {
-        data.dynamicLimit = Number(lower);
-      } else if (['primary', 'secondary', 'list', 'text'].includes(lower)) {
-        // CTA style token
-        if (data.links && data.links[0] && !data.cta1Style) {
-          data.cta1Style = lower;
-          data.links[0].style = lower;
-        } else if (data.links && data.links[1]) {
-          data.cta2Style = lower;
-          data.links[1].style = lower;
-        }
-      } else if (lower === 'true' || lower === 'false') {
-        // Handled below or kept as boolean
-      } else if (txt) {
-        contentTextCells.push(c);
-      }
-    });
-
-    // Assign text content cells: title is first text, description is second
-    if (contentTextCells.length === 1) {
-      data.title = contentTextCells[0].textContent.trim();
-    } else if (contentTextCells.length >= 2) {
-      data.title = contentTextCells[0].textContent.trim();
-      data.description = contentTextCells[1].innerHTML.trim();
-      if (contentTextCells.length >= 3) {
-        data.shortDescription = contentTextCells[2].innerHTML.trim();
-      }
-    }
-  }
-
-  if (!Array.isArray(data.links)) {
-    data.links = [];
-  }
-  if (data.cta1Title && data.cta1Link) {
-    data.links.push({
-      title: data.cta1Title,
-      link: data.cta1Link,
-      style: data.cta1Style || 'primary',
-    });
-  }
-
-  if (data.cta2Title && data.cta2Link) {
-    data.links.push({
-      title: data.cta2Title,
-      link: data.cta2Link,
-      style: data.cta2Style || 'primary',
-    });
-  }
-
-  applyDefaults(data);
   return data;
 }
 
 /**
- * Apply authored classes.
+ * Attempts to parse the experimental composite multifield.
+ *
+ * The method intentionally supports multiple possible DOM structures because
+ * multifield serialization can differ between Universal Editor environments.
  */
+function parseMultifieldLinks(block) {
+  const linksRoot = block.querySelector('[data-aue-prop="links"]');
+
+  if (!linksRoot) {
+    return [];
+  }
+
+  let itemElements = [
+    ...linksRoot.querySelectorAll(
+      ':scope > [data-aue-type="item"], '
+      + ':scope > [data-aue-prop="item"], '
+      + ':scope > [data-aue-resource]',
+    ),
+  ];
+
+  if (!itemElements.length) {
+    itemElements = [...linksRoot.children];
+  }
+
+  return itemElements
+    .map((item) => {
+      const titleElement = item.querySelector(
+        '[data-aue-prop="title"], '
+        + '[data-aue-prop="ctaTitle"]',
+      );
+
+      const linkElement = item.querySelector(
+        '[data-aue-prop="link"], '
+        + '[data-aue-prop="ctaLink"]',
+      );
+
+      const linkTypeElement = item.querySelector(
+        '[data-aue-prop="linkType"], '
+        + '[data-aue-prop="ctaLinkType"]',
+      );
+
+      const title = titleElement?.textContent.trim() || '';
+      const link = getAnchorHref(linkElement)
+        || linkElement?.textContent.trim()
+        || '';
+
+      const linkType = linkTypeElement?.textContent.trim()
+        || 'default';
+
+      return {
+        title,
+        link,
+        linkType,
+      };
+    })
+    .filter(({ title, link }) => title && link);
+}
+
+function extractAuthoredPathLinks(block) {
+  return [...block.querySelectorAll('.button-container a')]
+    .map((anchor) => anchor.getAttribute('href'))
+    .filter(Boolean);
+}
+
+function assignFixedLinksFromDom(data, block) {
+  const nextData = { ...data };
+  const authoredPaths = extractAuthoredPathLinks(block);
+
+  let pathIndex = 0;
+
+  if (nextData.viewAllText && authoredPaths[pathIndex]) {
+    nextData.viewAllLink = nextData.viewAllLink
+      || authoredPaths[pathIndex];
+
+    pathIndex += 1;
+  }
+
+  if (nextData.primaryCtaTitle && authoredPaths[pathIndex]) {
+    nextData.primaryCtaLink = nextData.primaryCtaLink
+      || authoredPaths[pathIndex];
+
+    pathIndex += 1;
+  }
+
+  if (nextData.secondaryCtaTitle && authoredPaths[pathIndex]) {
+    nextData.secondaryCtaLink = nextData.secondaryCtaLink
+      || authoredPaths[pathIndex];
+  }
+
+  return nextData;
+}
+
+function resolveLinkStyle(linkType, linkStyle) {
+  if (
+    typeof linkType === 'string'
+    && VALID_LINK_STYLES.includes(linkType)
+    && linkType !== 'default'
+  ) {
+    return linkType;
+  }
+
+  if (
+    typeof linkStyle === 'string'
+    && VALID_LINK_STYLES.includes(linkStyle)
+  ) {
+    return linkStyle;
+  }
+
+  return 'default';
+}
+
+function normalizeMultifieldLinks(links, linkStyle) {
+  if (!Array.isArray(links)) {
+    return [];
+  }
+
+  return links
+    .filter(({ title, link }) => title && link)
+    .map((item) => ({
+      title: item.title,
+      link: item.link,
+      style: resolveLinkStyle(
+        item.linkType || item.style,
+        linkStyle,
+      ),
+    }));
+}
+
+function createFixedLinks(data) {
+  const links = [];
+
+  if (data.primaryCtaTitle && data.primaryCtaLink) {
+    links.push({
+      title: data.primaryCtaTitle,
+      link: data.primaryCtaLink,
+      style: resolveLinkStyle(
+        data.primaryCtaLinkType,
+        data.linkStyle,
+      ),
+    });
+  }
+
+  if (data.secondaryCtaTitle && data.secondaryCtaLink) {
+    links.push({
+      title: data.secondaryCtaTitle,
+      link: data.secondaryCtaLink,
+      style: resolveLinkStyle(
+        data.secondaryCtaLinkType,
+        data.linkStyle,
+      ),
+    });
+  }
+
+  return links;
+}
+
+function readBlockData(block) {
+  let data = parseNamedProperties(block);
+
+  data = parsePositionalProperties(block, data);
+  data = assignFixedLinksFromDom(data, block);
+  data = applyDefaults(data);
+
+  const multifieldLinks = parseMultifieldLinks(block);
+
+  if (parseBoolean(data.multiLinksEnabled)) {
+    data.links = normalizeMultifieldLinks(
+      multifieldLinks,
+      data.linkStyle,
+    );
+  } else {
+    data.links = createFixedLinks(data);
+  }
+
+  return data;
+}
+
+function formatDate(dateValue, format = 'mmm-d-yyyy') {
+  if (!dateValue) {
+    return '';
+  }
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.valueOf())) {
+    return dateValue;
+  }
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  const monthName = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ][date.getMonth()];
+
+  switch (format.toLowerCase()) {
+    case 'dd-mm-yyyy':
+      return `${day}-${month}-${year}`;
+
+    case 'mm-dd-yyyy':
+      return `${month}-${day}-${year}`;
+
+    case 'mmm-d-yyyy':
+    default:
+      return `${monthName} ${date.getDate()}, ${year}`;
+  }
+}
+
 function applyClasses(block, data) {
-  const classes = ['teaser-v1'];
+  const classes = [];
 
-  if (typeof data.teaserType === 'string' && data.teaserType && data.teaserType !== 'default') {
-    classes.push(data.teaserType.trim());
+  if (data.style && data.style !== 'default') {
+    classes.push(data.style);
   }
 
-  const bgColor = data.backgroundColor;
-  if (typeof bgColor === 'string' && bgColor && bgColor !== 'default') {
-    classes.push(bgColor.trim());
+  if (
+    data.backgroundColor
+    && data.backgroundColor !== 'default'
+  ) {
+    classes.push(data.backgroundColor);
   }
 
-  const sectionType = typeof data.sectionType === 'string' ? data.sectionType.trim() : 'curated';
-  classes.push(`source-${sectionType}`);
+  if (
+    data.imagePosition
+    && data.style !== 'no-image-right-desc-links'
+  ) {
+    classes.push(`image-${data.imagePosition}`);
+  }
 
-  if (data.hideImage === true || data.hideImage === 'true') {
+  if (
+    parseBoolean(data.hideImage)
+    || data.style === 'no-image-right-desc-links'
+  ) {
     classes.push('hide-image');
   }
 
-  if (data.hideTitle === true || data.hideTitle === 'true') {
+  if (parseBoolean(data.hideTitle)) {
     classes.push('hide-title');
   }
 
-  if (data.showDescription === false || data.showDescription === 'false') {
+  if (!parseBoolean(data.showDescription, true)) {
     classes.push('hide-description');
   }
 
-  if (data.showEyebrow === false || data.showEyebrow === 'false') {
+  if (!parseBoolean(data.showEyebrow, true)) {
     classes.push('hide-eyebrow');
   }
 
-  if (typeof data.motionType === 'string' && data.motionType && data.motionType !== 'none') {
-    classes.push(data.motionType.trim());
+  if (parseBoolean(data.personalizationEnabled)) {
+    classes.push('personalized');
   }
 
-  const safeClasses = classes.filter((cls) => typeof cls === 'string' && /^[a-zA-Z0-9-_]+$/.test(cls.trim()));
-  block.classList.add(...safeClasses);
+  block.classList.add(
+    ...classes.filter((className) => (
+      /^[a-zA-Z0-9_-]+$/.test(className)
+    )),
+  );
 }
 
 function createCTA(link) {
-  const anchor = document.createElement('a');
-  anchor.href = link.link || '#';
-  anchor.textContent = link.title || '';
+  if (!link?.title || !link?.link) {
+    return null;
+  }
 
-  const style = link.style || 'primary';
-  anchor.classList.add('teaser-cta', `teaser-cta-${style}`);
+  const anchor = document.createElement('a');
+  const style = resolveLinkStyle(link.style, 'default');
+
+  anchor.href = link.link;
+  anchor.textContent = link.title;
+  anchor.classList.add(
+    'teaser-cta',
+    `teaser-cta-${style}`,
+  );
+
   return anchor;
 }
 
 function createCTAs(links = []) {
-  if (!links || !links.length) return null;
+  if (!links.length) {
+    return null;
+  }
 
   const wrapper = document.createElement('div');
   wrapper.className = 'teaser-ctas';
 
   links.forEach((link) => {
-    if (link) wrapper.append(createCTA(link));
+    const anchor = createCTA(link);
+
+    if (anchor) {
+      wrapper.append(anchor);
+    }
   });
 
-  return wrapper;
+  return wrapper.children.length ? wrapper : null;
 }
 
-function renderImageElement(data) {
-  if (data.hideImage === true || data.hideImage === 'true') return null;
+function createViewAll(data) {
+  if (!data.viewAllText || !data.viewAllLink) {
+    return null;
+  }
+
+  const anchor = document.createElement('a');
+
+  anchor.className = 'teaser-view-all';
+  anchor.href = data.viewAllLink;
+  anchor.textContent = data.viewAllText;
+
+  return anchor;
+}
+
+function renderImage(data) {
+  const shouldHideImage = parseBoolean(data.hideImage)
+    || data.style === 'no-image-right-desc-links';
+
+  if (shouldHideImage) {
+    return null;
+  }
 
   const imageContainer = document.createElement('div');
   imageContainer.className = 'teaser-image';
 
   if (data.imagePicture) {
-    const existingPic = data.imagePicture.cloneNode(true);
-    imageContainer.append(existingPic);
+    const picture = data.imagePicture.cloneNode(true);
+    const image = picture.querySelector('img');
+
+    if (image && data.imageAlt) {
+      image.alt = stripHtml(data.imageAlt);
+    }
+
+    imageContainer.append(picture);
     return imageContainer;
   }
 
-  if (data.image) {
-    const cleanSrc = data.image.replace(/<[^>]*>?/gm, '').trim();
-    if (cleanSrc) {
-      const pic = createOptimizedPicture(cleanSrc, data.imageAlt || data.title || 'Teaser image', false, [{ width: '800' }]);
-      imageContainer.append(pic);
-      return imageContainer;
-    }
-  }
-
-  return null;
-}
-
-function createViewAll(viewAllData) {
-  if (!viewAllData.viewAllText || !viewAllData.viewAllLink) {
+  if (!data.image) {
     return null;
   }
 
-  const link = document.createElement('a');
-  link.className = 'teaser-view-all';
-  link.href = viewAllData.viewAllLink;
-  link.textContent = viewAllData.viewAllText;
+  const picture = createOptimizedPicture(
+    stripHtml(data.image),
+    stripHtml(data.imageAlt || data.title || 'Teaser image'),
+    false,
+    [{ width: '800' }],
+  );
 
-  return link;
+  imageContainer.append(picture);
+  return imageContainer;
 }
 
 function renderContent(data) {
   const wrapper = document.createElement('div');
   wrapper.className = 'teaser-content';
 
-  const showEyebrow = data.showEyebrow !== false && data.showEyebrow !== 'false';
-  if (showEyebrow && data.eyebrow) {
+  if (
+    parseBoolean(data.showEyebrow, true)
+    && data.eyebrow
+  ) {
     const eyebrow = document.createElement('p');
     eyebrow.className = 'teaser-eyebrow';
-    eyebrow.textContent = data.eyebrow.replace(/<[^>]*>?/gm, '').trim();
+    eyebrow.textContent = stripHtml(data.eyebrow);
     wrapper.append(eyebrow);
   }
 
-  const hideTitle = data.hideTitle === true || data.hideTitle === 'true';
-  if (!hideTitle && data.title && typeof data.title === 'string') {
-    const validHeadingTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-    const headingTag = (typeof data.titleType === 'string' && validHeadingTags.includes(data.titleType.toLowerCase()))
-      ? data.titleType.toLowerCase()
+  if (!parseBoolean(data.hideTitle) && data.title) {
+    const requestedTag = String(data.titleType).toLowerCase();
+    const headingTag = VALID_HEADING_TAGS.includes(requestedTag)
+      ? requestedTag
       : 'h2';
+
     const heading = document.createElement(headingTag);
     heading.className = 'teaser-title';
-    heading.textContent = data.title.replace(/<[^>]*>?/gm, '').trim();
+    heading.textContent = stripHtml(data.title);
     wrapper.append(heading);
   }
 
-  const showDate = data.showDate === true || data.showDate === 'true';
-  if (showDate && (data.date || data.lastModified)) {
-    const dateEl = document.createElement('div');
-    dateEl.className = 'teaser-date';
-    dateEl.textContent = formatDate(data.date || data.lastModified, data.dateFormat);
-    wrapper.append(dateEl);
+  if (
+    parseBoolean(data.showDate)
+    && (data.date || data.lastModified)
+  ) {
+    const date = document.createElement('div');
+    date.className = 'teaser-date';
+    date.textContent = formatDate(
+      data.date || data.lastModified,
+      data.dateFormat,
+    );
+
+    wrapper.append(date);
   }
 
-  const showDescription = data.showDescription !== false && data.showDescription !== 'false';
-  if (showDescription && (data.description || data.shortDescription)) {
-    const descEl = document.createElement('div');
-    descEl.className = 'teaser-description';
-    descEl.innerHTML = data.description || data.shortDescription;
-    wrapper.append(descEl);
+  if (
+    parseBoolean(data.showDescription, true)
+    && (data.description || data.shortDescription)
+  ) {
+    const description = document.createElement('div');
+    description.className = 'teaser-description';
+    description.innerHTML = data.description
+      || data.shortDescription;
+
+    wrapper.append(description);
   }
 
-  const ctasList = Array.isArray(data.links) ? [...data.links] : [];
+  const ctas = createCTAs(data.links);
+
+  if (ctas) {
+    wrapper.append(ctas);
+  }
 
   const viewAll = createViewAll(data);
 
@@ -564,131 +656,91 @@ function renderContent(data) {
     wrapper.append(viewAll);
   }
 
-  const ctas = createCTAs(ctasList);
-  if (ctas) {
-    wrapper.append(ctas);
-  }
-
   return wrapper;
 }
 
-function renderCurated(data) {
-  const outerWrapper = document.createElement('div');
-  outerWrapper.className = 'teaser-wrapper';
+function renderTeaser(data) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'teaser-wrapper';
 
-  const imageEl = renderImageElement(data);
-  if (imageEl) outerWrapper.append(imageEl);
+  const image = renderImage(data);
 
-  const bodyEl = document.createElement('div');
-  bodyEl.className = 'teaser-body';
-  bodyEl.append(renderContent(data));
-  outerWrapper.append(bodyEl);
+  if (image) {
+    wrapper.append(image);
+  }
 
-  return outerWrapper;
+  const body = document.createElement('div');
+  body.className = 'teaser-body';
+  body.append(renderContent(data));
+
+  wrapper.append(body);
+  return wrapper;
 }
 
-async function renderDynamic(data) {
+async function renderPersonalized(block, data) {
   try {
-    const indexItems = await loadIndex();
-    if (!indexItems.length) {
-      return renderCurated(data);
+    const targetConfig = getTargetConfig('teaser-v1');
+    const decision = await getDecision(targetConfig);
+
+    if (!decision?.data) {
+      setPersonalizationAttributes(
+        block,
+        true,
+        'fallback',
+      );
+
+      return renderTeaser(data);
     }
 
-    const tagFilter = (data.dynamicTag || '').toLowerCase().trim();
-    const sourcePath = (data.dynamicSource || '').toLowerCase().trim();
-
-    let matches = indexItems;
-
-    if (sourcePath) {
-      matches = matches.filter((item) => (item.path || '').toLowerCase().startsWith(sourcePath));
-    }
-
-    if (tagFilter) {
-      matches = matches.filter((item) => {
-        const tags = (item.tags || '').toLowerCase();
-        return tags.includes(tagFilter);
-      });
-    }
-
-    const targetItem = matches[0];
-    if (!targetItem) {
-      return renderCurated(data);
-    }
-
-    const dynamicData = {
+    const personalizedData = {
       ...data,
-      title: data.title || targetItem.title,
-      description: data.description || targetItem.description,
-      image: targetItem.image || data.image,
-      lastModified: targetItem.lastModified,
-      links: (data.links && data.links.length) ? data.links : [
-        {
-          title: data.viewAllText || 'Read More',
-          link: targetItem.path || '#',
-          style: 'primary',
-        },
-      ],
+      eyebrow: decision.data.eyebrow || data.eyebrow,
+      title: decision.data.title || data.title,
+      description:
+        decision.data.description || data.description,
+      shortDescription:
+        decision.data.shortDescription
+        || data.shortDescription,
+      image: decision.data.image || data.image,
+      imageAlt: decision.data.imageAlt || data.imageAlt,
+      links: Array.isArray(decision.data.links)
+        ? normalizeMultifieldLinks(
+          decision.data.links,
+          data.linkStyle,
+        )
+        : data.links,
     };
 
-    return renderCurated(dynamicData);
+    setPersonalizationAttributes(
+      block,
+      true,
+      'personalized',
+      decision.data.persona,
+    );
+
+    await sendPropositionDisplay(decision);
+
+    return renderTeaser(personalizedData);
   } catch (error) {
-    return renderCurated(data);
+    setPersonalizationAttributes(
+      block,
+      true,
+      'fallback',
+    );
+
+    return renderTeaser(data);
   }
-}
-
-async function renderPersonalization(block, data) {
-  const targetConfig = getTargetConfig('teaserv1');
-  const decision = await getDecision(targetConfig);
-
-  if (!decision || !decision.data) {
-    setPersonalizationAttributes(block, true, 'fallback');
-    return renderCurated(data);
-  }
-
-  const audience = (data.audienceSegment || '').toLowerCase().trim();
-  const decisionPersona = (decision.data.persona || '').toLowerCase().trim();
-
-  if (audience && decisionPersona && audience !== decisionPersona) {
-    setPersonalizationAttributes(block, true, 'fallback');
-    return renderCurated(data);
-  }
-
-  const personalizedData = {
-    ...data,
-    title: decision.data.title || data.title,
-    description: decision.data.description || data.description,
-    image: decision.data.image || data.image,
-    links: decision.data.links || data.links,
-  };
-
-  const rendered = renderCurated(personalizedData);
-  setPersonalizationAttributes(block, true, 'personalized', decision.data.persona);
-  await sendPropositionDisplay(decision);
-  return rendered;
 }
 
 export default async function decorate(block) {
+  // Multifield content must be parsed before clearing the raw block.
   const data = readBlockData(block);
+
   applyClasses(block, data);
 
-  const sectionType = typeof data.sectionType === 'string'
-    ? data.sectionType.toLowerCase().trim()
-    : 'curated';
+  const content = parseBoolean(data.personalizationEnabled)
+    ? await renderPersonalized(block, data)
+    : renderTeaser(data);
 
-  let content;
-  if (sectionType === 'dynamic') {
-    if (data.personalizationEnabled) {
-      content = await renderPersonalization(block, data);
-    } else {
-      content = await renderDynamic(data);
-    }
-  }
-  if (sectionType === 'curated' || !content) {
-    content = renderCurated(data);
-  }
-
-  block.textContent = '';
-  if (content) {
-    block.append(content);
-  }
+  block.replaceChildren(content);
 }
