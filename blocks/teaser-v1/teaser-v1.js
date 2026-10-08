@@ -61,69 +61,200 @@ function normalizeKey(str) {
 }
 
 /**
- * Parses block data supporting both EDS key-value rows and Universal Editor properties.
+ * Applies default values for teaser-v1 properties as defined in the component model.
+ */
+function applyDefaults(data) {
+  if (data.sectionType === undefined) data.sectionType = 'curated';
+  if (data.personalizationEnabled === undefined) data.personalizationEnabled = false;
+  if (data.fallbackToCurated === undefined) data.fallbackToCurated = true;
+  if (data.teaserType === undefined) data.teaserType = 'default';
+  if (data.backgroundColor === undefined) data.backgroundColor = 'default';
+  if (data.motionType === undefined) data.motionType = 'none';
+  if (data.titleType === undefined) data.titleType = 'h2';
+  if (data.showEyebrow === undefined) data.showEyebrow = true;
+  if (data.hideTitle === undefined) data.hideTitle = false;
+  if (data.showDescription === undefined) data.showDescription = true;
+  if (data.hideImage === undefined) data.hideImage = false;
+  if (data.showDate === undefined) data.showDate = false;
+  if (data.displayTags === undefined) data.displayTags = false;
+  if (data.dateFormat === undefined) data.dateFormat = 'mmm-d-yyyy';
+  if (data.dynamicLimit === undefined) data.dynamicLimit = 3;
+  if (data.cta1Style === undefined) data.cta1Style = 'primary';
+  if (data.cta2Style === undefined) data.cta2Style = 'primary';
+}
+
+/**
+ * Extracts property value from an element based on key type.
+ */
+function extractValue(key, el) {
+  if (key === 'image' || key === 'filereference') {
+    const pic = el.querySelector('picture') || el.closest('picture') || (el.tagName === 'PICTURE' ? el : null);
+    const img = el.querySelector('img') || (el.tagName === 'IMG' ? el : null);
+    return {
+      picture: pic || img?.closest('picture') || null,
+      src: img?.getAttribute('src') || el.textContent.trim(),
+    };
+  }
+
+  const text = el.textContent.trim();
+  const lower = text.toLowerCase();
+  if (lower === 'true') return true;
+  if (lower === 'false') return false;
+
+  if (key === 'dynamicLimit' || (text !== '' && !Number.isNaN(Number(text)) && /^\d+$/.test(text))) {
+    return Number(text);
+  }
+
+  if (key === 'description' || key === 'shortDescription') {
+    return el.innerHTML.trim();
+  }
+
+  const a = el.querySelector('a');
+  if (
+    a
+    && (
+      key === 'viewAllLink'
+      || key === 'cta1Link'
+      || key === 'cta2Link'
+    )
+  ) {
+    return a.getAttribute('href') || a.textContent.trim();
+  }
+
+  return text;
+}
+
+/**
+ * Parses block data supporting Universal Editor instrumentation, EDS 2-column key-value rows,
+ * and 1-column positional authoring.
  */
 function readBlockData(block) {
   const data = {};
 
-  [...block.children].forEach((row) => {
-    const cells = [...row.children];
-    if (cells.length >= 2) {
-      const keyRaw = cells[0].textContent.trim();
-      const key = normalizeKey(keyRaw);
-      const cell = cells[1];
+  // 1. Check Universal Editor instrumentation attributes (data-aue-prop)
+  const ueElements = [...block.querySelectorAll('[data-aue-prop]')];
+  if (block.hasAttribute('data-aue-prop')) {
+    ueElements.unshift(block);
+  }
 
-      const picture = cell.querySelector('picture');
-      const links = [...cell.querySelectorAll('a')];
+  if (ueElements.length > 0) {
+    ueElements.forEach((el) => {
+      const prop = el.getAttribute('data-aue-prop');
+      const key = normalizeKey(prop);
+      if (data[key] !== undefined) return;
 
+      const val = extractValue(key, el);
       if (key === 'image' || key === 'filereference') {
-        data.imagePicture = picture || cell.querySelector('img');
-        data.image = cell.querySelector('img')?.getAttribute('src') || cell.textContent.trim();
-      } else if (key === 'links' || key === 'cta' || key === 'ctas') {
-        data.links = links.map((a) => {
-          let style = 'primary';
-          if (a.parentElement?.tagName === 'EM') style = 'secondary';
-          if (a.parentElement?.tagName === 'STRONG') style = 'primary';
-          if (a.classList.contains('secondary')) style = 'secondary';
-          return {
-            title: a.textContent.trim(),
-            link: a.getAttribute('href') || '#',
-            style,
-          };
-        });
+        data.imagePicture = val.picture;
+        data.image = val.src;
       } else {
-        const text = cell.textContent.trim();
-        if (text.toLowerCase() === 'true') {
-          data[key] = true;
-        } else if (text.toLowerCase() === 'false') {
-          data[key] = false;
-        } else if (!Number.isNaN(Number(text)) && text !== '') {
-          data[key] = Number(text);
+        data[key] = val;
+      }
+    });
+
+    const authoredLinks = [
+      ...block.querySelectorAll('.button-container a'),
+    ];
+
+    let linkIndex = 0;
+
+    if (data.viewAllText && authoredLinks[linkIndex]) {
+      data.viewAllLink = data.viewAllLink
+        || authoredLinks[linkIndex].getAttribute('href');
+      linkIndex += 1;
+    }
+
+    if (data.cta1Title && authoredLinks[linkIndex]) {
+      data.cta1Link = data.cta1Link
+        || authoredLinks[linkIndex].getAttribute('href');
+      linkIndex += 1;
+    }
+
+    if (data.cta2Title && authoredLinks[linkIndex]) {
+      data.cta2Link = data.cta2Link
+        || authoredLinks[linkIndex].getAttribute('href');
+    }
+
+    if (!Array.isArray(data.links)) {
+      data.links = [];
+    }
+    if (data.cta1Title && data.cta1Link) {
+      data.links.push({
+        title: data.cta1Title,
+        link: data.cta1Link,
+        style: data.cta1Style || 'primary',
+      });
+    }
+    if (data.cta2Title && data.cta2Link) {
+      data.links.push({
+        title: data.cta2Title,
+        link: data.cta2Link,
+        style: data.cta2Style || 'primary',
+      });
+    }
+
+    applyDefaults(data);
+    return data;
+  }
+
+  // 2. Check EDS 2-column key-value format (| Key | Value |)
+  const rows = [...block.children];
+  const isKeyValue = rows.some((row) => row.children.length >= 2);
+  if (isKeyValue) {
+    rows.forEach((row) => {
+      const cells = [...row.children];
+      if (cells.length >= 2) {
+        const keyRaw = cells[0].textContent.trim();
+        const key = normalizeKey(keyRaw);
+        const cell = cells[1];
+
+        const picture = cell.querySelector('picture');
+        const links = [...cell.querySelectorAll('a')];
+
+        if (key === 'image' || key === 'filereference') {
+          data.imagePicture = picture || cell.querySelector('img');
+          data.image = cell.querySelector('img')?.getAttribute('src') || cell.textContent.trim();
+        } else if (key === 'links' || key === 'cta' || key === 'ctas') {
+          data.links = links.map((a) => {
+            let style = 'primary';
+            if (a.parentElement?.tagName === 'EM') style = 'secondary';
+            if (a.parentElement?.tagName === 'STRONG') style = 'primary';
+            if (a.classList.contains('secondary')) style = 'secondary';
+            return {
+              title: a.textContent.trim(),
+              link: a.getAttribute('href') || '#',
+              style,
+            };
+          });
         } else {
-          data[key] = cell.innerHTML.trim();
+          data[key] = extractValue(key, cell);
         }
       }
-    } else if (cells.length === 1) {
-      const picture = cells[0].querySelector('picture');
-      if (picture && !data.imagePicture) {
-        data.imagePicture = picture;
-      }
-    }
-  });
+    });
 
-  block.querySelectorAll('[data-aue-prop]').forEach((el) => {
-    const prop = el.getAttribute('data-aue-prop');
-    const key = normalizeKey(prop);
-    if (data[key] === undefined) {
-      if (key === 'image') {
-        data.imagePicture = el.closest('picture');
-        data.image = el.getAttribute('src');
-      } else {
-        data[key] = el.innerHTML.trim();
-      }
+    if (!Array.isArray(data.links)) {
+      data.links = [];
     }
-  });
+    if (data.cta1Title && data.cta1Link) {
+      data.links.push({
+        title: data.cta1Title,
+        link: data.cta1Link,
+        style: data.cta1Style || 'primary',
+      });
+    }
+    if (data.cta2Title && data.cta2Link) {
+      data.links.push({
+        title: data.cta2Title,
+        link: data.cta2Link,
+        style: data.cta2Style || 'primary',
+      });
+    }
 
+    applyDefaults(data);
+    return data;
+  }
+
+  // 3. Single-column positional format (when neither UE nor 2-column format is present)
   const fieldOrder = [
     'sectionType',
     'personalizationEnabled',
@@ -159,50 +290,110 @@ function readBlockData(block) {
     'cta2Style',
   ];
 
-  [...block.children].forEach((row, index) => {
-    const key = fieldOrder[index];
+  const cells = rows.map((row) => (row.children.length > 0 ? row.children[0] : row));
 
-    if (!key || data[key] !== undefined) {
-      return;
-    }
-
-    if (key === 'image') {
-      const picture = row.querySelector('picture');
-      const image = row.querySelector('img');
-
-      if (picture) {
-        data.imagePicture = picture;
+  if (cells.length === fieldOrder.length) {
+    cells.forEach((cell, index) => {
+      const key = fieldOrder[index];
+      const val = extractValue(key, cell);
+      if (key === 'image') {
+        data.imagePicture = cell.querySelector('picture') || null;
+        data.image = cell.querySelector('img')?.getAttribute('src') || cell.textContent.trim();
+      } else {
+        data[key] = val;
       }
+    });
+  } else {
+    // Dynamic content-type classification when optional/empty fields are omitted
+    let remainingCells = [...cells];
 
-      if (image) {
-        data.image = image.getAttribute('src');
+    // Find image cell
+    const imgIndex = remainingCells.findIndex((c) => {
+      if (c.querySelector('picture, img')) return true;
+      const text = c.textContent.trim();
+      return (
+        /\.(avif|webp|jpe?g|png|svg)(\?.*)?$/i.test(text)
+        || /urn:aaid:aem:/i.test(text)
+        || /\/adobe\/assets\//i.test(text)
+        || /\/content\/dam\/.*\.(avif|webp|jpe?g|png|svg)/i.test(text)
+      );
+    });
+    if (imgIndex !== -1) {
+      const imgCell = remainingCells.splice(imgIndex, 1)[0];
+      data.imagePicture = imgCell.querySelector('picture') || null;
+      data.image = imgCell.querySelector('img')?.getAttribute('src') || imgCell.textContent.trim();
+    }
+
+    // Extract CTAs / Links
+    const ctaLinks = [];
+    remainingCells = remainingCells.filter((c) => {
+      const a = c.querySelector('a');
+      const txt = c.textContent.trim();
+      if (a) {
+        ctaLinks.push({
+          title: txt,
+          link: a ? a.getAttribute('href') : txt,
+          style: 'primary',
+        });
+        return false;
       }
-
-      return;
+      return true;
+    });
+    if (ctaLinks.length) {
+      data.links = ctaLinks;
     }
 
-    const propEl = row.querySelector('[data-aue-prop]');
-    const value = propEl
-      ? propEl.textContent.trim()
-      : row.textContent.trim();
+    // Classify config keywords vs content
+    const contentTextCells = [];
+    remainingCells.forEach((c) => {
+      const txt = c.textContent.trim();
+      const lower = txt.toLowerCase();
 
-    if (!value) {
-      return;
+      if (lower === 'curated' || lower === 'dynamic') {
+        data.sectionType = lower;
+      } else if (['default', 'right-image', 'no-image'].includes(lower)) {
+        data.teaserType = lower;
+      } else if (['grey', 'dark'].includes(lower)) {
+        data.backgroundColor = lower;
+      } else if (['fade-in', 'slide-up', 'zoom-in'].includes(lower)) {
+        data.motionType = lower;
+      } else if (/^h[1-6]$/i.test(lower)) {
+        data.titleType = lower;
+      } else if (['dd-mm-yyyy', 'mm-dd-yyyy', 'mmm-d-yyyy'].includes(lower)) {
+        data.dateFormat = lower;
+      } else if (!Number.isNaN(Number(lower)) && lower !== '') {
+        data.dynamicLimit = Number(lower);
+      } else if (['primary', 'secondary', 'list', 'text'].includes(lower)) {
+        // CTA style token
+        if (data.links && data.links[0] && !data.cta1Style) {
+          data.cta1Style = lower;
+          data.links[0].style = lower;
+        } else if (data.links && data.links[1]) {
+          data.cta2Style = lower;
+          data.links[1].style = lower;
+        }
+      } else if (lower === 'true' || lower === 'false') {
+        // Handled below or kept as boolean
+      } else if (txt) {
+        contentTextCells.push(c);
+      }
+    });
+
+    // Assign text content cells: title is first text, description is second
+    if (contentTextCells.length === 1) {
+      data.title = contentTextCells[0].textContent.trim();
+    } else if (contentTextCells.length >= 2) {
+      data.title = contentTextCells[0].textContent.trim();
+      data.description = contentTextCells[1].innerHTML.trim();
+      if (contentTextCells.length >= 3) {
+        data.shortDescription = contentTextCells[2].innerHTML.trim();
+      }
     }
+  }
 
-    if (value === 'true') {
-      data[key] = true;
-    } else if (value === 'false') {
-      data[key] = false;
-    } else if (!Number.isNaN(Number(value)) && value !== '') {
-      data[key] = Number(value);
-    } else {
-      data[key] = value;
-    }
-  });
-
-  data.links = data.links || [];
-
+  if (!Array.isArray(data.links)) {
+    data.links = [];
+  }
   if (data.cta1Title && data.cta1Link) {
     data.links.push({
       title: data.cta1Title,
@@ -218,6 +409,8 @@ function readBlockData(block) {
       style: data.cta2Style || 'primary',
     });
   }
+
+  applyDefaults(data);
   return data;
 }
 
@@ -227,16 +420,16 @@ function readBlockData(block) {
 function applyClasses(block, data) {
   const classes = ['teaser-v1'];
 
-  if (data.teaserType && data.teaserType !== 'default') {
-    classes.push(data.teaserType);
+  if (typeof data.teaserType === 'string' && data.teaserType && data.teaserType !== 'default') {
+    classes.push(data.teaserType.trim());
   }
 
   const bgColor = data.backgroundColor;
-  if (bgColor && bgColor !== 'default') {
-    classes.push(bgColor);
+  if (typeof bgColor === 'string' && bgColor && bgColor !== 'default') {
+    classes.push(bgColor.trim());
   }
 
-  const sectionType = data.sectionType || 'curated';
+  const sectionType = typeof data.sectionType === 'string' ? data.sectionType.trim() : 'curated';
   classes.push(`source-${sectionType}`);
 
   if (data.hideImage === true || data.hideImage === 'true') {
@@ -255,11 +448,12 @@ function applyClasses(block, data) {
     classes.push('hide-eyebrow');
   }
 
-  if (data.motionType && data.motionType !== 'none') {
-    classes.push(data.motionType);
+  if (typeof data.motionType === 'string' && data.motionType && data.motionType !== 'none') {
+    classes.push(data.motionType.trim());
   }
 
-  block.classList.add(...classes);
+  const safeClasses = classes.filter((cls) => typeof cls === 'string' && /^[a-zA-Z0-9-_]+$/.test(cls.trim()));
+  block.classList.add(...safeClasses);
 }
 
 function createCTA(link) {
@@ -335,8 +529,11 @@ function renderContent(data) {
   }
 
   const hideTitle = data.hideTitle === true || data.hideTitle === 'true';
-  if (!hideTitle && data.title) {
-    const headingTag = data.titleType || 'h2';
+  if (!hideTitle && data.title && typeof data.title === 'string') {
+    const validHeadingTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    const headingTag = (typeof data.titleType === 'string' && validHeadingTags.includes(data.titleType.toLowerCase()))
+      ? data.titleType.toLowerCase()
+      : 'h2';
     const heading = document.createElement(headingTag);
     heading.className = 'teaser-title';
     heading.textContent = data.title.replace(/<[^>]*>?/gm, '').trim();
@@ -472,21 +669,11 @@ async function renderPersonalization(block, data) {
 
 export default async function decorate(block) {
   const data = readBlockData(block);
-  console.log('BLOCK', block);
-  console.log('DATASET', block.dataset);
-  console.log('ATTRIBUTES', [...block.attributes].map((a) => ({
-    name: a.name,
-    value: a.value,
-  })));
-  console.log('TEASER DATA', data);
-  console.log('CHILDREN');
-  [...block.children].forEach((c, i) => {
-    console.log(`Child ${i}`, c.outerHTML);
-  });
-  console.log(data.links);
   applyClasses(block, data);
 
-  const sectionType = (data.sectionType || data.sectiontype || 'curated').toLowerCase().trim();
+  const sectionType = typeof data.sectionType === 'string'
+    ? data.sectionType.toLowerCase().trim()
+    : 'curated';
 
   let content;
   if (sectionType === 'dynamic') {
