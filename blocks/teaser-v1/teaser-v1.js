@@ -383,6 +383,12 @@ async function renderPersonalization(block, data) {
 
 export default async function decorate(block) {
   const data = readBlockData(block);
+  console.log('BLOCK', block);
+  console.log('DATASET', block.dataset);
+  console.log('ATTRIBUTES', [...block.attributes].map(a => ({
+    name: a.name,
+    value: a.value,
+  })));
   console.log('TEASER DATA', data);
   applyClasses(block, data);
 
