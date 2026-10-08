@@ -36,12 +36,30 @@
           "label": "Title Type",
           "value": "h2",
           "options": [
-            { "name": "H1", "value": "h1" },
-            { "name": "H2", "value": "h2" },
-            { "name": "H3", "value": "h3" },
-            { "name": "H4", "value": "h4" },
-            { "name": "H5", "value": "h5" },
-            { "name": "H6", "value": "h6" }
+            {
+              "name": "H1",
+              "value": "h1"
+            },
+            {
+              "name": "H2",
+              "value": "h2"
+            },
+            {
+              "name": "H3",
+              "value": "h3"
+            },
+            {
+              "name": "H4",
+              "value": "h4"
+            },
+            {
+              "name": "H5",
+              "value": "h5"
+            },
+            {
+              "name": "H6",
+              "value": "h6"
+            }
           ]
         },
         {
@@ -70,7 +88,10 @@
           "label": "Style",
           "value": "default",
           "options": [
-            { "name": "Default", "value": "default" },
+            {
+              "name": "Default",
+              "value": "default"
+            },
             {
               "name": "No Image, Right Desc & Links",
               "value": "no-image-right-desc-links"
@@ -78,10 +99,11 @@
           ]
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "personalizationEnabled",
           "label": "Personalization",
-          "value": false
+          "value": false,
+          "valueType": "boolean"
         },
         {
           "component": "select",
@@ -89,8 +111,14 @@
           "label": "BG Color",
           "value": "default",
           "options": [
-            { "name": "Default", "value": "default" },
-            { "name": "Grey", "value": "grey" }
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "Grey",
+              "value": "grey"
+            }
           ]
         },
         {
@@ -99,39 +127,50 @@
           "label": "Image Position",
           "value": "left",
           "options": [
-            { "name": "Left", "value": "left" },
-            { "name": "Right", "value": "right" }
+            {
+              "name": "Left",
+              "value": "left"
+            },
+            {
+              "name": "Right",
+              "value": "right"
+            }
           ]
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "showEyebrow",
           "label": "Show Eyebrow",
-          "value": true
+          "value": true,
+          "valueType": "boolean"
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "hideTitle",
           "label": "Hide Title",
-          "value": false
+          "value": false,
+          "valueType": "boolean"
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "showDescription",
           "label": "Show Description",
-          "value": true
+          "value": true,
+          "valueType": "boolean"
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "hideImage",
           "label": "Hide Image",
-          "value": false
+          "value": false,
+          "valueType": "boolean"
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "showDate",
           "label": "Show Date",
-          "value": false
+          "value": false,
+          "valueType": "boolean"
         },
         {
           "component": "select",
@@ -139,22 +178,33 @@
           "label": "Date Format",
           "value": "mmm-d-yyyy",
           "options": [
-            { "name": "DD-MM-YYYY", "value": "dd-mm-yyyy" },
-            { "name": "MM-DD-YYYY", "value": "mm-dd-yyyy" },
-            { "name": "MMM d, yyyy", "value": "mmm-d-yyyy" }
+            {
+              "name": "DD-MM-YYYY",
+              "value": "dd-mm-yyyy"
+            },
+            {
+              "name": "MM-DD-YYYY",
+              "value": "mm-dd-yyyy"
+            },
+            {
+              "name": "MMM d, yyyy",
+              "value": "mmm-d-yyyy"
+            }
           ]
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "displayTags",
           "label": "Display Tags",
-          "value": false
+          "value": false,
+          "valueType": "boolean"
         },
         {
-          "component": "checkbox",
+          "component": "boolean",
           "name": "multiLinksEnabled",
           "label": "Multi Links",
-          "value": false
+          "value": false,
+          "valueType": "boolean"
         },
         {
           "component": "multifield",
@@ -177,10 +227,22 @@
               "label": "CTA Link Type",
               "value": "default",
               "options": [
-                { "name": "Default", "value": "default" },
-                { "name": "List", "value": "list" },
-                { "name": "Primary Button", "value": "primary" },
-                { "name": "Secondary Button", "value": "secondary" }
+                {
+                  "name": "Default",
+                  "value": "default"
+                },
+                {
+                  "name": "List",
+                  "value": "list"
+                },
+                {
+                  "name": "Primary Button",
+                  "value": "primary"
+                },
+                {
+                  "name": "Secondary Button",
+                  "value": "secondary"
+                }
               ]
             }
           ]
@@ -201,10 +263,22 @@
           "label": "Primary CTA Link Type",
           "value": "default",
           "options": [
-            { "name": "Default", "value": "default" },
-            { "name": "List", "value": "list" },
-            { "name": "Primary Button", "value": "primary" },
-            { "name": "Secondary Button", "value": "secondary" }
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "List",
+              "value": "list"
+            },
+            {
+              "name": "Primary Button",
+              "value": "primary"
+            },
+            {
+              "name": "Secondary Button",
+              "value": "secondary"
+            }
           ]
         },
         {
@@ -223,10 +297,22 @@
           "label": "Secondary CTA Link Type",
           "value": "default",
           "options": [
-            { "name": "Default", "value": "default" },
-            { "name": "List", "value": "list" },
-            { "name": "Primary Button", "value": "primary" },
-            { "name": "Secondary Button", "value": "secondary" }
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "List",
+              "value": "list"
+            },
+            {
+              "name": "Primary Button",
+              "value": "primary"
+            },
+            {
+              "name": "Secondary Button",
+              "value": "secondary"
+            }
           ]
         },
         {
@@ -235,10 +321,22 @@
           "label": "Link Style",
           "value": "default",
           "options": [
-            { "name": "Default", "value": "default" },
-            { "name": "List", "value": "list" },
-            { "name": "Primary Button", "value": "primary" },
-            { "name": "Secondary Button", "value": "secondary" }
+            {
+              "name": "Default",
+              "value": "default"
+            },
+            {
+              "name": "List",
+              "value": "list"
+            },
+            {
+              "name": "Primary Button",
+              "value": "primary"
+            },
+            {
+              "name": "Secondary Button",
+              "value": "secondary"
+            }
           ]
         }
       ]

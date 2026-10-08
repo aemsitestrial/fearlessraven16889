@@ -6326,10 +6326,11 @@
         ]
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "personalizationEnabled",
         "label": "Personalization",
-        "value": false
+        "value": false,
+        "valueType": "boolean"
       },
       {
         "component": "select",
@@ -6364,34 +6365,39 @@
         ]
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "showEyebrow",
         "label": "Show Eyebrow",
-        "value": true
+        "value": true,
+        "valueType": "boolean"
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "hideTitle",
         "label": "Hide Title",
-        "value": false
+        "value": false,
+        "valueType": "boolean"
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "showDescription",
         "label": "Show Description",
-        "value": true
+        "value": true,
+        "valueType": "boolean"
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "hideImage",
         "label": "Hide Image",
-        "value": false
+        "value": false,
+        "valueType": "boolean"
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "showDate",
         "label": "Show Date",
-        "value": false
+        "value": false,
+        "valueType": "boolean"
       },
       {
         "component": "select",
@@ -6414,16 +6420,18 @@
         ]
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "displayTags",
         "label": "Display Tags",
-        "value": false
+        "value": false,
+        "valueType": "boolean"
       },
       {
-        "component": "checkbox",
+        "component": "boolean",
         "name": "multiLinksEnabled",
         "label": "Multi Links",
-        "value": false
+        "value": false,
+        "valueType": "boolean"
       },
       {
         "component": "multifield",
