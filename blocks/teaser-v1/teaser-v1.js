@@ -383,6 +383,7 @@ async function renderPersonalization(block, data) {
 
 export default async function decorate(block) {
   const data = readBlockData(block);
+  console.log('TEASER DATA', data);
   applyClasses(block, data);
 
   const sectionType = (data.sectionType || data.sectiontype || 'curated').toLowerCase().trim();
