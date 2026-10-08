@@ -11,12 +11,10 @@
   inset: 0;
   z-index: 0;
   background:
-    linear-gradient(
-      90deg,
+    linear-gradient(90deg,
       rgb(11 11 13 / 96%) 0%,
       rgb(11 11 13 / 88%) 48%,
-      rgb(11 11 13 / 76%) 100%
-    ),
+      rgb(11 11 13 / 76%) 100%),
     var(--teaser-background-image, none);
   background-position: center;
   background-repeat: no-repeat;
@@ -107,11 +105,11 @@
   color: #555;
 }
 
-.teaser-v1 .teaser-description > :first-child {
+.teaser-v1 .teaser-description> :first-child {
   margin-top: 0;
 }
 
-.teaser-v1 .teaser-description > :last-child {
+.teaser-v1 .teaser-description> :last-child {
   margin-bottom: 0;
 }
 
@@ -198,8 +196,10 @@
 }
 
 .teaser-v1 .teaser-cta-list::after {
+  display: inline-block;
   flex: 0 0 auto;
   margin-left: 1rem;
+  color: currentcolor;
   font-size: 1rem;
   line-height: 1;
   content: "↗";
@@ -419,7 +419,7 @@
 
 /* Tablet */
 
-@media (width <= 1024px) {
+@media (width <=1024px) {
   .teaser-v1 .teaser-wrapper {
     gap: 3rem;
     width: min(100% - 2.5rem, 900px);
@@ -439,7 +439,7 @@
 
 /* Mobile */
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .teaser-v1 .teaser-wrapper,
   .teaser-v1.image-left .teaser-wrapper,
   .teaser-v1.image-right .teaser-wrapper {
@@ -487,7 +487,7 @@
 
 /* Small mobile */
 
-@media (width <= 480px) {
+@media (width <=480px) {
   .teaser-v1 .teaser-wrapper {
     width: min(100% - 1.5rem, 480px);
     padding: 2.75rem 0;
