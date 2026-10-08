@@ -114,9 +114,10 @@ function readBlockData(block) {
   block.querySelectorAll('[data-aue-prop]').forEach((el) => {
     const prop = el.getAttribute('data-aue-prop');
     const key = normalizeKey(prop);
-    if (!data[key]) {
+    if (data[key] === undefined) {
       if (key === 'image') {
-        data.imagePicture = el.querySelector('picture') || el.querySelector('img');
+        data.imagePicture = el.closest('picture');
+        data.image = el.getAttribute('src');
       } else {
         data[key] = el.innerHTML.trim();
       }
@@ -133,9 +134,11 @@ function readBlockData(block) {
     'motionType',
     'eyebrow',
     'title',
+    'titleType',
     'description',
     'shortDescription',
     'image',
+    'imageAlt',
     'showEyebrow',
     'hideTitle',
     'showDescription',
@@ -148,13 +151,18 @@ function readBlockData(block) {
     'dynamicLimit',
     'viewAllText',
     'viewAllLink',
-    'links',
+    'cta1Title',
+    'cta1Link',
+    'cta1Style',
+    'cta2Title',
+    'cta2Link',
+    'cta2Style',
   ];
 
   [...block.children].forEach((row, index) => {
     const key = fieldOrder[index];
 
-    if (!key || data[key]) {
+    if (!key || data[key] !== undefined) {
       return;
     }
 
@@ -193,6 +201,23 @@ function readBlockData(block) {
     }
   });
 
+  data.links = data.links || [];
+
+  if (data.cta1Title && data.cta1Link) {
+    data.links.push({
+      title: data.cta1Title,
+      link: data.cta1Link,
+      style: data.cta1Style || 'primary',
+    });
+  }
+
+  if (data.cta2Title && data.cta2Link) {
+    data.links.push({
+      title: data.cta2Title,
+      link: data.cta2Link,
+      style: data.cta2Style || 'primary',
+    });
+  }
   return data;
 }
 
@@ -284,6 +309,19 @@ function renderImageElement(data) {
   return null;
 }
 
+function createViewAll(viewAllData) {
+  if (!viewAllData.viewAllText || !viewAllData.viewAllLink) {
+    return null;
+  }
+
+  const link = document.createElement('a');
+  link.className = 'teaser-view-all';
+  link.href = viewAllData.viewAllLink;
+  link.textContent = viewAllData.viewAllText;
+
+  return link;
+}
+
 function renderContent(data) {
   const wrapper = document.createElement('div');
   wrapper.className = 'teaser-content';
@@ -322,26 +360,7 @@ function renderContent(data) {
   }
 
   const ctasList = Array.isArray(data.links) ? [...data.links] : [];
-  if (data.viewAllLink && data.viewAllText) {
-    ctasList.push({
-      title: data.viewAllText.replace(/<[^>]*>?/gm, '').trim(),
-      link: data.viewAllLink.replace(/<[^>]*>?/gm, '').trim(),
-      style: 'primary',
-    });
-  }
 
-  function createViewAll(viewAllData) {
-    if (!viewAllData.viewAllText || !viewAllData.viewAllLink) {
-      return null;
-    }
-
-    const link = document.createElement('a');
-    link.className = 'teaser-view-all';
-    link.href = viewAllData.viewAllLink;
-    link.textContent = viewAllData.viewAllText;
-
-    return link;
-  }
   const viewAll = createViewAll(data);
 
   if (viewAll) {
@@ -455,7 +474,7 @@ export default async function decorate(block) {
   const data = readBlockData(block);
   console.log('BLOCK', block);
   console.log('DATASET', block.dataset);
-  console.log('ATTRIBUTES', [...block.attributes].map(a => ({
+  console.log('ATTRIBUTES', [...block.attributes].map((a) => ({
     name: a.name,
     value: a.value,
   })));
@@ -464,6 +483,7 @@ export default async function decorate(block) {
   [...block.children].forEach((c, i) => {
     console.log(`Child ${i}`, c.outerHTML);
   });
+  console.log(data.links);
   applyClasses(block, data);
 
   const sectionType = (data.sectionType || data.sectiontype || 'curated').toLowerCase().trim();

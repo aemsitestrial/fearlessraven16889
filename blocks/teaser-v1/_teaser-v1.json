@@ -53,7 +53,6 @@
           "label": "Fallback To Curated",
           "value": true
         },
-
         {
           "component": "select",
           "name": "teaserType",
@@ -74,7 +73,6 @@
             }
           ]
         },
-
         {
           "component": "select",
           "name": "backgroundColor",
@@ -95,7 +93,6 @@
             }
           ]
         },
-
         {
           "component": "select",
           "name": "motionType",
@@ -120,7 +117,6 @@
             }
           ]
         },
-
         {
           "component": "text",
           "name": "eyebrow",
@@ -173,7 +169,6 @@
           "name": "shortDescription",
           "label": "Short Description"
         },
-
         {
           "component": "reference",
           "name": "image",
@@ -184,7 +179,6 @@
           "name": "imageAlt",
           "label": "Image Alt Text"
         },
-
         {
           "component": "checkbox",
           "name": "showEyebrow",
@@ -221,7 +215,6 @@
           "label": "Display Tags",
           "value": false
         },
-
         {
           "component": "select",
           "name": "dateFormat",
@@ -242,7 +235,6 @@
             }
           ]
         },
-
         {
           "component": "text",
           "name": "dynamicSource",
@@ -259,7 +251,6 @@
           "label": "Dynamic Limit",
           "value": 3
         },
-
         {
           "component": "text",
           "name": "viewAllText",
@@ -270,49 +261,71 @@
           "name": "viewAllLink",
           "label": "View All Link"
         },
-
         {
-          "component": "multifield",
-          "name": "links",
-          "label": "Links",
-          "fields": [
+          "component": "text",
+          "name": "cta1Title",
+          "label": "CTA 1 Title"
+        },
+        {
+          "component": "aem-content",
+          "name": "cta1Link",
+          "label": "CTA 1 Link"
+        },
+        {
+          "component": "select",
+          "name": "cta1Style",
+          "label": "CTA 1 Style",
+          "value": "primary",
+          "options": [
             {
-              "component": "text",
-              "name": "title",
-              "label": "CTA Title"
+              "name": "Primary Button",
+              "value": "primary"
             },
             {
-              "component": "aem-content",
-              "name": "link",
-              "label": "CTA Link"
+              "name": "Secondary Button",
+              "value": "secondary"
             },
             {
-              "component": "select",
-              "name": "style",
-              "label": "CTA Style",
-              "value": "default",
-              "options": [
-                {
-                  "name": "Default",
-                  "value": "default"
-                },
-                {
-                  "name": "Primary Button",
-                  "value": "primary"
-                },
-                {
-                  "name": "Secondary Button",
-                  "value": "secondary"
-                },
-                {
-                  "name": "List Link",
-                  "value": "list"
-                },
-                {
-                  "name": "Text Link",
-                  "value": "text"
-                }
-              ]
+              "name": "List Link",
+              "value": "list"
+            },
+            {
+              "name": "Text Link",
+              "value": "text"
+            }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "cta2Title",
+          "label": "CTA 2 Title"
+        },
+        {
+          "component": "aem-content",
+          "name": "cta2Link",
+          "label": "CTA 2 Link"
+        },
+        {
+          "component": "select",
+          "name": "cta2Style",
+          "label": "CTA 2 Style",
+          "value": "primary",
+          "options": [
+            {
+              "name": "Primary Button",
+              "value": "primary"
+            },
+            {
+              "name": "Secondary Button",
+              "value": "secondary"
+            },
+            {
+              "name": "List Link",
+              "value": "list"
+            },
+            {
+              "name": "Text Link",
+              "value": "text"
             }
           ]
         }
