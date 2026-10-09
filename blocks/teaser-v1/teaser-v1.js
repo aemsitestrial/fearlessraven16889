@@ -761,7 +761,7 @@ function applyClasses(block, data) {
 function createCTAArrow() {
   const arrow = document.createElement('img');
 
-  arrow.src = '/content/dam/eds-crosswalk-demo/arrow-right.png';
+  arrow.src = 'https://author-p220207-e2271469.adobeaemcloud.com/ui#/aem/assetdetails.html/content/dam/eds-crosswalk-demo/arrow-right.png';
   arrow.alt = '';
   arrow.className = 'teaser-cta-arrow';
   arrow.setAttribute('aria-hidden', 'true');
