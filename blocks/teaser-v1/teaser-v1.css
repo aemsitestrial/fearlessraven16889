@@ -203,7 +203,7 @@
   color: currentcolor;
   font-size: 1rem;
   line-height: 1;
-  content: "↗";
+  content: "→";
   transition: transform 0.2s ease;
 }
 
