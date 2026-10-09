@@ -170,7 +170,7 @@ function applyDefaults(data) {
     style: 'default',
     personalizationEnabled: false,
     backgroundColor: 'default',
-    imagePosition: 'left',
+    imagePosition: 'right',
     showEyebrow: true,
     hideTitle: false,
     showDescription: true,
