@@ -758,6 +758,18 @@ function applyClasses(block, data) {
   block.classList.add(...classes);
 }
 
+function createCTAArrow() {
+  const arrow = document.createElement('img');
+
+  arrow.src = '/content/dam/eds-crosswalk-demo/arrow-right.png';
+  arrow.alt = '';
+  arrow.className = 'teaser-cta-arrow';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.decoding = 'async';
+
+  return arrow;
+}
+
 function createCTA(link) {
   if (!link?.title || !link?.link) {
     return null;
@@ -767,11 +779,20 @@ function createCTA(link) {
   const style = resolveLinkStyle(link.style, 'default');
 
   anchor.href = link.link;
-  anchor.textContent = link.title;
   anchor.classList.add(
     'teaser-cta',
     `teaser-cta-${style}`,
   );
+
+  const label = document.createElement('span');
+  label.className = 'teaser-cta-label';
+  label.textContent = link.title;
+
+  anchor.append(label);
+
+  if (style === 'list') {
+    anchor.append(createCTAArrow());
+  }
 
   return anchor;
 }
@@ -1018,6 +1039,20 @@ async function renderPersonalized(block, data) {
   }
 }
 
+function createBackground() {
+  const background = document.createElement('div');
+  background.className = 'teaser-background';
+  background.setAttribute('aria-hidden', 'true');
+
+  const img = document.createElement('img');
+  img.src = '/blocks/teaser-v1/careers-background.png';
+  img.alt = '';
+  img.loading = 'lazy';
+
+  background.append(img);
+  return background;
+}
+
 export default async function decorate(block) {
   // Parent and child authoring data must be parsed before clearing the block.
   const data = readBlockData(block);
@@ -1028,5 +1063,5 @@ export default async function decorate(block) {
     ? await renderPersonalized(block, data)
     : renderTeaser(data);
 
-  block.replaceChildren(content);
+  block.replaceChildren(createBackground(), content);
 }

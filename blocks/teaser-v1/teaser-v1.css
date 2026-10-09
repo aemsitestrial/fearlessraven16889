@@ -117,11 +117,11 @@
   color: #555;
 }
 
-.teaser-v1 .teaser-description > :first-child {
+.teaser-v1 .teaser-description> :first-child {
   margin-top: 0;
 }
 
-.teaser-v1 .teaser-description > :last-child {
+.teaser-v1 .teaser-description> :last-child {
   margin-bottom: 0;
 }
 
@@ -210,31 +210,9 @@
   text-align: left;
 }
 
-.teaser-v1 .teaser-cta-list::after {
-  display: block;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  margin-left: auto;
-  background-image: url("./arrow-right.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 24px 24px;
-  content: "";
-  opacity: 0.4;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
 .teaser-v1 .teaser-cta-list:hover {
   color: #fff;
   border-bottom-color: rgb(255 255 255 / 72%);
-}
-
-.teaser-v1 .teaser-cta-list:hover::after {
-  opacity: 1;
-  transform: translateX(3px);
 }
 
 /* No divider below the final CTA */
@@ -244,17 +222,8 @@
   border-bottom-color: #767676;
 }
 
-.teaser-v1.grey .teaser-cta-list::after {
-  filter: brightness(0);
-  opacity: 0.45;
-}
-
 .teaser-v1.grey .teaser-cta-list:hover {
   border-bottom-color: #111;
-}
-
-.teaser-v1.grey .teaser-cta-list:hover::after {
-  opacity: 1;
 }
 
 .teaser-v1 .teaser-ctas .teaser-cta-list:last-child {
@@ -455,7 +424,7 @@
 
 /* Medium desktop and tablet */
 
-@media (width <= 1200px) {
+@media (width <=1200px) {
   .teaser-v1 {
     min-height: auto;
   }
@@ -484,7 +453,7 @@
 
 /* Mobile */
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .teaser-v1 .teaser-wrapper,
   .teaser-v1.image-left .teaser-wrapper,
   .teaser-v1.image-right .teaser-wrapper {
@@ -527,6 +496,33 @@
     font-size: 20px;
   }
 
+  .teaser-v1 .teaser-cta-label {
+    min-width: 0;
+  }
+
+  .teaser-v1 .teaser-cta-list .teaser-cta-label {
+    flex: 1 1 auto;
+  }
+
+  .teaser-v1 .teaser-cta-arrow {
+    display: block;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    object-fit: contain;
+    opacity: 0.4;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .teaser-v1 .teaser-cta-list:hover .teaser-cta-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+
   .teaser-v1 .teaser-cta-primary,
   .teaser-v1 .teaser-cta-secondary {
     align-self: stretch;
@@ -536,7 +532,7 @@
 
 /* Small mobile */
 
-@media (width <= 480px) {
+@media (width <=480px) {
   .teaser-v1 .teaser-wrapper {
     width: calc(100% - 32px);
     padding: 48px 0;
