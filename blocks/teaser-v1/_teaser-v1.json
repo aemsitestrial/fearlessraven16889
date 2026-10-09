@@ -154,7 +154,7 @@
           "component": "select",
           "name": "imagePosition",
           "label": "Image Position",
-          "value": "left",
+          "value": "right",
           "options": [
             {
               "name": "Left",

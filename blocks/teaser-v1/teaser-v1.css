@@ -218,19 +218,19 @@
 }
 
 .teaser-v1 .teaser-cta-list::after {
-  display: inline-flex;
+  display: block;
   flex: 0 0 24px;
-  align-items: center;
-  justify-content: center;
   width: 24px;
   height: 24px;
   margin-left: auto;
-  color: rgb(255 255 255 / 40%);
-  font-size: 20px;
-  line-height: 1;
-  content: "→";
+  background-image: url("./arrow-right.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  content: "";
+  opacity: 0.4;
   transition:
-    color 0.2s ease,
+    opacity 0.2s ease,
     transform 0.2s ease;
 }
 
@@ -240,8 +240,8 @@
 }
 
 .teaser-v1 .teaser-cta-list:hover::after {
-  color: #fff;
-  transform: translate(2px, -2px);
+  opacity: 1;
+  transform: translateX(3px);
 }
 
 /* No divider below the final CTA */
@@ -256,7 +256,8 @@
 }
 
 .teaser-v1.grey .teaser-cta-list::after {
-  color: rgb(0 0 0 / 45%);
+  filter: brightness(0);
+  opacity: 0.45;
 }
 
 .teaser-v1.grey .teaser-cta-list:hover {
@@ -264,7 +265,7 @@
 }
 
 .teaser-v1.grey .teaser-cta-list:hover::after {
-  color: #111;
+  opacity: 1;
 }
 
 /* Default text link */
