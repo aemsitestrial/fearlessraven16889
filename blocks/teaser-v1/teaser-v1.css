@@ -189,10 +189,11 @@
   padding: 0.875rem 0;
   color: #f4f4f5;
   border: 0;
-  border-bottom: 2px solid rgb(255 255 255 / 20%);
+  border-bottom: 1px solid rgb(255 255 255 / 20%);
   border-radius: 0;
   background-color: transparent;
   text-align: left;
+  text-decoration: none;
 }
 
 .teaser-v1 .teaser-cta-list::after {
@@ -222,6 +223,11 @@
 
 .teaser-v1.grey .teaser-cta-list:hover {
   border-bottom-color: rgb(0 0 0 / 60%);
+}
+
+/* Remove separator below the final CTA */
+.teaser-v1 .teaser-ctas .teaser-cta-list:last-child {
+  border-bottom: 0;
 }
 
 /* Default text link */
