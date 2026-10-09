@@ -274,9 +274,9 @@
   background-color: #111;
 }
 
-.teaser-v1.grey .teaser-cta-primary:hover {
-  border-color: #333;
-  background-color: #333;
+.teaser-v1.dark .teaser-cta-primary:hover {
+  border-color: #4e4d4d;
+  background-color: #484848;
 }
 
 /* Secondary button */
