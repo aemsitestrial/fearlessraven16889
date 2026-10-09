@@ -179,9 +179,9 @@ function applyDefaults(data) {
     dateFormat: 'mmm-d-yyyy',
     displayTags: false,
     multiLinksEnabled: false,
-    primaryCtaLinkType: 'default',
-    secondaryCtaLinkType: 'default',
-    linkStyle: 'default',
+    primaryCtaLinkType: 'list',
+    secondaryCtaLinkType: 'list',
+    linkStyle: 'list',
     ...data,
   };
 }
@@ -619,6 +619,18 @@ function normalizeConfiguration(data) {
     normalizedData.multiLinksEnabled,
     false,
   );
+
+  if (!VALID_LINK_STYLES.includes(normalizedData.linkStyle)) {
+    normalizedData.linkStyle = 'list';
+  }
+
+  if (!VALID_LINK_STYLES.includes(normalizedData.primaryCtaLinkType)) {
+    normalizedData.primaryCtaLinkType = 'list';
+  }
+
+  if (!VALID_LINK_STYLES.includes(normalizedData.secondaryCtaLinkType)) {
+    normalizedData.secondaryCtaLinkType = 'list';
+  }
 
   return normalizedData;
 }
