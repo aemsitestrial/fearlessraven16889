@@ -8,17 +8,21 @@
   background-color: #0c0c0d;
 }
 
-.teaser-v1::before {
+.teaser-v1 .teaser-background {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background-image: url("./careers-background.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  content: "";
-  opacity: 0.03;
+  z-index: 0;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.teaser-v1 .teaser-background img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.03;
 }
 
 .teaser-v1.grey {
@@ -517,11 +521,15 @@
       transform 0.2s ease;
   }
 
+  .teaser-v1.grey .teaser-cta-arrow {
+    filter: brightness(0);
+    opacity: 0.45;
+  }
+
   .teaser-v1 .teaser-cta-list:hover .teaser-cta-arrow {
     opacity: 1;
     transform: translateX(3px);
   }
-
 
   .teaser-v1 .teaser-cta-primary,
   .teaser-v1 .teaser-cta-secondary {

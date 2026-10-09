@@ -12,6 +12,8 @@ const FIELD_ORDER = [
   'titleType',
   'image',
   'imageAlt',
+  'backgroundImage',
+  'arrowIcon',
   'description',
   'shortDescription',
   'viewAllText',
@@ -113,6 +115,8 @@ function extractValue(key, element) {
 
   if (
     key === 'image'
+    || key === 'backgroundImage'
+    || key === 'arrowIcon'
     || key === 'fileReference'
     || key === 'filereference'
   ) {
@@ -263,6 +267,10 @@ function parseNamedProperties(block) {
     if (key === 'image') {
       data.imagePicture = value.picture;
       data.image = value.src;
+    } else if (key === 'backgroundImage') {
+      data.backgroundImage = value.src;
+    } else if (key === 'arrowIcon') {
+      data.arrowIcon = value.src;
     } else {
       data[key] = value;
     }
@@ -288,6 +296,15 @@ function parsePositionalProperties(block, existingData) {
     if (key === 'image') {
       data.imagePicture = value.picture;
       data.image = value.src;
+      return;
+    }
+    if (key === 'backgroundImage') {
+      data.backgroundImage = value.src;
+      return;
+    }
+
+    if (key === 'arrowIcon') {
+      data.arrowIcon = value.src;
       return;
     }
 
@@ -758,19 +775,27 @@ function applyClasses(block, data) {
   block.classList.add(...classes);
 }
 
-function createCTAArrow() {
+function createCTAArrow(arrowIcon) {
+  if (!arrowIcon) {
+    return null;
+  }
+
   const arrow = document.createElement('img');
 
-  arrow.src = 'https://author-p220207-e2271469.adobeaemcloud.com/ui#/aem/assetdetails.html/content/dam/eds-crosswalk-demo/arrow-right.png';
+  arrow.src = arrowIcon;
   arrow.alt = '';
   arrow.className = 'teaser-cta-arrow';
   arrow.setAttribute('aria-hidden', 'true');
   arrow.decoding = 'async';
 
+  arrow.addEventListener('error', () => {
+    arrow.remove();
+  });
+
   return arrow;
 }
 
-function createCTA(link) {
+function createCTA(link, arrowIcon) {
   if (!link?.title || !link?.link) {
     return null;
   }
@@ -791,13 +816,17 @@ function createCTA(link) {
   anchor.append(label);
 
   if (style === 'list') {
-    anchor.append(createCTAArrow());
+    const arrow = createCTAArrow(arrowIcon);
+
+    if (arrow) {
+      anchor.append(arrow);
+    }
   }
 
   return anchor;
 }
 
-function createCTAs(links = []) {
+function createCTAs(links = [], arrowIcon = '') {
   if (!links.length) {
     return null;
   }
@@ -806,7 +835,7 @@ function createCTAs(links = []) {
   wrapper.className = 'teaser-ctas';
 
   links.forEach((link) => {
-    const anchor = createCTA(link);
+    const anchor = createCTA(link, arrowIcon);
 
     if (anchor) {
       wrapper.append(anchor);
@@ -946,7 +975,7 @@ function renderContent(data) {
     wrapper.append(description);
   }
 
-  const ctas = createCTAs(data.links);
+  const ctas = createCTAs(data.links, data.arrowIcon);
 
   if (ctas) {
     wrapper.append(ctas);
@@ -1039,22 +1068,31 @@ async function renderPersonalized(block, data) {
   }
 }
 
-function createBackground() {
+function createBackground(backgroundImage) {
+  if (!backgroundImage) {
+    return null;
+  }
+
   const background = document.createElement('div');
   background.className = 'teaser-background';
   background.setAttribute('aria-hidden', 'true');
 
-  const img = document.createElement('img');
-  img.src = '/blocks/teaser-v1/careers-background.png';
-  img.alt = '';
-  img.loading = 'lazy';
+  const image = document.createElement('img');
 
-  background.append(img);
+  image.src = backgroundImage;
+  image.alt = '';
+  image.decoding = 'async';
+
+  image.addEventListener('error', () => {
+    background.remove();
+  });
+
+  background.append(image);
+
   return background;
 }
 
 export default async function decorate(block) {
-  // Parent and child authoring data must be parsed before clearing the block.
   const data = readBlockData(block);
 
   applyClasses(block, data);
@@ -1063,5 +1101,11 @@ export default async function decorate(block) {
     ? await renderPersonalized(block, data)
     : renderTeaser(data);
 
-  block.replaceChildren(createBackground(), content);
+  const background = createBackground(data.backgroundImage);
+
+  if (background) {
+    block.replaceChildren(background, content);
+  } else {
+    block.replaceChildren(content);
+  }
 }

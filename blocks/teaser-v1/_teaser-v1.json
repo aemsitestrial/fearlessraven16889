@@ -92,6 +92,20 @@
           "valueType": "string"
         },
         {
+          "component": "reference",
+          "name": "backgroundImage",
+          "label": "Background Image",
+          "valueType": "string",
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "name": "arrowIcon",
+          "label": "CTA Arrow Icon",
+          "valueType": "string",
+          "multi": false
+        },
+        {
           "component": "richtext",
           "name": "description",
           "label": "Description"
