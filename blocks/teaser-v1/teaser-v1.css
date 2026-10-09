@@ -189,7 +189,7 @@
   padding: 0.875rem 0;
   color: #f4f4f5;
   border: 0;
-  border-bottom: 1px solid rgb(255 255 255 / 20%);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 0;
   background-color: transparent;
   text-align: left;
@@ -274,9 +274,9 @@
   background-color: #111;
 }
 
-.teaser-v1.dark .teaser-cta-primary:hover {
-  border-color: #4e4d4d;
-  background-color: #484848;
+.teaser-v1.grey .teaser-cta-primary:hover {
+  border-color: #333;
+  background-color: #333;
 }
 
 /* Secondary button */
