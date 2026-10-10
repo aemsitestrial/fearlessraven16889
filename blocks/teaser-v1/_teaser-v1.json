@@ -216,6 +216,11 @@
           "valueType": "boolean"
         },
         {
+          "component": "text",
+          "name": "date",
+          "label": "Date"
+        },
+        {
           "component": "select",
           "name": "dateFormat",
           "label": "Date Format",
@@ -241,6 +246,12 @@
           "label": "Display Tags",
           "value": false,
           "valueType": "boolean"
+        },
+        {
+          "component": "text",
+          "name": "tags",
+          "label": "Tags",
+          "description": "Enter comma-separated tags."
         },
         {
           "component": "boolean",

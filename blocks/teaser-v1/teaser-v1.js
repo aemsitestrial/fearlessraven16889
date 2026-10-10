@@ -27,8 +27,10 @@ const FIELD_ORDER = [
   'showDescription',
   'hideImage',
   'showDate',
+  'date',
   'dateFormat',
   'displayTags',
+  'tags',
   'multiLinksEnabled',
   'primaryCtaTitle',
   'primaryCtaLink',
@@ -59,6 +61,18 @@ const VALID_LINK_STYLES = [
   'list',
   'primary',
   'secondary',
+];
+
+const CONFIGURATION_CLASSES = [
+  'no-image-right-desc-links',
+  'grey',
+  'image-left',
+  'image-right',
+  'hide-image',
+  'hide-title',
+  'hide-description',
+  'hide-eyebrow',
+  'personalized',
 ];
 
 function normalizeKey(value = '') {
@@ -770,6 +784,8 @@ function formatDate(dateValue, format = 'mmm-d-yyyy') {
 function applyClasses(block, data) {
   const classes = [];
 
+  block.classList.remove(...CONFIGURATION_CLASSES);
+
   if (
     typeof data.style === 'string'
     && data.style === 'no-image-right-desc-links'
@@ -918,6 +934,35 @@ function createViewAll(data) {
   return anchor;
 }
 
+function createTags(data) {
+  if (!parseBoolean(data.displayTags)) {
+    return null;
+  }
+
+  const values = Array.isArray(data.tags)
+    ? data.tags
+    : String(data.tags || '').split(',');
+  const tags = values
+    .map((tag) => stripHtml(tag).trim())
+    .filter(Boolean);
+
+  if (!tags.length) {
+    return null;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'teaser-tags';
+
+  tags.forEach((tag) => {
+    const element = document.createElement('span');
+    element.className = 'teaser-tag';
+    element.textContent = tag;
+    wrapper.append(element);
+  });
+
+  return wrapper;
+}
+
 function renderImage(data) {
   const shouldHideImage = parseBoolean(data.hideImage)
     || data.style === 'no-image-right-desc-links';
@@ -1016,6 +1061,12 @@ function renderContent(data) {
       || data.shortDescription;
 
     wrapper.append(description);
+  }
+
+  const tags = createTags(data);
+
+  if (tags) {
+    wrapper.append(tags);
   }
 
   const ctas = createCTAs(data.links, data.arrowIcon);
