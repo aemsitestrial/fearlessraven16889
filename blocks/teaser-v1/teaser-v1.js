@@ -287,15 +287,35 @@ function parseNamedProperties(block) {
   return data;
 }
 
-function parseSemanticProperties(block, existingData) {
-  const data = { ...existingData };
+function getSemanticPropertyRows(block) {
   const rows = getParentPropertyRows(block);
   const headingRow = rows.find((row) => row.querySelector(
     'h1, h2, h3, h4, h5, h6',
   ));
-  const heading = headingRow?.querySelector(
-    'h1, h2, h3, h4, h5, h6',
-  );
+  const headingIndex = rows.indexOf(headingRow);
+  const imageRow = rows.find((row) => row.querySelector('picture'));
+  const imageIndex = rows.indexOf(imageRow);
+  const descriptionStartIndex = Math.max(headingIndex, imageIndex);
+  const descriptionRow = rows.find((row, index) => (
+    index > descriptionStartIndex && row.querySelector('p')
+  ));
+
+  return {
+    headingRow,
+    heading: headingRow?.querySelector('h1, h2, h3, h4, h5, h6'),
+    imageRow,
+    picture: imageRow?.querySelector('picture'),
+    descriptionRow,
+  };
+}
+
+function parseSemanticProperties(block, existingData) {
+  const data = { ...existingData };
+  const {
+    heading,
+    picture,
+    descriptionRow,
+  } = getSemanticPropertyRows(block);
 
   if (heading) {
     if (!data.title) {
@@ -307,8 +327,6 @@ function parseSemanticProperties(block, existingData) {
     }
   }
 
-  const imageRow = rows.find((row) => row.querySelector('picture'));
-  const picture = imageRow?.querySelector('picture');
   const image = picture?.querySelector('img');
 
   if (picture && !data.image) {
@@ -320,12 +338,6 @@ function parseSemanticProperties(block, existingData) {
     data.imageAlt = image.getAttribute('alt') || '';
   }
 
-  const descriptionRow = rows.find((row) => (
-    row !== headingRow
-    && row !== imageRow
-    && row.querySelector('p')
-  ));
-
   if (descriptionRow && !data.description) {
     data.description = descriptionRow.innerHTML.trim();
   }
@@ -335,34 +347,47 @@ function parseSemanticProperties(block, existingData) {
 
 function parsePositionalProperties(block, existingData) {
   const data = { ...existingData };
-  const rows = getParentPropertyRows(block);
+  const semanticRows = getSemanticPropertyRows(block);
+  const rows = getParentPropertyRows(block).filter((row) => (
+    !Object.values(semanticRows).includes(row)
+    && !row.querySelector('[data-aue-prop]')
+  ));
+  const semanticFields = new Set([
+    'title',
+    'titleType',
+    'image',
+    'imageAlt',
+    'description',
+  ]);
+  const fields = FIELD_ORDER.filter((key) => (
+    !semanticFields.has(key) && data[key] === undefined
+  ));
+  let rowIndex = 0;
 
-  rows.forEach((row, index) => {
-    const key = FIELD_ORDER[index];
+  fields.forEach((key) => {
+    const row = rows[rowIndex];
 
-    if (!key || data[key] !== undefined) {
+    if (!row) {
       return;
     }
 
     const valueElement = row.children[0] || row;
     const value = extractValue(key, valueElement);
 
-    if (key === 'image') {
-      data.imagePicture = value.picture;
-      data.image = value.src;
-      return;
-    }
-    if (key === 'backgroundImage') {
-      data.backgroundImage = value.src;
-      return;
-    }
-
-    if (key === 'arrowIcon') {
-      data.arrowIcon = value.src;
-      return;
-    }
-
     if (
+      key === 'primaryCtaLinkType'
+      || key === 'secondaryCtaLinkType'
+    ) {
+      if (!VALID_LINK_STYLES.includes(value)) {
+        return;
+      }
+    }
+
+    rowIndex += 1;
+
+    if (key === 'backgroundImage' || key === 'arrowIcon') {
+      data[key] = value.src;
+    } else if (
       value !== ''
       && value !== null
       && value !== undefined
@@ -712,15 +737,7 @@ function readBlockData(block) {
     parseNamedProperties(block),
   );
 
-  const parentRows = getParentPropertyRows(block);
-
-  /*
-   * Positional parsing is safe only when every model field produced
-   * exactly one parent row. Otherwise values shift into wrong fields.
-   */
-  if (parentRows.length === FIELD_ORDER.length) {
-    data = parsePositionalProperties(block, data);
-  }
+  data = parsePositionalProperties(block, data);
 
   data = assignFixedLinksFromDom(data, block);
   data = applyDefaults(data);
