@@ -1074,9 +1074,13 @@ function renderContent(data) {
   ) {
     const description = document.createElement('div');
     description.className = 'teaser-description';
-    description.innerHTML = data.description
-      || data.shortDescription;
-
+    description.innerHTML = data.description;
+    if (data.shortDescription) {
+      const shortDescription = document.createElement('div');
+      shortDescription.classList.add('teaser-short-description');
+      shortDescription.innerHTML = data.shortDescription;
+      wrapper.append(shortDescription);
+    }
     wrapper.append(description);
   }
 
