@@ -206,10 +206,10 @@ function applyDefaults(data) {
 
 function isTeaserLinkItem(element) {
   return Boolean(element) && (
-    element.dataset?.aueComponent === 'teaser-v1-link'
-    || element.dataset?.aueModel === 'teaser-v1-link'
-    || element.dataset?.blockName === 'teaser-v1-link'
-    || element.classList?.contains('teaser-v1-link')
+    element.dataset?.aueComponent === 'teaser-v1-item'
+    || element.dataset?.aueModel === 'teaser-v1-item'
+    || element.dataset?.blockName === 'teaser-v1-item'
+    || element.classList?.contains('teaser-v1-item')
   );
 }
 
@@ -230,10 +230,10 @@ function getClosestTeaserLinkItem(element, block) {
 function getTeaserLinkItems(block) {
   return [
     ...block.querySelectorAll(
-      '[data-aue-component="teaser-v1-link"], '
-      + '[data-aue-model="teaser-v1-link"], '
-      + '[data-block-name="teaser-v1-link"], '
-      + '.teaser-v1-link',
+      '[data-aue-component="teaser-v1-item"], '
+      + '[data-aue-model="teaser-v1-item"], '
+      + '[data-block-name="teaser-v1-item"], '
+      + '.teaser-v1-item',
     ),
   ].filter((item, index, items) => items.indexOf(item) === index);
 }

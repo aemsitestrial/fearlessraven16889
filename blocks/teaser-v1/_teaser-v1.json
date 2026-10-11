@@ -10,7 +10,7 @@
             "template": {
               "name": "Teaser V1",
               "model": "teaser-v1",
-              "filter": "teaser-v1-children"
+              "filter": "teaser-v1"
             }
           }
         }
@@ -18,14 +18,14 @@
     },
     {
       "title": "Teaser Link",
-      "id": "teaser-v1-link",
+      "id": "teaser-v1-item",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
               "name": "Teaser Link",
-              "model": "teaser-v1-link"
+              "model": "teaser-v1-item"
             }
           }
         }
@@ -355,7 +355,7 @@
       ]
     },
     {
-      "id": "teaser-v1-link",
+      "id": "teaser-v1-item",
       "fields": [
         {
           "component": "text",
@@ -396,9 +396,9 @@
   ],
   "filters": [
     {
-      "id": "teaser-v1-children",
+      "id": "teaser-v1",
       "components": [
-        "teaser-v1-link"
+        "teaser-v1-item"
       ]
     }
   ]

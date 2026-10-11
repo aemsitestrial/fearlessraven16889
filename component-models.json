@@ -6566,7 +6566,7 @@
     ]
   },
   {
-    "id": "teaser-v1-link",
+    "id": "teaser-v1-item",
     "fields": [
       {
         "component": "text",

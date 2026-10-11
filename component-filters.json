@@ -134,9 +134,9 @@
     ]
   },
   {
-    "id": "teaser-v1-children",
+    "id": "teaser-v1",
     "components": [
-      "teaser-v1-link"
+      "teaser-v1-item"
     ]
   },
   {
