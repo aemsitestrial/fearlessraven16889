@@ -1,5 +1,4 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { moveInstrumentation } from '../../scripts/scripts.js';
 import {
   getDecision,
   getTargetConfig,
@@ -75,6 +74,18 @@ const CONFIGURATION_CLASSES = [
   'hide-eyebrow',
   'personalized',
 ];
+
+function moveInstrumentation(from, to) {
+  [...from.attributes]
+    .filter(({ name }) => (
+      name.startsWith('data-aue-')
+      || name.startsWith('data-richtext-')
+    ))
+    .forEach(({ name, value }) => {
+      to.setAttribute(name, value);
+      from.removeAttribute(name);
+    });
+}
 
 function normalizeKey(value = '') {
   return value
