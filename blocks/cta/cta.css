@@ -1,0 +1,166 @@
+.cta {
+  box-sizing: border-box;
+}
+
+.cta-link,
+.cta-link:any-link {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  max-width: 100%;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  color: #000;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 0;
+  font: inherit;
+  font-weight: inherit;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease;
+}
+
+.cta-link.cta-link-rectangle {
+  border-radius: 0;
+}
+
+.cta-link.cta-link-rounded {
+  border-radius: 0.375rem;
+}
+
+.cta-link.cta-link-pill {
+  border-radius: 9999px;
+}
+
+.cta-link.cta-view-default.cta-link-pill,
+.cta-link.cta-view-default.cta-link-rounded,
+.cta-link.cta-view-default.cta-link-rectangle {
+  border-radius: 0;
+}
+
+/* Default View */
+.cta-link.cta-view-default {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Primary View */
+.cta-link.cta-view-primary {
+  padding: 12px 16px 12px 24px;
+  gap: 8px;
+  min-height: 50px;
+}
+
+/* Secondary View */
+.cta-link.cta-view-secondary {
+  background: transparent;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.cta-text {
+  font-family: Inter, sans-serif;
+  display: inline-block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0.01em;
+}
+
+.cta-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 1;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.cta-arrow-icon {
+  display: block;
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.cta-arrow-icon.cta-arrow-icon-white {
+  filter: brightness(0) invert(1);
+}
+
+.cta-arrow-icon.cta-arrow-icon-black {
+  filter: brightness(0);
+}
+
+.cta-link:hover {
+  transform: none;
+}
+
+.cta-link:active {
+  transform: translateY(0);
+}
+
+.cta-link:focus {
+  outline: 3px solid currentcolor;
+  outline-offset: 3px;
+}
+
+.cta-link:focus-visible {
+  outline: 3px solid currentcolor;
+  outline-offset: 3px;
+}
+
+.cta-link:hover .cta-arrow-right {
+  transform: translateX(3px);
+}
+
+.cta-link:hover .cta-arrow-left {
+  transform: translateX(-3px);
+}
+
+.cta-link:any-link:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.cta-link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-link,
+  .cta-arrow {
+    transition: none;
+  }
+
+  .cta-link:hover {
+    transform: none;
+  }
+
+  .cta-link:hover .cta-arrow-right,
+  .cta-link:hover .cta-arrow-left {
+    transform: none;
+  }
+}
+
+@media (width <=767px) {
+  .cta-link {
+    max-width: 100%;
+  }
+
+  .cta-text {
+    overflow-wrap: anywhere;
+  }
+}

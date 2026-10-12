@@ -17,17 +17,34 @@
       }
     },
     {
-      "title": "Teaser Link",
-      "id": "teaser-v1-item",
+      "title": "Teaser CTA",
+      "id": "teaser-v1-cta",
       "plugins": {
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
-              "name": "Teaser Link",
-              "model": "teaser-v1-item",
-              "title": "CTA",
-              "link": "/"
+              "name": "CTA",
+              "model": "cta",
+              "text_cta": "CTA",
+              "ctaLink": "/"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Teaser Image",
+      "id": "teaser-v1-image",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Image",
+              "model": "image",
+              "image": "",
+              "imageAlt": ""
             }
           }
         }
@@ -355,52 +372,14 @@
           ]
         }
       ]
-    },
-    {
-      "id": "teaser-v1-item",
-      "fields": [
-        {
-          "component": "text",
-          "name": "title",
-          "label": "CTA Title"
-        },
-        {
-          "component": "aem-content",
-          "name": "link",
-          "label": "CTA Link"
-        },
-        {
-          "component": "select",
-          "name": "linkType",
-          "label": "CTA Link Type",
-          "value": "default",
-          "options": [
-            {
-              "name": "Default",
-              "value": "default"
-            },
-            {
-              "name": "List",
-              "value": "list"
-            },
-            {
-              "name": "Primary Button",
-              "value": "primary"
-            },
-            {
-              "name": "Secondary Button",
-              "value": "secondary"
-            }
-          ]
-        }
-      ]
     }
   ],
   "filters": [
     {
       "id": "teaser-v1",
       "components": [
-        "teaser-v1-item"
+        "teaser-v1-cta",
+        "teaser-v1-image"
       ]
     }
   ]

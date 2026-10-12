@@ -273,6 +273,193 @@
     ]
   },
   {
+    "id": "cta",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "text_cta",
+        "label": "CTA Title",
+        "value": "",
+        "required": true
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "ctaLink",
+        "label": "CTA Link",
+        "value": "",
+        "required": true
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "arrowIcon",
+        "label": "Arrow Icon",
+        "validation": {
+          "pattern": ".*\\.svg$",
+          "message": "Only SVG files are allowed."
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "linkTarget",
+        "label": "CTA Link Type",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Open In New Window",
+            "value": "new-window"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "ctaView",
+        "label": "CTA View",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Primary",
+            "value": "primary"
+          },
+          {
+            "name": "Secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "shape",
+        "label": "Shape",
+        "value": "rectangle",
+        "condition": {
+          "in": [
+            {
+              "var": "ctaView"
+            },
+            [
+              "primary",
+              "secondary"
+            ]
+          ]
+        },
+        "options": [
+          {
+            "name": "Rectangle",
+            "value": "rectangle"
+          },
+          {
+            "name": "Rounded",
+            "value": "rounded"
+          },
+          {
+            "name": "Pill",
+            "value": "pill"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "backgroundColor",
+        "label": "Background Color",
+        "value": "",
+        "condition": {
+          "===": [
+            {
+              "var": "ctaView"
+            },
+            "primary"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "textColor",
+        "label": "Text Color",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "borderColor",
+        "label": "Border Color",
+        "value": "",
+        "condition": {
+          "in": [
+            {
+              "var": "ctaView"
+            },
+            [
+              "primary",
+              "secondary"
+            ]
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "arrowDirection",
+        "label": "Arrow",
+        "value": "none",
+        "options": [
+          {
+            "name": "None",
+            "value": "none"
+          },
+          {
+            "name": "Left",
+            "value": "left"
+          },
+          {
+            "name": "Right",
+            "value": "right"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "arrowColor",
+        "label": "Arrow Color",
+        "value": "white",
+        "condition": {
+          "!==": [
+            {
+              "var": "arrowDirection"
+            },
+            "none"
+          ]
+        },
+        "options": [
+          {
+            "name": "White",
+            "value": "white"
+          },
+          {
+            "name": "Black",
+            "value": "black"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "dm-scene7-template",
     "fields": [
       {
@@ -6543,45 +6730,6 @@
         "component": "select",
         "name": "linkStyle",
         "label": "Link Style",
-        "value": "default",
-        "options": [
-          {
-            "name": "Default",
-            "value": "default"
-          },
-          {
-            "name": "List",
-            "value": "list"
-          },
-          {
-            "name": "Primary Button",
-            "value": "primary"
-          },
-          {
-            "name": "Secondary Button",
-            "value": "secondary"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "teaser-v1-item",
-    "fields": [
-      {
-        "component": "text",
-        "name": "title",
-        "label": "CTA Title"
-      },
-      {
-        "component": "aem-content",
-        "name": "link",
-        "label": "CTA Link"
-      },
-      {
-        "component": "select",
-        "name": "linkType",
-        "label": "CTA Link Type",
         "value": "default",
         "options": [
           {

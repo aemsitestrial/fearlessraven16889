@@ -168,6 +168,7 @@ function extractValue(key, element) {
     || key === 'primaryCtaLink'
     || key === 'secondaryCtaLink'
     || key === 'link'
+    || key === 'ctaLink'
   ) {
     return getAnchorHref(element)
       || element.textContent.trim();
@@ -219,17 +220,34 @@ function applyDefaults(data) {
 function isTeaserLinkItem(element) {
   return Boolean(element) && (
     element.dataset?.aueComponent === 'teaser-v1-item'
+    || element.dataset?.aueComponent === 'teaser-v1-cta'
     || element.dataset?.aueModel === 'teaser-v1-item'
+    || element.dataset?.aueModel === 'cta'
     || element.dataset?.blockName === 'teaser-v1-item'
+    || element.dataset?.blockName === 'teaser-v1-cta'
     || element.classList?.contains('teaser-v1-item')
+    || element.classList?.contains('teaser-v1-cta')
   );
 }
 
-function getClosestTeaserLinkItem(element, block) {
+function isTeaserImageItem(element) {
+  return Boolean(element) && (
+    element.dataset?.aueComponent === 'teaser-v1-image'
+    || element.dataset?.aueModel === 'image'
+    || element.dataset?.blockName === 'teaser-v1-image'
+    || element.classList?.contains('teaser-v1-image')
+  );
+}
+
+function isTeaserChildItem(element) {
+  return isTeaserLinkItem(element) || isTeaserImageItem(element);
+}
+
+function getClosestTeaserChildItem(element, block) {
   let current = element;
 
   while (current && current !== block) {
-    if (isTeaserLinkItem(current)) {
+    if (isTeaserChildItem(current)) {
       return current;
     }
 
@@ -243,18 +261,42 @@ function getTeaserLinkItems(block) {
   return [
     ...block.querySelectorAll(
       '[data-aue-component="teaser-v1-item"], '
+      + '[data-aue-component="teaser-v1-cta"], '
       + '[data-aue-model="teaser-v1-item"], '
+      + '[data-aue-model="cta"], '
       + '[data-block-name="teaser-v1-item"], '
-      + '.teaser-v1-item',
+      + '[data-block-name="teaser-v1-cta"], '
+      + '.teaser-v1-item, '
+      + '.teaser-v1-cta',
     ),
   ].filter((item, index, items) => items.indexOf(item) === index);
 }
 
+function getTeaserImageItems(block) {
+  return [
+    ...block.querySelectorAll(
+      '[data-aue-component="teaser-v1-image"], '
+      + '[data-aue-model="image"], '
+      + '[data-block-name="teaser-v1-image"], '
+      + '.teaser-v1-image',
+    ),
+  ].filter((item, index, items) => items.indexOf(item) === index);
+}
+
+function getTeaserChildItems(block) {
+  return [
+    ...new Set([
+      ...getTeaserLinkItems(block),
+      ...getTeaserImageItems(block),
+    ]),
+  ];
+}
+
 function getParentPropertyRows(block) {
-  const childItems = new Set(getTeaserLinkItems(block));
+  const childItems = new Set(getTeaserChildItems(block));
 
   return [...block.children].filter((child) => {
-    if (isTeaserLinkItem(child) || childItems.has(child)) {
+    if (isTeaserChildItem(child) || childItems.has(child)) {
       return false;
     }
 
@@ -266,7 +308,7 @@ function parseNamedProperties(block) {
   const data = {};
 
   block.querySelectorAll('[data-aue-prop]').forEach((element) => {
-    if (getClosestTeaserLinkItem(element, block)) {
+    if (getClosestTeaserChildItem(element, block)) {
       return;
     }
 
@@ -424,7 +466,7 @@ function getTopLevelRow(element, block) {
 function findNextParentLink(block, propertyName) {
   const propertyElement = [...block.querySelectorAll(
     `[data-aue-prop="${propertyName}"]`,
-  )].find((element) => !getClosestTeaserLinkItem(element, block));
+  )].find((element) => !getClosestTeaserChildItem(element, block));
 
   if (!propertyElement) {
     return '';
@@ -441,7 +483,7 @@ function findNextParentLink(block, propertyName) {
   while (nextRow) {
     if (!isTeaserLinkItem(nextRow)) {
       const anchor = [...nextRow.querySelectorAll('a')]
-        .find((item) => !getClosestTeaserLinkItem(item, block));
+        .find((item) => !getClosestTeaserChildItem(item, block));
 
       if (anchor) {
         return anchor.getAttribute('href') || '';
@@ -538,6 +580,9 @@ function readChildItemRows(item) {
 
 function readTeaserLinkItem(item, fallbackStyle = 'default') {
   const data = {};
+  const isCtaModel = item.dataset?.aueModel === 'cta'
+    || item.dataset?.aueComponent === 'teaser-v1-cta'
+    || item.classList?.contains('teaser-v1-cta');
   const instrumentation = {
     item,
     title: null,
@@ -551,7 +596,13 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
       return;
     }
 
-    const key = normalizeKey(property);
+    const propertyKey = normalizeKey(property);
+    const key = {
+      textCta: 'title',
+      ctaLink: 'link',
+      ctaView: 'linkType',
+      linkTarget: 'target',
+    }[propertyKey] || propertyKey;
     if (key === 'title' || key === 'link') {
       instrumentation[key] = element;
     }
@@ -562,9 +613,24 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
   });
 
   const rows = readChildItemRows(item);
+  const rowFields = isCtaModel
+    ? [
+      'textCta',
+      'ctaLink',
+      'arrowIcon',
+      'linkTarget',
+      'ctaView',
+    ]
+    : LINK_ITEM_FIELD_ORDER;
 
   rows.forEach((row, index) => {
-    const key = LINK_ITEM_FIELD_ORDER[index];
+    const propertyKey = rowFields[index];
+    const key = {
+      textCta: 'title',
+      ctaLink: 'link',
+      ctaView: 'linkType',
+      linkTarget: 'target',
+    }[propertyKey] || propertyKey;
 
     if (key === 'title' || key === 'link') {
       instrumentation[key] ||= row;
@@ -602,8 +668,11 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
   }
 
   const renderedStyle = [...item.classList]
-    .find((className) => className.startsWith('teaser-cta-'))
-    ?.replace('teaser-cta-', '');
+    .find((className) => (
+      className.startsWith('teaser-cta-')
+      || className.startsWith('cta-view-')
+    ))
+    ?.replace(/^(teaser-cta-|cta-view-)/, '');
 
   return {
     title,
@@ -612,6 +681,7 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
       data.linkType || renderedStyle,
       fallbackStyle,
     ),
+    target: data.target,
     instrumentation,
   };
 }
@@ -620,6 +690,70 @@ function readTeaserLinkItems(block, fallbackStyle = 'default') {
   return getTeaserLinkItems(block)
     .map((item) => readTeaserLinkItem(item, fallbackStyle))
     .filter(Boolean);
+}
+
+function readTeaserImageItem(item) {
+  const data = {
+    image: '',
+    imageAlt: '',
+    imagePicture: null,
+    imageInstrumentation: {
+      item,
+      image: null,
+      imageAlt: null,
+    },
+  };
+
+  item.querySelectorAll('[data-aue-prop]').forEach((element) => {
+    const property = normalizeKey(
+      element.getAttribute('data-aue-prop') || '',
+    );
+
+    if (property === 'image' && !data.image) {
+      const value = extractValue('image', element);
+      data.image = value.src;
+      data.imagePicture = value.picture;
+      data.imageInstrumentation.image = element;
+    } else if (property === 'imageAlt' && !data.imageAlt) {
+      data.imageAlt = extractValue('imageAlt', element);
+      data.imageInstrumentation.imageAlt = element;
+    }
+  });
+
+  const rows = readChildItemRows(item);
+  ['image', 'imageAlt'].forEach((key, index) => {
+    if (data[key]) {
+      return;
+    }
+
+    const row = rows[index];
+    if (!row) {
+      return;
+    }
+
+    if (key === 'image') {
+      const value = extractValue(key, row);
+      data.image = value.src;
+      data.imagePicture = value.picture;
+      data.imageInstrumentation.image = row;
+    } else {
+      data.imageAlt = extractValue(key, row);
+      data.imageInstrumentation.imageAlt = row;
+    }
+  });
+
+  const image = item.querySelector('picture img, img');
+  if (!data.image && image) {
+    data.image = image.getAttribute('src') || '';
+    data.imagePicture = image.closest('picture');
+    data.imageInstrumentation.image = image;
+  }
+  if (!data.imageAlt && image) {
+    data.imageAlt = image.getAttribute('alt') || '';
+    data.imageInstrumentation.imageAlt = image;
+  }
+
+  return data.image || data.imagePicture ? data : null;
 }
 
 function isValidText(value) {
@@ -767,6 +901,17 @@ function readBlockData(block) {
   );
 
   data = parsePositionalProperties(block, data);
+
+  const childImage = getTeaserImageItems(block)
+    .map(readTeaserImageItem)
+    .find(Boolean);
+
+  if (childImage) {
+    data.image = childImage.image || data.image;
+    data.imageAlt = childImage.imageAlt || data.imageAlt;
+    data.imagePicture = childImage.imagePicture || data.imagePicture;
+    data.imageInstrumentation = childImage.imageInstrumentation;
+  }
 
   data = assignFixedLinksFromDom(data, block);
   data = applyDefaults(data);
@@ -931,6 +1076,11 @@ function createCTA(link, arrowIcon) {
     moveInstrumentation(link.instrumentation.link, anchor);
   }
 
+  if (link.target === 'new-window') {
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+  }
+
   anchor.append(label);
 
   if (style === 'list') {
@@ -1032,6 +1182,24 @@ function renderImage(data) {
 
   const imageContainer = document.createElement('div');
   imageContainer.className = 'teaser-image';
+  if (data.imageInstrumentation?.item) {
+    imageContainer.classList.add('teaser-v1-image');
+    moveInstrumentation(data.imageInstrumentation.item, imageContainer);
+  }
+
+  const preserveImageInstrumentation = (picture) => {
+    const image = picture.querySelector('img');
+    if (!image) {
+      return;
+    }
+
+    if (data.imageInstrumentation?.image) {
+      moveInstrumentation(data.imageInstrumentation.image, image);
+    }
+    if (data.imageInstrumentation?.imageAlt) {
+      moveInstrumentation(data.imageInstrumentation.imageAlt, image);
+    }
+  };
 
   const altText = stripHtml(
     data.imageAlt || data.title || 'Teaser image',
@@ -1045,6 +1213,7 @@ function renderImage(data) {
       image.alt = altText;
     }
 
+    preserveImageInstrumentation(picture);
     imageContainer.append(picture);
     return imageContainer;
   }
@@ -1066,6 +1235,7 @@ function renderImage(data) {
     [{ width: '800' }],
   );
 
+  preserveImageInstrumentation(picture);
   imageContainer.append(picture);
   return imageContainer;
 }
