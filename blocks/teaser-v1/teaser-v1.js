@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 import {
   getDecision,
   getTargetConfig,
@@ -526,6 +527,11 @@ function readChildItemRows(item) {
 
 function readTeaserLinkItem(item, fallbackStyle = 'default') {
   const data = {};
+  const instrumentation = {
+    item,
+    title: null,
+    link: null,
+  };
 
   item.querySelectorAll('[data-aue-prop]').forEach((element) => {
     const property = element.getAttribute('data-aue-prop');
@@ -535,6 +541,9 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
     }
 
     const key = normalizeKey(property);
+    if (key === 'title' || key === 'link') {
+      instrumentation[key] = element;
+    }
 
     if (data[key] === undefined) {
       data[key] = extractValue(key, element);
@@ -545,6 +554,10 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
 
   rows.forEach((row, index) => {
     const key = LINK_ITEM_FIELD_ORDER[index];
+
+    if (key === 'title' || key === 'link') {
+      instrumentation[key] ||= row;
+    }
 
     if (!key || data[key] !== undefined) {
       return;
@@ -577,13 +590,18 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
     return null;
   }
 
+  const renderedStyle = [...item.classList]
+    .find((className) => className.startsWith('teaser-cta-'))
+    ?.replace('teaser-cta-', '');
+
   return {
     title,
     link,
     style: resolveLinkStyle(
-      data.linkType,
+      data.linkType || renderedStyle,
       fallbackStyle,
     ),
+    instrumentation,
   };
 }
 
@@ -885,9 +903,22 @@ function createCTA(link, arrowIcon) {
     `teaser-cta-${style}`,
   );
 
+  if (link.instrumentation?.item) {
+    anchor.classList.add('teaser-v1-item');
+    moveInstrumentation(link.instrumentation.item, anchor);
+  }
+
   const label = document.createElement('span');
   label.className = 'teaser-cta-label';
   label.textContent = link.title;
+
+  if (link.instrumentation?.title) {
+    moveInstrumentation(link.instrumentation.title, label);
+  }
+
+  if (link.instrumentation?.link) {
+    moveInstrumentation(link.instrumentation.link, anchor);
+  }
 
   anchor.append(label);
 
