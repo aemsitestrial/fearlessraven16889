@@ -1266,7 +1266,7 @@
         },
         {
           "title": "Teaser CTA",
-          "id": "teaser-v1-cta",
+          "id": "cta",
           "plugins": {
             "xwalk": {
               "page": {

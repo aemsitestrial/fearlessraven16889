@@ -136,7 +136,7 @@
   {
     "id": "teaser-v1",
     "components": [
-      "teaser-v1-cta",
+      "cta",
       "teaser-v1-image"
     ]
   },

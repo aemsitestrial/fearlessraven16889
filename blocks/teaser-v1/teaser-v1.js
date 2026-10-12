@@ -10,10 +10,6 @@ const FIELD_ORDER = [
   'eyebrow',
   'title',
   'titleType',
-  'image',
-  'imageAlt',
-  'backgroundImage',
-  'arrowIcon',
   'description',
   'shortDescription',
   'viewAllText',
@@ -31,14 +27,6 @@ const FIELD_ORDER = [
   'dateFormat',
   'displayTags',
   'tags',
-  'multiLinksEnabled',
-  'primaryCtaTitle',
-  'primaryCtaLink',
-  'primaryCtaLinkType',
-  'secondaryCtaTitle',
-  'secondaryCtaLink',
-  'secondaryCtaLinkType',
-  'linkStyle',
 ];
 
 const LINK_ITEM_FIELD_ORDER = [
@@ -141,7 +129,6 @@ function extractValue(key, element) {
 
   if (
     key === 'image'
-    || key === 'backgroundImage'
     || key === 'arrowIcon'
     || key === 'fileReference'
     || key === 'filereference'
@@ -165,8 +152,6 @@ function extractValue(key, element) {
 
   if (
     key === 'viewAllLink'
-    || key === 'primaryCtaLink'
-    || key === 'secondaryCtaLink'
     || key === 'link'
     || key === 'ctaLink'
   ) {
@@ -209,10 +194,6 @@ function applyDefaults(data) {
     showDate: false,
     dateFormat: 'mmm-d-yyyy',
     displayTags: false,
-    multiLinksEnabled: false,
-    primaryCtaLinkType: 'list',
-    secondaryCtaLinkType: 'list',
-    linkStyle: 'list',
     ...data,
   };
 }
@@ -329,10 +310,6 @@ function parseNamedProperties(block) {
     if (key === 'image') {
       data.imagePicture = value.picture;
       data.image = value.src;
-    } else if (key === 'backgroundImage') {
-      data.backgroundImage = value.src;
-    } else if (key === 'arrowIcon') {
-      data.arrowIcon = value.src;
     } else {
       data[key] = value;
     }
@@ -428,20 +405,9 @@ function parsePositionalProperties(block, existingData) {
     const valueElement = row.children[0] || row;
     const value = extractValue(key, valueElement);
 
-    if (
-      key === 'primaryCtaLinkType'
-      || key === 'secondaryCtaLinkType'
-    ) {
-      if (!VALID_LINK_STYLES.includes(value)) {
-        return;
-      }
-    }
-
     rowIndex += 1;
 
-    if (key === 'backgroundImage' || key === 'arrowIcon') {
-      data[key] = value.src;
-    } else if (
+    if (
       value !== ''
       && value !== null
       && value !== undefined
@@ -492,11 +458,7 @@ function findNextParentLink(block, propertyName) {
       const namedProperty = nextRow.querySelector('[data-aue-prop]');
       const name = namedProperty?.getAttribute('data-aue-prop');
 
-      if (
-        name === 'viewAllText'
-        || name === 'primaryCtaTitle'
-        || name === 'secondaryCtaTitle'
-      ) {
+      if (name === 'viewAllText') {
         break;
       }
     }
@@ -506,7 +468,7 @@ function findNextParentLink(block, propertyName) {
   return '';
 }
 
-function assignFixedLinksFromDom(data, block) {
+function assignViewAllLinkFromDom(data, block) {
   const nextData = { ...data };
 
   if (nextData.viewAllText) {
@@ -517,26 +479,10 @@ function assignFixedLinksFromDom(data, block) {
     }
   }
 
-  if (nextData.primaryCtaTitle) {
-    const primaryLink = findNextParentLink(block, 'primaryCtaTitle');
-
-    if (primaryLink) {
-      nextData.primaryCtaLink = primaryLink;
-    }
-  }
-
-  if (nextData.secondaryCtaTitle) {
-    const secondaryLink = findNextParentLink(block, 'secondaryCtaTitle');
-
-    if (secondaryLink) {
-      nextData.secondaryCtaLink = secondaryLink;
-    }
-  }
-
   return nextData;
 }
 
-function resolveLinkStyle(linkType, linkStyle) {
+function resolveLinkStyle(linkType, fallbackStyle) {
   if (
     typeof linkType === 'string'
     && VALID_LINK_STYLES.includes(linkType)
@@ -546,16 +492,16 @@ function resolveLinkStyle(linkType, linkStyle) {
   }
 
   if (
-    typeof linkStyle === 'string'
-    && VALID_LINK_STYLES.includes(linkStyle)
+    typeof fallbackStyle === 'string'
+    && VALID_LINK_STYLES.includes(fallbackStyle)
   ) {
-    return linkStyle;
+    return fallbackStyle;
   }
 
   return 'default';
 }
 
-function normalizeLinks(links, linkStyle) {
+function normalizeLinks(links, fallbackStyle = 'default') {
   if (!Array.isArray(links)) {
     return [];
   }
@@ -567,7 +513,7 @@ function normalizeLinks(links, linkStyle) {
       link: String(item.link).trim(),
       style: resolveLinkStyle(
         item.linkType || item.style,
-        linkStyle,
+        fallbackStyle,
       ),
     }));
 }
@@ -620,6 +566,12 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
       'arrowIcon',
       'linkTarget',
       'ctaView',
+      'shape',
+      'backgroundColor',
+      'textColor',
+      'borderColor',
+      'arrowDirection',
+      'arrowColor',
     ]
     : LINK_ITEM_FIELD_ORDER;
 
@@ -682,6 +634,9 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
       fallbackStyle,
     ),
     target: data.target,
+    arrowIcon: data.arrowIcon?.src || data.arrowIcon || '',
+    arrowDirection: data.arrowDirection || 'none',
+    arrowColor: data.arrowColor || 'white',
     instrumentation,
   };
 }
@@ -754,49 +709,6 @@ function readTeaserImageItem(item) {
   }
 
   return data.image || data.imagePicture ? data : null;
-}
-
-function isValidText(value) {
-  return (
-    typeof value === 'string'
-    && value.trim() !== ''
-    && value.trim() !== 'true'
-    && value.trim() !== 'false'
-  );
-}
-
-function createFixedLinks(data) {
-  const links = [];
-
-  if (
-    isValidText(data.primaryCtaTitle)
-    && isValidText(data.primaryCtaLink)
-  ) {
-    links.push({
-      title: stripHtml(data.primaryCtaTitle),
-      link: data.primaryCtaLink.trim(),
-      style: resolveLinkStyle(
-        data.primaryCtaLinkType,
-        data.linkStyle,
-      ),
-    });
-  }
-
-  if (
-    isValidText(data.secondaryCtaTitle)
-    && isValidText(data.secondaryCtaLink)
-  ) {
-    links.push({
-      title: stripHtml(data.secondaryCtaTitle),
-      link: data.secondaryCtaLink.trim(),
-      style: resolveLinkStyle(
-        data.secondaryCtaLinkType,
-        data.linkStyle,
-      ),
-    });
-  }
-
-  return links;
 }
 
 function normalizeConfiguration(data) {
@@ -874,23 +786,6 @@ function normalizeConfiguration(data) {
     false,
   );
 
-  normalizedData.multiLinksEnabled = parseBoolean(
-    normalizedData.multiLinksEnabled,
-    false,
-  );
-
-  if (!VALID_LINK_STYLES.includes(normalizedData.linkStyle)) {
-    normalizedData.linkStyle = 'list';
-  }
-
-  if (!VALID_LINK_STYLES.includes(normalizedData.primaryCtaLinkType)) {
-    normalizedData.primaryCtaLinkType = 'list';
-  }
-
-  if (!VALID_LINK_STYLES.includes(normalizedData.secondaryCtaLinkType)) {
-    normalizedData.secondaryCtaLinkType = 'list';
-  }
-
   return normalizedData;
 }
 
@@ -913,18 +808,11 @@ function readBlockData(block) {
     data.imageInstrumentation = childImage.imageInstrumentation;
   }
 
-  data = assignFixedLinksFromDom(data, block);
+  data = assignViewAllLinkFromDom(data, block);
   data = applyDefaults(data);
   data = normalizeConfiguration(data);
 
-  const childLinks = readTeaserLinkItems(
-    block,
-    data.linkStyle,
-  );
-
-  data.links = parseBoolean(data.multiLinksEnabled)
-    ? childLinks
-    : createFixedLinks(data);
+  data.links = readTeaserLinkItems(block, 'default');
 
   return data;
 }
@@ -1025,16 +913,20 @@ function applyClasses(block, data) {
   block.classList.add(...classes);
 }
 
-function createCTAArrow(arrowIcon) {
-  if (!arrowIcon) {
+function createCTAArrow(arrowIcon, direction, color) {
+  const source = typeof arrowIcon === 'string'
+    ? arrowIcon
+    : arrowIcon?.src;
+
+  if (!source || !['left', 'right'].includes(direction)) {
     return null;
   }
 
   const arrow = document.createElement('img');
 
-  arrow.src = arrowIcon;
+  arrow.src = source;
   arrow.alt = '';
-  arrow.className = 'teaser-cta-arrow';
+  arrow.className = `teaser-cta-arrow teaser-cta-arrow-${direction} teaser-cta-arrow-${color}`;
   arrow.setAttribute('aria-hidden', 'true');
   arrow.decoding = 'async';
 
@@ -1045,12 +937,13 @@ function createCTAArrow(arrowIcon) {
   return arrow;
 }
 
-function createCTA(link, arrowIcon) {
+function createCTA(link) {
   if (!link?.title || !link?.link) {
     return null;
   }
 
   const anchor = document.createElement('a');
+  let childWrapper = null;
   const style = resolveLinkStyle(link.style, 'default');
 
   anchor.href = link.link;
@@ -1060,8 +953,9 @@ function createCTA(link, arrowIcon) {
   );
 
   if (link.instrumentation?.item) {
-    anchor.classList.add('teaser-v1-item');
-    moveInstrumentation(link.instrumentation.item, anchor);
+    childWrapper = document.createElement('div');
+    childWrapper.className = 'teaser-v1-cta teaser-cta-item';
+    moveInstrumentation(link.instrumentation.item, childWrapper);
   }
 
   const label = document.createElement('span');
@@ -1081,20 +975,31 @@ function createCTA(link, arrowIcon) {
     anchor.rel = 'noopener noreferrer';
   }
 
+  const arrow = createCTAArrow(
+    link.arrowIcon,
+    link.arrowDirection,
+    link.arrowColor,
+  );
+
+  if (arrow && link.arrowDirection === 'left') {
+    anchor.append(arrow);
+  }
+
   anchor.append(label);
 
-  if (style === 'list') {
-    const arrow = createCTAArrow(arrowIcon);
+  if (arrow && link.arrowDirection === 'right') {
+    anchor.append(arrow);
+  }
 
-    if (arrow) {
-      anchor.append(arrow);
-    }
+  if (childWrapper) {
+    childWrapper.append(anchor);
+    return childWrapper;
   }
 
   return anchor;
 }
 
-function createCTAs(links = [], arrowIcon = '') {
+function createCTAs(links = []) {
   if (!links.length) {
     return null;
   }
@@ -1103,7 +1008,7 @@ function createCTAs(links = [], arrowIcon = '') {
   wrapper.className = 'teaser-ctas';
 
   links.forEach((link) => {
-    const anchor = createCTA(link, arrowIcon);
+    const anchor = createCTA(link);
 
     if (anchor) {
       wrapper.append(anchor);
@@ -1302,7 +1207,7 @@ function renderContent(data) {
     wrapper.append(tags);
   }
 
-  const ctas = createCTAs(data.links, data.arrowIcon);
+  const ctas = createCTAs(data.links);
 
   if (ctas) {
     wrapper.append(ctas);
@@ -1369,7 +1274,7 @@ async function renderPersonalized(block, data) {
       links: Array.isArray(decision.data.links)
         ? normalizeLinks(
           decision.data.links,
-          data.linkStyle,
+          'default',
         )
         : data.links,
     };
@@ -1395,30 +1300,6 @@ async function renderPersonalized(block, data) {
   }
 }
 
-function createBackground(backgroundImage) {
-  if (!backgroundImage) {
-    return null;
-  }
-
-  const background = document.createElement('div');
-  background.className = 'teaser-background';
-  background.setAttribute('aria-hidden', 'true');
-
-  const image = document.createElement('img');
-
-  image.src = backgroundImage;
-  image.alt = '';
-  image.decoding = 'async';
-
-  image.addEventListener('error', () => {
-    background.remove();
-  });
-
-  background.append(image);
-
-  return background;
-}
-
 export default async function decorate(block) {
   const data = readBlockData(block);
 
@@ -1428,11 +1309,5 @@ export default async function decorate(block) {
     ? await renderPersonalized(block, data)
     : renderTeaser(data);
 
-  const background = createBackground(data.backgroundImage);
-
-  if (background) {
-    block.replaceChildren(background, content);
-  } else {
-    block.replaceChildren(content);
-  }
+  block.replaceChildren(content);
 }
