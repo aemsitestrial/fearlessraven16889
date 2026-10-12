@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 import {
   getDecision,
   getTargetConfig,
@@ -12,6 +13,7 @@ const FIELD_ORDER = [
   'titleType',
   'description',
   'shortDescription',
+  'backgroundImage',
   'viewAllText',
   'viewAllLink',
   'style',
@@ -27,12 +29,6 @@ const FIELD_ORDER = [
   'dateFormat',
   'displayTags',
   'tags',
-];
-
-const LINK_ITEM_FIELD_ORDER = [
-  'title',
-  'link',
-  'linkType',
 ];
 
 const VALID_HEADING_TAGS = [
@@ -62,18 +58,6 @@ const CONFIGURATION_CLASSES = [
   'hide-eyebrow',
   'personalized',
 ];
-
-function moveInstrumentation(from, to) {
-  [...from.attributes]
-    .filter(({ name }) => (
-      name.startsWith('data-aue-')
-      || name.startsWith('data-richtext-')
-    ))
-    .forEach(({ name, value }) => {
-      to.setAttribute(name, value);
-      from.removeAttribute(name);
-    });
-}
 
 function normalizeKey(value = '') {
   return value
@@ -129,6 +113,7 @@ function extractValue(key, element) {
 
   if (
     key === 'image'
+    || key === 'backgroundImage'
     || key === 'arrowIcon'
     || key === 'fileReference'
     || key === 'filereference'
@@ -200,13 +185,9 @@ function applyDefaults(data) {
 
 function isTeaserLinkItem(element) {
   return Boolean(element) && (
-    element.dataset?.aueComponent === 'teaser-v1-item'
-    || element.dataset?.aueComponent === 'teaser-v1-cta'
-    || element.dataset?.aueModel === 'teaser-v1-item'
+    element.dataset?.aueComponent === 'teaser-v1-cta'
     || element.dataset?.aueModel === 'cta'
-    || element.dataset?.blockName === 'teaser-v1-item'
     || element.dataset?.blockName === 'teaser-v1-cta'
-    || element.classList?.contains('teaser-v1-item')
     || element.classList?.contains('teaser-v1-cta')
   );
 }
@@ -214,7 +195,7 @@ function isTeaserLinkItem(element) {
 function isTeaserImageItem(element) {
   return Boolean(element) && (
     element.dataset?.aueComponent === 'teaser-v1-image'
-    || element.dataset?.aueModel === 'image'
+    || element.dataset?.aueModel === 'teaser-v1-image'
     || element.dataset?.blockName === 'teaser-v1-image'
     || element.classList?.contains('teaser-v1-image')
   );
@@ -239,29 +220,34 @@ function getClosestTeaserChildItem(element, block) {
 }
 
 function getTeaserLinkItems(block) {
-  return [
+  const componentItems = [
     ...block.querySelectorAll(
-      '[data-aue-component="teaser-v1-item"], '
-      + '[data-aue-component="teaser-v1-cta"], '
-      + '[data-aue-model="teaser-v1-item"], '
-      + '[data-aue-model="cta"], '
-      + '[data-block-name="teaser-v1-item"], '
+      '[data-aue-component="teaser-v1-cta"], '
       + '[data-block-name="teaser-v1-cta"], '
-      + '.teaser-v1-item, '
       + '.teaser-v1-cta',
     ),
-  ].filter((item, index, items) => items.indexOf(item) === index);
+  ];
+
+  if (componentItems.length) {
+    return [...new Set(componentItems)];
+  }
+
+  return [
+    ...block.querySelectorAll('[data-aue-model="cta"]'),
+  ];
 }
 
 function getTeaserImageItems(block) {
   return [
     ...block.querySelectorAll(
       '[data-aue-component="teaser-v1-image"], '
-      + '[data-aue-model="image"], '
+      + '[data-aue-model="teaser-v1-image"], '
       + '[data-block-name="teaser-v1-image"], '
       + '.teaser-v1-image',
     ),
-  ].filter((item, index, items) => items.indexOf(item) === index);
+  ].filter((item, index, items) => (
+    items.indexOf(item) === index
+  ));
 }
 
 function getTeaserChildItems(block) {
@@ -307,9 +293,9 @@ function parseNamedProperties(block) {
 
     const value = extractValue(key, element);
 
-    if (key === 'image') {
-      data.imagePicture = value.picture;
-      data.image = value.src;
+    if (key === 'backgroundImage') {
+      data.backgroundImage = value.src;
+      data.backgroundImagePicture = value.picture;
     } else {
       data[key] = value;
     }
@@ -324,18 +310,13 @@ function getSemanticPropertyRows(block) {
     'h1, h2, h3, h4, h5, h6',
   ));
   const headingIndex = rows.indexOf(headingRow);
-  const imageRow = rows.find((row) => row.querySelector('picture'));
-  const imageIndex = rows.indexOf(imageRow);
-  const descriptionStartIndex = Math.max(headingIndex, imageIndex);
   const descriptionRow = rows.find((row, index) => (
-    index > descriptionStartIndex && row.querySelector('p')
+    index > headingIndex && row.querySelector('p')
   ));
 
   return {
     headingRow,
     heading: headingRow?.querySelector('h1, h2, h3, h4, h5, h6'),
-    imageRow,
-    picture: imageRow?.querySelector('picture'),
     descriptionRow,
   };
 }
@@ -344,7 +325,6 @@ function parseSemanticProperties(block, existingData) {
   const data = { ...existingData };
   const {
     heading,
-    picture,
     descriptionRow,
   } = getSemanticPropertyRows(block);
 
@@ -356,17 +336,6 @@ function parseSemanticProperties(block, existingData) {
     if (!data.titleType) {
       data.titleType = heading.tagName.toLowerCase();
     }
-  }
-
-  const image = picture?.querySelector('img');
-
-  if (picture && !data.image) {
-    data.imagePicture = picture;
-    data.image = image?.getAttribute('src') || '';
-  }
-
-  if (image && !data.imageAlt) {
-    data.imageAlt = image.getAttribute('alt') || '';
   }
 
   if (descriptionRow && !data.description) {
@@ -386,8 +355,6 @@ function parsePositionalProperties(block, existingData) {
   const semanticFields = new Set([
     'title',
     'titleType',
-    'image',
-    'imageAlt',
     'description',
   ]);
   const fields = FIELD_ORDER.filter((key) => (
@@ -407,7 +374,12 @@ function parsePositionalProperties(block, existingData) {
 
     rowIndex += 1;
 
-    if (
+    if (key === 'backgroundImage') {
+      if (value?.src) {
+        data.backgroundImage = value.src;
+        data.backgroundImagePicture = value.picture;
+      }
+    } else if (
       value !== ''
       && value !== null
       && value !== undefined
@@ -447,7 +419,7 @@ function findNextParentLink(block, propertyName) {
   let nextRow = propertyRow.nextElementSibling;
 
   while (nextRow) {
-    if (!isTeaserLinkItem(nextRow)) {
+    if (!isTeaserChildItem(nextRow)) {
       const anchor = [...nextRow.querySelectorAll('a')]
         .find((item) => !getClosestTeaserChildItem(item, block));
 
@@ -501,21 +473,64 @@ function resolveLinkStyle(linkType, fallbackStyle) {
   return 'default';
 }
 
-function normalizeLinks(links, fallbackStyle = 'default') {
+function normalizeLinks(
+  links,
+  fallbackStyle = 'default',
+  authoredLinks = [],
+) {
   if (!Array.isArray(links)) {
     return [];
   }
 
   return links
     .filter((item) => item?.title && item?.link)
-    .map((item) => ({
-      title: stripHtml(item.title),
-      link: String(item.link).trim(),
-      style: resolveLinkStyle(
-        item.linkType || item.style,
-        fallbackStyle,
-      ),
-    }));
+    .map((item, index) => {
+      const authoredLink = authoredLinks[index];
+
+      return {
+        title: stripHtml(item.title),
+        link: String(item.link).trim(),
+        style: resolveLinkStyle(
+          item.linkType || item.style,
+          authoredLink?.style || fallbackStyle,
+        ),
+        target:
+          item.target
+          || item.linkTarget
+          || authoredLink?.target
+          || 'default',
+        shape:
+          item.shape
+          || authoredLink?.shape
+          || 'rectangle',
+        backgroundColor:
+          item.backgroundColor
+          || authoredLink?.backgroundColor
+          || '',
+        textColor:
+          item.textColor
+          || authoredLink?.textColor
+          || '',
+        borderColor:
+          item.borderColor
+          || authoredLink?.borderColor
+          || '',
+        arrowIcon:
+          item.arrowIcon
+          || authoredLink?.arrowIcon
+          || '',
+        arrowDirection:
+          item.arrowDirection
+          || authoredLink?.arrowDirection
+          || 'none',
+        arrowColor:
+          item.arrowColor
+          || authoredLink?.arrowColor
+          || 'white',
+        instrumentation:
+          authoredLink?.instrumentation || null,
+      };
+    });
 }
 
 function readChildItemRows(item) {
@@ -526,9 +541,6 @@ function readChildItemRows(item) {
 
 function readTeaserLinkItem(item, fallbackStyle = 'default') {
   const data = {};
-  const isCtaModel = item.dataset?.aueModel === 'cta'
-    || item.dataset?.aueComponent === 'teaser-v1-cta'
-    || item.classList?.contains('teaser-v1-cta');
   const instrumentation = {
     item,
     title: null,
@@ -559,21 +571,19 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
   });
 
   const rows = readChildItemRows(item);
-  const rowFields = isCtaModel
-    ? [
-      'textCta',
-      'ctaLink',
-      'arrowIcon',
-      'linkTarget',
-      'ctaView',
-      'shape',
-      'backgroundColor',
-      'textColor',
-      'borderColor',
-      'arrowDirection',
-      'arrowColor',
-    ]
-    : LINK_ITEM_FIELD_ORDER;
+  const rowFields = [
+    'textCta',
+    'ctaLink',
+    'arrowIcon',
+    'linkTarget',
+    'ctaView',
+    'shape',
+    'backgroundColor',
+    'textColor',
+    'borderColor',
+    'arrowDirection',
+    'arrowColor',
+  ];
 
   rows.forEach((row, index) => {
     const propertyKey = rowFields[index];
@@ -616,7 +626,21 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
   }
 
   if (!title || !link) {
-    return null;
+    return {
+      title: title || 'CTA',
+      link: link || '#',
+      style: 'default',
+      target: 'default',
+      shape: 'rectangle',
+      backgroundColor: '',
+      textColor: '',
+      borderColor: '',
+      arrowIcon: '',
+      arrowDirection: 'none',
+      arrowColor: 'white',
+      instrumentation,
+      incomplete: true,
+    };
   }
 
   const renderedStyle = [...item.classList]
@@ -634,6 +658,10 @@ function readTeaserLinkItem(item, fallbackStyle = 'default') {
       fallbackStyle,
     ),
     target: data.target,
+    shape: data.shape || 'rectangle',
+    backgroundColor: data.backgroundColor || '',
+    textColor: data.textColor || '',
+    borderColor: data.borderColor || '',
     arrowIcon: data.arrowIcon?.src || data.arrowIcon || '',
     arrowDirection: data.arrowDirection || 'none',
     arrowColor: data.arrowColor || 'white',
@@ -708,7 +736,7 @@ function readTeaserImageItem(item) {
     data.imageInstrumentation.imageAlt = image;
   }
 
-  return data.image || data.imagePicture ? data : null;
+  return data;
 }
 
 function normalizeConfiguration(data) {
@@ -744,7 +772,7 @@ function normalizeConfiguration(data) {
   }
 
   if (!validImagePositions.includes(normalizedData.imagePosition)) {
-    normalizedData.imagePosition = 'left';
+    normalizedData.imagePosition = 'right';
   }
 
   if (!validDateFormats.includes(normalizedData.dateFormat)) {
@@ -796,18 +824,9 @@ function readBlockData(block) {
   );
 
   data = parsePositionalProperties(block, data);
-
-  const childImage = getTeaserImageItems(block)
+  data.images = getTeaserImageItems(block)
     .map(readTeaserImageItem)
-    .find(Boolean);
-
-  if (childImage) {
-    data.image = childImage.image || data.image;
-    data.imageAlt = childImage.imageAlt || data.imageAlt;
-    data.imagePicture = childImage.imagePicture || data.imagePicture;
-    data.imageInstrumentation = childImage.imageInstrumentation;
-  }
-
+    .filter(Boolean);
   data = assignViewAllLinkFromDom(data, block);
   data = applyDefaults(data);
   data = normalizeConfiguration(data);
@@ -950,12 +969,29 @@ function createCTA(link) {
   anchor.classList.add(
     'teaser-cta',
     `teaser-cta-${style}`,
+    `teaser-cta-shape-${link.shape}`,
   );
 
   if (link.instrumentation?.item) {
     childWrapper = document.createElement('div');
     childWrapper.className = 'teaser-v1-cta teaser-cta-item';
     moveInstrumentation(link.instrumentation.item, childWrapper);
+  }
+
+  if (link.backgroundColor) {
+    anchor.style.backgroundColor = link.backgroundColor;
+  }
+
+  if (link.textColor) {
+    anchor.style.color = link.textColor;
+  }
+
+  if (link.borderColor) {
+    anchor.style.borderColor = link.borderColor;
+  }
+
+  if (link.incomplete) {
+    childWrapper?.classList.add('is-incomplete');
   }
 
   const label = document.createElement('span');
@@ -1077,72 +1113,84 @@ function createTags(data) {
   return wrapper;
 }
 
-function renderImage(data) {
-  const shouldHideImage = parseBoolean(data.hideImage)
-    || data.style === 'no-image-right-desc-links';
-
-  if (shouldHideImage) {
-    return null;
-  }
-
+function renderImageItem(imageData) {
   const imageContainer = document.createElement('div');
-  imageContainer.className = 'teaser-image';
-  if (data.imageInstrumentation?.item) {
-    imageContainer.classList.add('teaser-v1-image');
-    moveInstrumentation(data.imageInstrumentation.item, imageContainer);
+  imageContainer.className = 'teaser-image teaser-v1-image';
+
+  if (imageData.imageInstrumentation?.item) {
+    moveInstrumentation(
+      imageData.imageInstrumentation.item,
+      imageContainer,
+    );
   }
-
-  const preserveImageInstrumentation = (picture) => {
-    const image = picture.querySelector('img');
-    if (!image) {
-      return;
-    }
-
-    if (data.imageInstrumentation?.image) {
-      moveInstrumentation(data.imageInstrumentation.image, image);
-    }
-    if (data.imageInstrumentation?.imageAlt) {
-      moveInstrumentation(data.imageInstrumentation.imageAlt, image);
-    }
-  };
 
   const altText = stripHtml(
-    data.imageAlt || data.title || 'Teaser image',
+    imageData.imageAlt || 'Teaser image',
   );
 
-  if (data.imagePicture) {
-    const picture = data.imagePicture.cloneNode(true);
+  if (imageData.imagePicture) {
+    const picture = imageData.imagePicture.cloneNode(true);
     const image = picture.querySelector('img');
 
     if (image) {
       image.alt = altText;
+
+      if (imageData.imageInstrumentation?.image) {
+        moveInstrumentation(
+          imageData.imageInstrumentation.image,
+          image,
+        );
+      }
     }
 
-    preserveImageInstrumentation(picture);
     imageContainer.append(picture);
     return imageContainer;
   }
 
-  if (!data.image) {
-    return null;
-  }
+  if (!imageData.image) {
+    imageContainer.classList.add('is-empty');
 
-  const imageSrc = stripHtml(data.image).trim();
+    const placeholder = document.createElement('span');
+    placeholder.className = 'teaser-image-placeholder';
+    placeholder.textContent = 'Select an image';
 
-  if (!imageSrc) {
-    return null;
+    imageContainer.append(placeholder);
+    return imageContainer;
   }
 
   const picture = createOptimizedPicture(
-    imageSrc,
+    stripHtml(imageData.image).trim(),
     altText,
     false,
     [{ width: '800' }],
   );
 
-  preserveImageInstrumentation(picture);
+  const image = picture.querySelector('img');
+
+  if (image && imageData.imageInstrumentation?.image) {
+    moveInstrumentation(
+      imageData.imageInstrumentation.image,
+      image,
+    );
+  }
+
   imageContainer.append(picture);
   return imageContainer;
+}
+
+function renderImages(data) {
+  if (!Array.isArray(data.images) || !data.images.length) {
+    return null;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'teaser-images';
+
+  data.images.forEach((imageData) => {
+    wrapper.append(renderImageItem(imageData));
+  });
+
+  return wrapper;
 }
 
 function renderContent(data) {
@@ -1189,16 +1237,19 @@ function renderContent(data) {
     parseBoolean(data.showDescription, true)
     && (data.description || data.shortDescription)
   ) {
-    const description = document.createElement('div');
-    description.className = 'teaser-description';
-    description.innerHTML = data.description;
+    if (data.description) {
+      const description = document.createElement('div');
+      description.className = 'teaser-description';
+      description.innerHTML = data.description;
+      wrapper.append(description);
+    }
+
     if (data.shortDescription) {
       const shortDescription = document.createElement('div');
-      shortDescription.classList.add('teaser-short-description');
+      shortDescription.className = 'teaser-short-description';
       shortDescription.innerHTML = data.shortDescription;
       wrapper.append(shortDescription);
     }
-    wrapper.append(description);
   }
 
   const tags = createTags(data);
@@ -1226,10 +1277,10 @@ function renderTeaser(data) {
   const wrapper = document.createElement('div');
   wrapper.className = 'teaser-wrapper';
 
-  const image = renderImage(data);
+  const images = renderImages(data);
 
-  if (image) {
-    wrapper.append(image);
+  if (images) {
+    wrapper.append(images);
   }
 
   const body = document.createElement('div');
@@ -1266,15 +1317,26 @@ async function renderPersonalized(block, data) {
       shortDescription:
         decision.data.shortDescription
         || data.shortDescription,
-      image: personalizedImage || data.image,
-      imagePicture: personalizedImage
-        ? null
-        : data.imagePicture,
-      imageAlt: decision.data.imageAlt || data.imageAlt,
+      images: personalizedImage
+        ? [
+          {
+            image: personalizedImage,
+            imageAlt:
+              decision.data.imageAlt
+              || data.images?.[0]?.imageAlt
+              || '',
+            imagePicture: null,
+            imageInstrumentation:
+              data.images?.[0]?.imageInstrumentation || null,
+          },
+          ...((data.images || []).slice(1)),
+        ]
+        : data.images,
       links: Array.isArray(decision.data.links)
         ? normalizeLinks(
           decision.data.links,
           'default',
+          data.links,
         )
         : data.links,
     };
@@ -1300,6 +1362,40 @@ async function renderPersonalized(block, data) {
   }
 }
 
+function createBackground(data) {
+  if (!data.backgroundImage && !data.backgroundImagePicture) {
+    return null;
+  }
+
+  const background = document.createElement('div');
+  background.className = 'teaser-background';
+  background.setAttribute('aria-hidden', 'true');
+
+  if (data.backgroundImagePicture) {
+    const picture = data.backgroundImagePicture.cloneNode(true);
+    const image = picture.querySelector('img');
+
+    if (image) {
+      image.alt = '';
+    }
+
+    background.append(picture);
+    return background;
+  }
+
+  const image = document.createElement('img');
+  image.src = data.backgroundImage;
+  image.alt = '';
+  image.decoding = 'async';
+
+  image.addEventListener('error', () => {
+    background.remove();
+  });
+
+  background.append(image);
+  return background;
+}
+
 export default async function decorate(block) {
   const data = readBlockData(block);
 
@@ -1309,5 +1405,11 @@ export default async function decorate(block) {
     ? await renderPersonalized(block, data)
     : renderTeaser(data);
 
-  block.replaceChildren(content);
+  const background = createBackground(data);
+
+  if (background) {
+    block.replaceChildren(background, content);
+  } else {
+    block.replaceChildren(content);
+  }
 }

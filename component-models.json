@@ -6487,6 +6487,13 @@
         "label": "Short Description"
       },
       {
+        "component": "reference",
+        "name": "backgroundImage",
+        "label": "Background Image",
+        "valueType": "string",
+        "multi": false
+      },
+      {
         "component": "text",
         "name": "viewAllText",
         "label": "View All Text"
@@ -6623,6 +6630,23 @@
         "name": "tags",
         "label": "Tags",
         "description": "Enter comma-separated tags."
+      }
+    ]
+  },
+  {
+    "id": "teaser-v1-image",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "valueType": "string",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Image Alt Text"
       }
     ]
   },
