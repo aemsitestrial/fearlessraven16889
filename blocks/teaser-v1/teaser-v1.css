@@ -969,7 +969,7 @@
   max-width: none;
   transform:
     translateX(-50%) scale(var(--collage-scale));
-  transform-origin: center top;
+  transform-origin: center center;
   pointer-events: none;
 }
 
