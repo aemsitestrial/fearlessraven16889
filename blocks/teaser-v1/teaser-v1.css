@@ -894,6 +894,7 @@
   --teaser-surface: #0c0c0d;
   --teaser-foreground: #fff;
   --teaser-muted: #9e9fa3;
+  --collage-scale: 1;
 
   min-height: 1024px;
 }
@@ -907,6 +908,7 @@
 }
 
 .teaser-v1.image-collage .teaser-wrapper {
+  position: relative;
   display: grid;
   width: 100%;
   min-height: 1024px;
@@ -959,11 +961,28 @@
 .teaser-v1.image-collage .teaser-images {
   position: absolute;
   z-index: 1;
-  inset: 0;
+  top: 0;
+  left: 50%;
+  display: block;
+  width: 1440px;
+  height: 1024px;
+  max-width: none;
+  transform:
+    translateX(-50%) scale(var(--collage-scale));
+  transform-origin: center top;
+  pointer-events: none;
+}
+
+.teaser-v1.image-collage .teaser-image picture,
+.teaser-v1.image-collage .teaser-image img {
   display: block;
   width: 100%;
-  max-width: none;
-  pointer-events: none;
+  height: 100%;
+}
+
+.teaser-v1.image-collage .teaser-image img {
+  object-fit: cover;
+  object-position: center;
 }
 
 .teaser-v1.image-collage .teaser-image-slot-1 {
@@ -1041,8 +1060,8 @@
 .teaser-v1.image-collage .teaser-image-slot-9 {
   top: 69.71%;
   left: 70.01%;
-  width: 198px;
-  height: 117px;
+  width: 197.82px;
+  height: 116.8px;
 }
 
 .teaser-v1.image-collage .teaser-image:nth-child(n + 10) {
@@ -1172,13 +1191,24 @@
     font-size: 21px;
   }
 
+  .teaser-v1.image-collage {
+    --collage-scale: 0.84;
+  }
+
   .teaser-v1.image-collage .teaser-wrapper {
     width: 100%;
   }
+}
 
-  .teaser-v1.image-collage .teaser-images {
-    transform: scale(0.84);
-    transform-origin: center;
+@media (width <=1024px) {
+  .teaser-v1.image-collage {
+    --collage-scale: 0.72;
+  }
+}
+
+@media (width <=900px) {
+  .teaser-v1.image-collage {
+    --collage-scale: 0.64;
   }
 }
 
@@ -1210,6 +1240,10 @@
     flex-basis: auto;
     width: 100%;
     max-width: none;
+  }
+
+  .teaser-v1.image-collage {
+    min-height: auto;
   }
 
   .teaser-v1.image-collage .teaser-wrapper {
@@ -1311,13 +1345,10 @@
     width: 100%;
   }
 
-  .teaser-v1.image-collage {
-    min-height: auto;
-  }
-
   .teaser-v1.image-collage .teaser-body {
     position: relative;
     z-index: 20;
+    order: 1;
     flex: none;
     width: min(100%, 600px);
     max-width: 600px;
@@ -1336,6 +1367,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     width: 100%;
+    height: auto;
     transform: none;
     pointer-events: auto;
   }
@@ -1348,6 +1380,12 @@
     height: auto;
     border-radius: 16px;
     aspect-ratio: 4 / 5;
+  }
+
+  .teaser-v1.image-collage .teaser-image[class*="teaser-image-slot-"] {
+    inset: auto;
+    width: 100%;
+    height: auto;
   }
 
   .teaser-v1.image-collage .teaser-image img {
