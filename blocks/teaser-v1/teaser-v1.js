@@ -25,6 +25,7 @@ const FIELD_ORDER = [
   'showDescription',
   'hideImage',
   'showDate',
+  'textAlignment',
   'date',
   'dateFormat',
   'displayTags',
@@ -48,15 +49,41 @@ const VALID_LINK_STYLES = [
 ];
 
 const CONFIGURATION_CLASSES = [
+  'split-image-content',
+  'split-feature',
+  'background-hero',
+  'image-collage',
   'no-image-right-desc-links',
   'grey',
   'image-left',
   'image-right',
+  'text-left',
+  'text-center',
+  'text-right',
+  'text-justify',
   'hide-image',
   'hide-title',
   'hide-description',
   'hide-eyebrow',
   'personalized',
+];
+
+const IMAGE_ITEM_FIELD_ORDER = [
+  'image',
+  'imageAlt',
+  'imageMode',
+];
+
+const IMAGE_COLLAGE_SLOTS = [
+  'slot-1',
+  'slot-2',
+  'slot-3',
+  'slot-4',
+  'slot-5',
+  'slot-6',
+  'slot-7',
+  'slot-8',
+  'slot-9',
 ];
 
 function normalizeKey(value = '') {
@@ -168,10 +195,11 @@ function extractValue(key, element) {
 function applyDefaults(data) {
   return {
     titleType: 'h2',
-    style: 'default',
+    style: 'split-image-content',
     personalizationEnabled: false,
     backgroundColor: 'default',
     imagePosition: 'right',
+    textAlignment: 'left',
     showEyebrow: true,
     hideTitle: false,
     showDescription: true,
@@ -680,6 +708,7 @@ function readTeaserImageItem(item) {
     image: '',
     imageAlt: '',
     imagePicture: null,
+    imageMode: 'normal',
     imageInstrumentation: {
       item,
       image: null,
@@ -687,54 +716,107 @@ function readTeaserImageItem(item) {
     },
   };
 
+  const namedProperties = new Set();
+
   item.querySelectorAll('[data-aue-prop]').forEach((element) => {
     const property = normalizeKey(
       element.getAttribute('data-aue-prop') || '',
     );
 
-    if (property === 'image' && !data.image) {
+    if (!property) {
+      return;
+    }
+
+    namedProperties.add(property);
+
+    if (property === 'image') {
       const value = extractValue('image', element);
+
       data.image = value.src;
       data.imagePicture = value.picture;
       data.imageInstrumentation.image = element;
-    } else if (property === 'imageAlt' && !data.imageAlt) {
-      data.imageAlt = extractValue('imageAlt', element);
+      return;
+    }
+
+    if (property === 'imageAlt') {
+      data.imageAlt = extractValue(
+        'imageAlt',
+        element,
+      );
       data.imageInstrumentation.imageAlt = element;
+      return;
+    }
+
+    if (property === 'imageMode') {
+      data.imageMode = extractValue(
+        'imageMode',
+        element,
+      );
     }
   });
 
   const rows = readChildItemRows(item);
-  ['image', 'imageAlt'].forEach((key, index) => {
-    if (data[key]) {
+
+  IMAGE_ITEM_FIELD_ORDER.forEach((key, index) => {
+    if (namedProperties.has(key)) {
       return;
     }
 
     const row = rows[index];
+
     if (!row) {
       return;
     }
 
     if (key === 'image') {
       const value = extractValue(key, row);
-      data.image = value.src;
-      data.imagePicture = value.picture;
-      data.imageInstrumentation.image = row;
-    } else {
-      data.imageAlt = extractValue(key, row);
-      data.imageInstrumentation.imageAlt = row;
+
+      if (value.src) {
+        data.image = value.src;
+        data.imagePicture = value.picture;
+        data.imageInstrumentation.image = row;
+      }
+
+      return;
+    }
+
+    if (key === 'imageAlt') {
+      const value = extractValue(key, row);
+
+      if (value) {
+        data.imageAlt = value;
+        data.imageInstrumentation.imageAlt = row;
+      }
+
+      return;
+    }
+
+    const value = extractValue(key, row);
+
+    if (
+      value !== ''
+      && value !== undefined
+      && value !== null
+    ) {
+      data[key] = value;
     }
   });
 
   const image = item.querySelector('picture img, img');
+
   if (!data.image && image) {
     data.image = image.getAttribute('src') || '';
     data.imagePicture = image.closest('picture');
     data.imageInstrumentation.image = image;
   }
+
   if (!data.imageAlt && image) {
     data.imageAlt = image.getAttribute('alt') || '';
-    data.imageInstrumentation.imageAlt = image;
   }
+
+  data.imageMode = data.imageMode === 'black-white'
+    ? 'black-white'
+    : 'normal';
 
   return data;
 }
@@ -743,7 +825,10 @@ function normalizeConfiguration(data) {
   const normalizedData = { ...data };
 
   const validStyles = [
-    'default',
+    'split-image-content',
+    'split-feature',
+    'background-hero',
+    'image-collage',
     'no-image-right-desc-links',
   ];
 
@@ -757,25 +842,55 @@ function normalizeConfiguration(data) {
     'right',
   ];
 
+  const validTextAlignments = [
+    'left',
+    'center',
+    'right',
+    'justify',
+  ];
+
   const validDateFormats = [
     'dd-mm-yyyy',
     'mm-dd-yyyy',
     'mmm-d-yyyy',
   ];
 
-  if (!validStyles.includes(normalizedData.style)) {
-    normalizedData.style = 'default';
+  if (
+    normalizedData.style === 'default'
+    || !validStyles.includes(normalizedData.style)
+  ) {
+    normalizedData.style = 'split-image-content';
   }
 
-  if (!validBackgroundColors.includes(normalizedData.backgroundColor)) {
+  if (
+    !validBackgroundColors.includes(
+      normalizedData.backgroundColor,
+    )
+  ) {
     normalizedData.backgroundColor = 'default';
   }
 
-  if (!validImagePositions.includes(normalizedData.imagePosition)) {
+  if (
+    !validImagePositions.includes(
+      normalizedData.imagePosition,
+    )
+  ) {
     normalizedData.imagePosition = 'right';
   }
 
-  if (!validDateFormats.includes(normalizedData.dateFormat)) {
+  if (
+    !validTextAlignments.includes(
+      normalizedData.textAlignment,
+    )
+  ) {
+    normalizedData.textAlignment = 'left';
+  }
+
+  if (
+    !validDateFormats.includes(
+      normalizedData.dateFormat,
+    )
+  ) {
     normalizedData.dateFormat = 'mmm-d-yyyy';
   }
 
@@ -836,15 +951,50 @@ function readBlockData(block) {
   return data;
 }
 
+function parseDateValue(dateValue) {
+  if (!dateValue) {
+    return null;
+  }
+
+  const normalizedDateValue = String(dateValue).trim();
+  const dateOnlyPattern = /^(\d{4})-(\d{2})-(\d{2})$/;
+  const dateOnlyMatch = dateOnlyPattern.exec(
+    normalizedDateValue,
+  );
+
+  let date = new Date(normalizedDateValue);
+
+  if (dateOnlyMatch) {
+    date = new Date(
+      Number(dateOnlyMatch[1]),
+      Number(dateOnlyMatch[2]) - 1,
+      Number(dateOnlyMatch[3]),
+    );
+
+    if (
+      date.getFullYear() !== Number(dateOnlyMatch[1])
+      || date.getMonth() !== Number(dateOnlyMatch[2]) - 1
+      || date.getDate() !== Number(dateOnlyMatch[3])
+    ) {
+      return null;
+    }
+  }
+
+  return Number.isNaN(date.valueOf())
+    ? null
+    : date;
+}
+
 function formatDate(dateValue, format = 'mmm-d-yyyy') {
   if (!dateValue) {
     return '';
   }
 
-  const date = new Date(dateValue);
+  const normalizedDateValue = String(dateValue).trim();
+  const date = parseDateValue(normalizedDateValue);
 
-  if (Number.isNaN(date.valueOf())) {
-    return dateValue;
+  if (!date) {
+    return normalizedDateValue;
   }
 
   const day = String(date.getDate()).padStart(2, '0');
@@ -884,26 +1034,63 @@ function applyClasses(block, data) {
 
   block.classList.remove(...CONFIGURATION_CLASSES);
 
+  const validVariantClasses = [
+    'split-image-content',
+    'split-feature',
+    'background-hero',
+    'image-collage',
+    'no-image-right-desc-links',
+  ];
+
+  const splitVariants = [
+    'split-image-content',
+    'split-feature',
+  ];
+
   if (
     typeof data.style === 'string'
-    && data.style === 'no-image-right-desc-links'
+    && validVariantClasses.includes(data.style)
   ) {
     classes.push(data.style);
   }
 
+  /*
+   * Grey applies only to layouts that support a selectable
+   * background color. Hero and collage own their theme.
+   */
   if (
-    typeof data.backgroundColor === 'string'
-    && data.backgroundColor === 'grey'
+    data.backgroundColor === 'grey'
+    && ![
+      'background-hero',
+      'image-collage',
+    ].includes(data.style)
   ) {
-    classes.push(data.backgroundColor);
+    classes.push('grey');
   }
 
   if (
-    typeof data.imagePosition === 'string'
+    splitVariants.includes(data.style)
     && ['left', 'right'].includes(data.imagePosition)
-    && data.style !== 'no-image-right-desc-links'
   ) {
     classes.push(`image-${data.imagePosition}`);
+  }
+
+  const flexibleAlignmentVariants = [
+    'split-image-content',
+    'split-feature',
+    'no-image-right-desc-links',
+  ];
+
+  if (
+    flexibleAlignmentVariants.includes(data.style)
+    && [
+      'left',
+      'center',
+      'right',
+      'justify',
+    ].includes(data.textAlignment)
+  ) {
+    classes.push(`text-${data.textAlignment}`);
   }
 
   if (
@@ -1113,9 +1300,23 @@ function createTags(data) {
   return wrapper;
 }
 
-function renderImageItem(imageData) {
+function renderImageItem(
+  imageData,
+  slot = '',
+  fallbackAlt = '',
+) {
   const imageContainer = document.createElement('div');
   imageContainer.className = 'teaser-image teaser-v1-image';
+
+  imageContainer.classList.add(
+    `teaser-image-mode-${imageData.imageMode}`,
+  );
+
+  if (slot) {
+    imageContainer.classList.add(
+      `teaser-image-${slot}`,
+    );
+  }
 
   if (imageData.imageInstrumentation?.item) {
     moveInstrumentation(
@@ -1125,7 +1326,7 @@ function renderImageItem(imageData) {
   }
 
   const altText = stripHtml(
-    imageData.imageAlt || 'Teaser image',
+    imageData.imageAlt || fallbackAlt,
   );
 
   if (imageData.imagePicture) {
@@ -1186,8 +1387,22 @@ function renderImages(data) {
   const wrapper = document.createElement('div');
   wrapper.className = 'teaser-images';
 
-  data.images.forEach((imageData) => {
-    wrapper.append(renderImageItem(imageData));
+  data.images.forEach((imageData, index) => {
+    const isCollage = data.style === 'image-collage';
+    const slot = isCollage
+      ? IMAGE_COLLAGE_SLOTS[index] || ''
+      : '';
+    const fallbackAlt = isCollage
+      ? ''
+      : data.title || '';
+
+    wrapper.append(
+      renderImageItem(
+        imageData,
+        slot,
+        fallbackAlt,
+      ),
+    );
   });
 
   return wrapper;
@@ -1202,20 +1417,29 @@ function renderContent(data) {
     && data.eyebrow
   ) {
     const eyebrow = document.createElement('p');
+
     eyebrow.className = 'teaser-eyebrow';
     eyebrow.textContent = stripHtml(data.eyebrow);
+
     wrapper.append(eyebrow);
   }
 
   if (!parseBoolean(data.hideTitle) && data.title) {
-    const requestedTag = String(data.titleType).toLowerCase();
-    const headingTag = VALID_HEADING_TAGS.includes(requestedTag)
+    const requestedTag = String(
+      data.titleType || '',
+    ).toLowerCase();
+
+    const headingTag = VALID_HEADING_TAGS.includes(
+      requestedTag,
+    )
       ? requestedTag
       : 'h2';
 
     const heading = document.createElement(headingTag);
+
     heading.className = 'teaser-title';
     heading.textContent = stripHtml(data.title);
+
     wrapper.append(heading);
   }
 
@@ -1223,12 +1447,26 @@ function renderContent(data) {
     parseBoolean(data.showDate)
     && (data.date || data.lastModified)
   ) {
-    const date = document.createElement('div');
+    const rawDate = data.date || data.lastModified;
+    const parsedDate = parseDateValue(rawDate);
+    const date = document.createElement('time');
+
     date.className = 'teaser-date';
     date.textContent = formatDate(
-      data.date || data.lastModified,
+      rawDate,
       data.dateFormat,
     );
+
+    if (parsedDate) {
+      const normalizedRawDate = String(rawDate).trim();
+      const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(
+        normalizedRawDate,
+      );
+
+      date.dateTime = isDateOnly
+        ? normalizedRawDate
+        : parsedDate.toISOString();
+    }
 
     wrapper.append(date);
   }
@@ -1239,15 +1477,20 @@ function renderContent(data) {
   ) {
     if (data.description) {
       const description = document.createElement('div');
+
       description.className = 'teaser-description';
       description.innerHTML = data.description;
+
       wrapper.append(description);
     }
 
     if (data.shortDescription) {
       const shortDescription = document.createElement('div');
+
       shortDescription.className = 'teaser-short-description';
+
       shortDescription.innerHTML = data.shortDescription;
+
       wrapper.append(shortDescription);
     }
   }
@@ -1310,8 +1553,10 @@ async function renderPersonalized(block, data) {
 
     const personalizedData = {
       ...data,
-      eyebrow: decision.data.eyebrow || data.eyebrow,
-      title: decision.data.title || data.title,
+      eyebrow:
+        decision.data.eyebrow || data.eyebrow,
+      title:
+        decision.data.title || data.title,
       description:
         decision.data.description || data.description,
       shortDescription:
@@ -1326,8 +1571,12 @@ async function renderPersonalized(block, data) {
               || data.images?.[0]?.imageAlt
               || '',
             imagePicture: null,
+            imageMode:
+              data.images?.[0]?.imageMode
+              || 'normal',
             imageInstrumentation:
-              data.images?.[0]?.imageInstrumentation || null,
+              data.images?.[0]?.imageInstrumentation
+              || null,
           },
           ...((data.images || []).slice(1)),
         ]
@@ -1363,7 +1612,10 @@ async function renderPersonalized(block, data) {
 }
 
 function createBackground(data) {
-  if (!data.backgroundImage && !data.backgroundImagePicture) {
+  if (
+    !data.backgroundImage
+    && !data.backgroundImagePicture
+  ) {
     return null;
   }
 
@@ -1384,6 +1636,7 @@ function createBackground(data) {
   }
 
   const image = document.createElement('img');
+
   image.src = data.backgroundImage;
   image.alt = '';
   image.decoding = 'async';
@@ -1393,6 +1646,7 @@ function createBackground(data) {
   });
 
   background.append(image);
+
   return background;
 }
 
@@ -1405,7 +1659,14 @@ export default async function decorate(block) {
     ? await renderPersonalized(block, data)
     : renderTeaser(data);
 
-  const background = createBackground(data);
+  const supportsBackgroundImage = [
+    'background-hero',
+    'image-collage',
+  ].includes(data.style);
+
+  const background = supportsBackgroundImage
+    ? createBackground(data)
+    : null;
 
   if (background) {
     block.replaceChildren(background, content);

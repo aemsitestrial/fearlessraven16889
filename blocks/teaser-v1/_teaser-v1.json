@@ -44,7 +44,8 @@
               "name": "Image",
               "model": "teaser-v1-image",
               "image": "",
-              "imageAlt": ""
+              "imageAlt": "",
+              "imageMode": "normal"
             }
           }
         }
@@ -127,15 +128,28 @@
         {
           "component": "select",
           "name": "style",
-          "label": "Style",
-          "value": "default",
+          "label": "Layout Variant",
+          "description": "Select the predefined teaser layout.",
+          "value": "split-image-content",
           "options": [
             {
-              "name": "Default",
-              "value": "default"
+              "name": "Split Image and Content",
+              "value": "split-image-content"
             },
             {
-              "name": "No Image, Right Desc & Links",
+              "name": "Split Feature",
+              "value": "split-feature"
+            },
+            {
+              "name": "Background Hero",
+              "value": "background-hero"
+            },
+            {
+              "name": "Image Collage",
+              "value": "image-collage"
+            },
+            {
+              "name": "No Image, Right Content",
               "value": "no-image-right-desc-links"
             }
           ]
@@ -215,6 +229,31 @@
           "valueType": "boolean"
         },
         {
+          "component": "select",
+          "name": "textAlignment",
+          "label": "Text Alignment",
+          "description": "Controls the alignment of the teaser text content.",
+          "value": "left",
+          "options": [
+            {
+              "name": "Left",
+              "value": "left"
+            },
+            {
+              "name": "Center",
+              "value": "center"
+            },
+            {
+              "name": "Right",
+              "value": "right"
+            },
+            {
+              "name": "Justify",
+              "value": "justify"
+            }
+          ]
+        },
+        {
           "component": "text",
           "name": "date",
           "label": "Date"
@@ -255,30 +294,48 @@
       ]
     },
     {
-      "id": "teaser-v1-image",
-      "fields": [
+  "id": "teaser-v1-image",
+  "fields": [
+    {
+      "component": "reference",
+      "name": "image",
+      "label": "Image",
+      "valueType": "string",
+      "multi": false
+    },
+    {
+      "component": "text",
+      "name": "imageAlt",
+      "label": "Image Alt Text",
+      "description": "Describe meaningful image content for accessibility.",
+      "valueType": "string"
+    },
+    {
+      "component": "select",
+      "name": "imageMode",
+      "label": "Image Mode",
+      "value": "normal",
+      "options": [
         {
-          "component": "reference",
-          "name": "image",
-          "label": "Image",
-          "valueType": "string",
-          "multi": false
+          "name": "Normal",
+          "value": "normal"
         },
         {
-          "component": "text",
-          "name": "imageAlt",
-          "label": "Image Alt Text"
+          "name": "Black and White",
+          "value": "black-white"
         }
       ]
     }
-  ],
-  "filters": [
-    {
-      "id": "teaser-v1",
-      "components": [
-        "teaser-v1-cta",
-        "teaser-v1-image"
-      ]
-    }
   ]
+}
+],
+"filters": [
+  {
+    "id": "teaser-v1",
+    "components": [
+      "teaser-v1-cta",
+      "teaser-v1-image"
+    ]
+  }
+]
 }

@@ -1292,7 +1292,8 @@
                   "name": "Image",
                   "model": "teaser-v1-image",
                   "image": "",
-                  "imageAlt": ""
+                  "imageAlt": "",
+                  "imageMode": "normal"
                 }
               }
             }
